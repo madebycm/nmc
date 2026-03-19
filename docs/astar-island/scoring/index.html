@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Astar Island Scoring | NM i AI Docs Mirror</title>
+  <link rel="stylesheet" href="../../_assets/docs.css">
+</head>
+<body>
+  <div class="layout">
+    <div class="topbar panel">
+      <h1>NM i AI Docs Mirror</h1>
+      <p>Local snapshot of <a href="https://app.ainm.no/docs/astar-island/scoring">https://app.ainm.no/docs/astar-island/scoring</a> generated 2026-03-19 21:15:01 UTC.</p>
+    </div>
+    <div class="shell">
+      <aside class="sidebar panel">
+        <div class="section-title">Overview</div><ul class="nav-list"><li><a class="nav-link" href="../../index.html">Getting Started</a></li></ul><div class="section-title">Google Cloud</div><ul class="nav-list"><li><a class="nav-link" href="../../google-cloud/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../google-cloud/setup/index.html">Account Setup</a></li><li><a class="nav-link" href="../../google-cloud/deploy/index.html">Deploy on Cloud Run</a></li><li><a class="nav-link" href="../../google-cloud/services/index.html">Services &amp; Tools</a></li></ul><div class="section-title">NorgesGruppen Data</div><ul class="nav-list"><li><a class="nav-link" href="../../norgesgruppen-data/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../norgesgruppen-data/submission/index.html">Submission</a></li><li><a class="nav-link" href="../../norgesgruppen-data/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../norgesgruppen-data/examples/index.html">Examples</a></li></ul><div class="section-title">Tripletex</div><ul class="nav-list"><li><a class="nav-link" href="../../tripletex/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../tripletex/sandbox/index.html">Sandbox Account</a></li><li><a class="nav-link" href="../../tripletex/endpoint/index.html">Endpoint Spec</a></li><li><a class="nav-link" href="../../tripletex/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../tripletex/examples/index.html">Examples</a></li></ul><div class="section-title">Astar Island</div><ul class="nav-list"><li><a class="nav-link" href="../overview/index.html">Overview</a></li><li><a class="nav-link" href="../mechanics/index.html">Simulation Mechanics</a></li><li><a class="nav-link" href="../endpoint/index.html">API Endpoints</a></li><li><a class="nav-link active" href="index.html">Scoring</a></li><li><a class="nav-link" href="../quickstart/index.html">Quickstart</a></li></ul>
+      </aside>
+      <main class="content panel">
+        <div class="eyebrow"><span>Astar Island</span><span>/</span><span>Scoring</span></div>
+        <div class="meta">Source route: <a href="https://app.ainm.no/docs/astar-island/scoring">/docs/astar-island/scoring</a></div>
+        <article class="prose">
+          <h1 id="astar-island-scoring">Astar Island Scoring</h1>
+<h2 id="score-formula">Score Formula</h2>
+<p>Your score is based on <strong>entropy-weighted KL divergence</strong> between your prediction and the ground truth.</p>
+<h3 id="ground-truth">Ground Truth</h3>
+<p>For each seed, the organizers pre-compute ground truth by running the simulation <strong>hundreds of times</strong> with the true hidden parameters. This produces a probability distribution for each cell.</p>
+<p>For example, a cell might have ground truth <code>[0.0, 0.60, 0.25, 0.15, 0.0, 0.0]</code> — meaning 60% chance of Settlement, 25% Port, 15% Ruin, after 50 years.</p>
+<p><img src="../probability-tensor.png" alt="Probability tensor — per-cell class probabilities"></p>
+<h3 id="kl-divergence">KL Divergence</h3>
+<p>For each cell, the <a href="https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence">KL divergence</a> measures how different your prediction is from the ground truth:</p>
+<pre><code>KL(p || q) = Σ pᵢ × log(pᵢ / qᵢ)
+</code></pre>
+<p>Where <code>p</code> = ground truth, <code>q</code> = your prediction. Lower KL = better match.</p>
+<h3 id="entropy-weighting">Entropy Weighting</h3>
+<p>Not all cells are equally important. Static cells (ocean stays ocean, mountain stays mountain) have near-zero entropy and are excluded from scoring.</p>
+<p><strong>Only dynamic cells</strong> (those that change between simulation runs) contribute to your score, weighted by their entropy:</p>
+<pre><code>entropy(cell) = -Σ pᵢ × log(pᵢ)
+</code></pre>
+<p>Cells with higher entropy (more uncertain outcomes) count more toward your score. This focuses scoring on the interesting parts of the map.</p>
+<h3 id="final-score">Final Score</h3>
+<pre><code>weighted_kl = Σ entropy(cell) × KL(ground_truth[cell], prediction[cell])
+              ─────────────────────────────────────────────────────────
+                            Σ entropy(cell)
+
+score = max(0, min(100, 100 × exp(-3 × weighted_kl)))
+</code></pre>
+<ul>
+<li><strong>100</strong> = perfect prediction (your distribution matches ground truth exactly)</li>
+<li><strong>0</strong> = terrible prediction (high KL divergence)</li>
+<li>The exponential decay means small improvements in prediction accuracy yield diminishing score gains</li>
+</ul>
+<h2 id="common-pitfalls">Common Pitfalls</h2>
+<p><strong>Never assign probability 0.0 to any class.</strong> KL divergence includes the term <code>pᵢ × log(pᵢ / qᵢ)</code>. If the ground truth has <code>pᵢ > 0</code> but your prediction has <code>qᵢ = 0</code>, the divergence goes to <strong>infinity</strong> — destroying your entire score for that cell.</p>
+<p>Even if you're confident a cell is Forest, the ground truth may assign a small probability to Settlement or Ruin across thousands of simulations. A single zero in your prediction can tank your score.</p>
+<p><strong>Recommendation:</strong> Always enforce a minimum probability floor of <strong>0.01</strong> per class, then renormalize so the values still sum to 1.0:</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="python" data-theme="github-dark-default"><code data-language="python" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#E6EDF3">prediction </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> np.maximum(prediction, </span><span style="color:#79C0FF">0.01</span><span style="color:#E6EDF3">)</span></span>
+<span data-line=""><span style="color:#E6EDF3">prediction </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> prediction </span><span style="color:#FF7B72">/</span><span style="color:#E6EDF3"> prediction.sum(</span><span style="color:#FFA657">axis</span><span style="color:#FF7B72">=-</span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">keepdims</span><span style="color:#FF7B72">=</span><span style="color:#79C0FF">True</span><span style="color:#E6EDF3">)</span></span></code></pre></figure>
+<p>This small safety margin costs almost nothing in score but protects against catastrophic KL blowups.</p>
+<h2 id="per-round-score">Per-Round Score</h2>
+<p>Each round has <strong>5 seeds</strong>. Your round score is the <strong>average</strong> of your per-seed scores:</p>
+<pre><code>round_score = (score_seed_0 + score_seed_1 + ... + score_seed_4) / 5
+</code></pre>
+<p>If you don't submit a prediction for a seed, that seed scores <strong>0</strong>. Always submit something for every seed — even a uniform prediction beats 0.</p>
+<h2 id="leaderboard">Leaderboard</h2>
+<p>Your leaderboard score is your <strong>best round score of all time</strong>:</p>
+<pre><code>leaderboard_score = max(round_score) across all rounds
+</code></pre>
+<p>Later rounds may have higher weights, meaning a good score on a later round counts for more. Only your single best result matters — keep improving your model across rounds.</p>
+<p>A <strong>hot streak score</strong> (average of your last 3 rounds) is also tracked.</p>
+<h2 id="game-end">Game End</h2>
+<p>Each round has a <strong>prediction window</strong> (typically 2 hours 45 minutes). After the window closes:</p>
+<ol>
+<li>Round status changes to <code>scoring</code></li>
+<li>All predictions are scored against ground truth</li>
+<li>Per-seed scores are averaged to compute round score</li>
+<li>Leaderboard updates with weighted averages</li>
+<li>Round status changes to <code>completed</code></li>
+</ol>
+        </article>
+        <div class="pager"><a href="../endpoint/index.html"><strong>Previous</strong><br>API Endpoints</a><a class="next" href="../quickstart/index.html"><strong>Next</strong><br>Quickstart</a></div>
+      </main>
+      <aside class="toc panel">
+        <div class="section-title">On This Page</div>
+        <ul class="toc-list"><li><a class="toc-link" style="padding-left: 10px" href="#score-formula">Score Formula</a></li><li><a class="toc-link" style="padding-left: 22px" href="#ground-truth">Ground Truth</a></li><li><a class="toc-link" style="padding-left: 22px" href="#kl-divergence">KL Divergence</a></li><li><a class="toc-link" style="padding-left: 22px" href="#entropy-weighting">Entropy Weighting</a></li><li><a class="toc-link" style="padding-left: 22px" href="#final-score">Final Score</a></li><li><a class="toc-link" style="padding-left: 10px" href="#common-pitfalls">Common Pitfalls</a></li><li><a class="toc-link" style="padding-left: 10px" href="#per-round-score">Per-Round Score</a></li><li><a class="toc-link" style="padding-left: 10px" href="#leaderboard">Leaderboard</a></li><li><a class="toc-link" style="padding-left: 10px" href="#game-end">Game End</a></li></ul>
+      </aside>
+    </div>
+  </div>
+</body>
+</html>

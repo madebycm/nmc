@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Services &amp; Tools | NM i AI Docs Mirror</title>
+  <link rel="stylesheet" href="../../_assets/docs.css">
+</head>
+<body>
+  <div class="layout">
+    <div class="topbar panel">
+      <h1>NM i AI Docs Mirror</h1>
+      <p>Local snapshot of <a href="https://app.ainm.no/docs/google-cloud/services">https://app.ainm.no/docs/google-cloud/services</a> generated 2026-03-19 21:15:01 UTC.</p>
+    </div>
+    <div class="shell">
+      <aside class="sidebar panel">
+        <div class="section-title">Overview</div><ul class="nav-list"><li><a class="nav-link" href="../../index.html">Getting Started</a></li></ul><div class="section-title">Google Cloud</div><ul class="nav-list"><li><a class="nav-link" href="../overview/index.html">Overview</a></li><li><a class="nav-link" href="../setup/index.html">Account Setup</a></li><li><a class="nav-link" href="../deploy/index.html">Deploy on Cloud Run</a></li><li><a class="nav-link active" href="index.html">Services &amp; Tools</a></li></ul><div class="section-title">NorgesGruppen Data</div><ul class="nav-list"><li><a class="nav-link" href="../../norgesgruppen-data/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../norgesgruppen-data/submission/index.html">Submission</a></li><li><a class="nav-link" href="../../norgesgruppen-data/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../norgesgruppen-data/examples/index.html">Examples</a></li></ul><div class="section-title">Tripletex</div><ul class="nav-list"><li><a class="nav-link" href="../../tripletex/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../tripletex/sandbox/index.html">Sandbox Account</a></li><li><a class="nav-link" href="../../tripletex/endpoint/index.html">Endpoint Spec</a></li><li><a class="nav-link" href="../../tripletex/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../tripletex/examples/index.html">Examples</a></li></ul><div class="section-title">Astar Island</div><ul class="nav-list"><li><a class="nav-link" href="../../astar-island/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../astar-island/mechanics/index.html">Simulation Mechanics</a></li><li><a class="nav-link" href="../../astar-island/endpoint/index.html">API Endpoints</a></li><li><a class="nav-link" href="../../astar-island/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../astar-island/quickstart/index.html">Quickstart</a></li></ul>
+      </aside>
+      <main class="content panel">
+        <div class="eyebrow"><span>Google Cloud</span><span>/</span><span>Services &amp; Tools</span></div>
+        <div class="meta">Source route: <a href="https://app.ainm.no/docs/google-cloud/services">/docs/google-cloud/services</a></div>
+        <article class="prose">
+          <h1 id="services--tools">Services &#x26; Tools</h1>
+<p>A curated list of GCP services relevant to competing in NM i AI. You don't need all of these — pick what fits your approach.</p>
+<h2 id="hosting-your-endpoint">Hosting Your Endpoint</h2>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Use case</th>
+<th>When to use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://console.cloud.google.com/run">Cloud Run</a></td>
+<td>Deploy containerized APIs</td>
+<td>Tripletex &#x26; Astar Island tasks — this is the go-to</td>
+</tr>
+<tr>
+<td><a href="https://console.cloud.google.com/compute">Compute Engine</a></td>
+<td>Full VM (any OS)</td>
+<td>Need GPU or persistent server</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Recommendation:</strong> Start with Cloud Run. It's simpler and free with your account. Only use Compute Engine if you need a GPU or persistent background processes.</p>
+<h2 id="ai--machine-learning">AI &#x26; Machine Learning</h2>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Use case</th>
+<th>When to use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://console.cloud.google.com/vertex-ai">Vertex AI</a></td>
+<td>Managed ML platform</td>
+<td>Access Gemini and other models via API</td>
+</tr>
+<tr>
+<td><a href="https://console.cloud.google.com/vertex-ai/model-garden">Model Garden</a></td>
+<td>Pre-trained model catalog</td>
+<td>Browse and deploy models (Gemini, Llama, Mistral)</td>
+</tr>
+<tr>
+<td><a href="https://aistudio.google.com">AI Studio</a></td>
+<td>Experiment with Gemini</td>
+<td>Quick prototyping, prompt engineering</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="using-vertex-ai-from-your-endpoint">Using Vertex AI from Your Endpoint</h3>
+<p>Call Gemini from your Cloud Run endpoint:</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="python" data-theme="github-dark-default"><code data-language="python" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> vertexai</span></span>
+<span data-line=""><span style="color:#FF7B72">from</span><span style="color:#E6EDF3"> vertexai.generative_models </span><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> GenerativeModel</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#E6EDF3">vertexai.init(</span><span style="color:#FFA657">project</span><span style="color:#FF7B72">=</span><span style="color:#A5D6FF">"your-project-id"</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">location</span><span style="color:#FF7B72">=</span><span style="color:#A5D6FF">"europe-north1"</span><span style="color:#E6EDF3">)</span></span>
+<span data-line=""><span style="color:#E6EDF3">model </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> GenerativeModel(</span><span style="color:#A5D6FF">"gemini-2.0-flash"</span><span style="color:#E6EDF3">)</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#E6EDF3">response </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> model.generate_content(</span><span style="color:#A5D6FF">"Parse this accounting task: ..."</span><span style="color:#E6EDF3">)</span></span>
+<span data-line=""><span style="color:#79C0FF">print</span><span style="color:#E6EDF3">(response.text)</span></span></code></pre></figure>
+<p>Install with: <code>pip install google-cloud-aiplatform</code></p>
+<h2 id="data--storage">Data &#x26; Storage</h2>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Use case</th>
+<th>When to use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://console.cloud.google.com/storage">Cloud Storage</a></td>
+<td>File storage (buckets)</td>
+<td>Store datasets, model weights, logs</td>
+</tr>
+<tr>
+<td><a href="https://console.cloud.google.com/sql">Cloud SQL</a></td>
+<td>Managed PostgreSQL/MySQL</td>
+<td>Need a relational database</td>
+</tr>
+<tr>
+<td><a href="https://console.cloud.google.com/bigquery">BigQuery</a></td>
+<td>Data warehouse</td>
+<td>Analyze large datasets with SQL</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="development-tools">Development Tools</h2>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>How to access</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cloud Shell</td>
+<td>Console top-right icon</td>
+<td>Free terminal with everything pre-installed</td>
+</tr>
+<tr>
+<td>Cloud Shell Editor</td>
+<td>"Open Editor" button</td>
+<td>VS Code in the browser</td>
+</tr>
+<tr>
+<td>Gemini Code Assist</td>
+<td>Cloud Shell Editor sidebar</td>
+<td>AI coding companion</td>
+</tr>
+<tr>
+<td>Gemini CLI</td>
+<td><code>gemini</code> in Cloud Shell</td>
+<td>AI assistant in the terminal</td>
+</tr>
+<tr>
+<td>Cloud Build</td>
+<td>Automatic with <code>gcloud run deploy --source .</code></td>
+<td>Builds your Docker images</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="collaboration">Collaboration</h2>
+<p>Your <code>@gcplab.me</code> account also works with:</p>
+<ul>
+<li><strong>Gmail</strong> — communicate with teammates</li>
+<li><strong>Google Docs</strong> — shared documentation</li>
+<li><strong>Google Chat</strong> — team messaging</li>
+<li><strong>NotebookLM</strong> — AI-powered research notebook</li>
+</ul>
+        </article>
+        <div class="pager"><a href="../deploy/index.html"><strong>Previous</strong><br>Deploy on Cloud Run</a><a class="next" href="../../norgesgruppen-data/overview/index.html"><strong>Next</strong><br>Overview</a></div>
+      </main>
+      <aside class="toc panel">
+        <div class="section-title">On This Page</div>
+        <ul class="toc-list"><li><a class="toc-link" style="padding-left: 10px" href="#hosting-your-endpoint">Hosting Your Endpoint</a></li><li><a class="toc-link" style="padding-left: 10px" href="#ai--machine-learning">AI &amp; Machine Learning</a></li><li><a class="toc-link" style="padding-left: 22px" href="#using-vertex-ai-from-your-endpoint">Using Vertex AI from Your Endpoint</a></li><li><a class="toc-link" style="padding-left: 10px" href="#data--storage">Data &amp; Storage</a></li><li><a class="toc-link" style="padding-left: 10px" href="#development-tools">Development Tools</a></li><li><a class="toc-link" style="padding-left: 10px" href="#collaboration">Collaboration</a></li></ul>
+      </aside>
+    </div>
+  </div>
+</body>
+</html>

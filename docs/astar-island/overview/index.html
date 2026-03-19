@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Astar Island — Viking Civilisation Prediction | NM i AI Docs Mirror</title>
+  <link rel="stylesheet" href="../../_assets/docs.css">
+</head>
+<body>
+  <div class="layout">
+    <div class="topbar panel">
+      <h1>NM i AI Docs Mirror</h1>
+      <p>Local snapshot of <a href="https://app.ainm.no/docs/astar-island/overview">https://app.ainm.no/docs/astar-island/overview</a> generated 2026-03-19 21:15:01 UTC.</p>
+    </div>
+    <div class="shell">
+      <aside class="sidebar panel">
+        <div class="section-title">Overview</div><ul class="nav-list"><li><a class="nav-link" href="../../index.html">Getting Started</a></li></ul><div class="section-title">Google Cloud</div><ul class="nav-list"><li><a class="nav-link" href="../../google-cloud/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../google-cloud/setup/index.html">Account Setup</a></li><li><a class="nav-link" href="../../google-cloud/deploy/index.html">Deploy on Cloud Run</a></li><li><a class="nav-link" href="../../google-cloud/services/index.html">Services &amp; Tools</a></li></ul><div class="section-title">NorgesGruppen Data</div><ul class="nav-list"><li><a class="nav-link" href="../../norgesgruppen-data/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../norgesgruppen-data/submission/index.html">Submission</a></li><li><a class="nav-link" href="../../norgesgruppen-data/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../norgesgruppen-data/examples/index.html">Examples</a></li></ul><div class="section-title">Tripletex</div><ul class="nav-list"><li><a class="nav-link" href="../../tripletex/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../tripletex/sandbox/index.html">Sandbox Account</a></li><li><a class="nav-link" href="../../tripletex/endpoint/index.html">Endpoint Spec</a></li><li><a class="nav-link" href="../../tripletex/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../tripletex/examples/index.html">Examples</a></li></ul><div class="section-title">Astar Island</div><ul class="nav-list"><li><a class="nav-link active" href="index.html">Overview</a></li><li><a class="nav-link" href="../mechanics/index.html">Simulation Mechanics</a></li><li><a class="nav-link" href="../endpoint/index.html">API Endpoints</a></li><li><a class="nav-link" href="../scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../quickstart/index.html">Quickstart</a></li></ul>
+      </aside>
+      <main class="content panel">
+        <div class="eyebrow"><span>Astar Island</span><span>/</span><span>Overview</span></div>
+        <div class="meta">Source route: <a href="https://app.ainm.no/docs/astar-island/overview">/docs/astar-island/overview</a></div>
+        <article class="prose">
+          <h1 id="astar-island--viking-civilisation-prediction">Astar Island — Viking Civilisation Prediction</h1>
+<h2 id="what-is-this">What is this?</h2>
+<p>Astar Island is a machine learning challenge where you observe a black-box Norse civilisation simulator through a limited viewport and predict the final world state. The simulator runs a procedurally generated Norse world for 50 years — settlements grow, factions clash, trade routes form, alliances shift, forests reclaim ruins, and harsh winters reshape entire civilisations.</p>
+<p>Your goal: <strong>observe, learn the world's hidden rules, and predict the probability distribution of terrain types across the entire map.</strong></p>
+<ul>
+<li><strong>Task type</strong>: Observation + probabilistic prediction</li>
+<li><strong>Platform</strong>: <a href="https://app.ainm.no">app.ainm.no</a></li>
+<li><strong>API</strong>: REST endpoints at <code>api.ainm.no/astar-island/</code></li>
+</ul>
+<p><img src="../map-initial.png" alt="Initial Astar Island Map"></p>
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+<li><strong>A round starts</strong> — the admin creates a round with a fixed map, many hidden parameters, and 5 random seeds</li>
+<li><strong>Observe through a viewport</strong> — call <code>POST /astar-island/simulate</code> with viewport coordinates to observe one stochastic run through a window (max 15×15 cells). You have 50 queries total per round, shared across all 5 seeds.</li>
+<li><strong>Learn the hidden rules</strong> — analyze viewport observations to understand the forces that govern the world</li>
+<li><strong>Generate predictions</strong> — use your understanding to build probability distributions for the full map</li>
+<li><strong>Submit predictions</strong> — for each of the 5 seeds, submit a W×H×6 probability tensor predicting terrain type probabilities per cell</li>
+<li><strong>Scoring</strong> — your prediction is compared against the ground truth using entropy-weighted KL divergence</li>
+</ol>
+<h2 id="the-core-challenge">The Core Challenge</h2>
+<p>The simulation is <strong>stochastic</strong> — the same map and parameters produce different outcomes every run. With only <strong>50 queries</strong> shared across <strong>5 seeds</strong>, and each query only revealing a <strong>15×15 viewport</strong> of the 40×40 map, you must be strategic about what you observe and how you use that information.</p>
+<p><img src="../stochastic-outcomes.png" alt="Same map, different stochastic outcomes"></p>
+<p><img src="../viewport-demo.png" alt="Viewport: you only see a small window of the full map"></p>
+<p>The world is governed by many hidden forces that interact in complex ways. Teams that understand these interactions can build accurate models and generate predictions far beyond what raw observation provides.</p>
+<h2 id="quick-start">Quick Start</h2>
+<ol>
+<li>Sign in at <a href="https://app.ainm.no">app.ainm.no</a> with Google</li>
+<li>Create or join a team</li>
+<li>Go to the Astar Island page</li>
+<li>When a round is active, use the API to observe the simulator</li>
+<li>Analyze results, build your model, submit predictions for all 5 seeds</li>
+</ol>
+<h2 id="key-concepts">Key Concepts</h2>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Map seed</strong></td>
+<td>Determines terrain layout (fixed per seed, visible to you)</td>
+</tr>
+<tr>
+<td><strong>Sim seed</strong></td>
+<td>Random seed for each simulation run (different every query)</td>
+</tr>
+<tr>
+<td><strong>Hidden parameters</strong></td>
+<td>Values controlling the world's behavior (same for all seeds in a round)</td>
+</tr>
+<tr>
+<td><strong>50 queries</strong></td>
+<td>Your budget per round, shared across all 5 seeds</td>
+</tr>
+<tr>
+<td><strong>Viewport</strong></td>
+<td>Each query reveals a max 15×15 window of the map</td>
+</tr>
+<tr>
+<td><strong>W×H×6 tensor</strong></td>
+<td>Your prediction — probability of each of 6 terrain classes per cell</td>
+</tr>
+<tr>
+<td><strong>50 years</strong></td>
+<td>Each simulation runs for 50 time steps</td>
+</tr>
+</tbody>
+</table></div>
+        </article>
+        <div class="pager"><a href="../../tripletex/examples/index.html"><strong>Previous</strong><br>Examples</a><a class="next" href="../mechanics/index.html"><strong>Next</strong><br>Simulation Mechanics</a></div>
+      </main>
+      <aside class="toc panel">
+        <div class="section-title">On This Page</div>
+        <ul class="toc-list"><li><a class="toc-link" style="padding-left: 10px" href="#what-is-this">What is this?</a></li><li><a class="toc-link" style="padding-left: 10px" href="#how-it-works">How It Works</a></li><li><a class="toc-link" style="padding-left: 10px" href="#the-core-challenge">The Core Challenge</a></li><li><a class="toc-link" style="padding-left: 10px" href="#quick-start">Quick Start</a></li><li><a class="toc-link" style="padding-left: 10px" href="#key-concepts">Key Concepts</a></li></ul>
+      </aside>
+    </div>
+  </div>
+</body>
+</html>

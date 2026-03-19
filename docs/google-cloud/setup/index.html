@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Account Setup | NM i AI Docs Mirror</title>
+  <link rel="stylesheet" href="../../_assets/docs.css">
+</head>
+<body>
+  <div class="layout">
+    <div class="topbar panel">
+      <h1>NM i AI Docs Mirror</h1>
+      <p>Local snapshot of <a href="https://app.ainm.no/docs/google-cloud/setup">https://app.ainm.no/docs/google-cloud/setup</a> generated 2026-03-19 21:15:01 UTC.</p>
+    </div>
+    <div class="shell">
+      <aside class="sidebar panel">
+        <div class="section-title">Overview</div><ul class="nav-list"><li><a class="nav-link" href="../../index.html">Getting Started</a></li></ul><div class="section-title">Google Cloud</div><ul class="nav-list"><li><a class="nav-link" href="../overview/index.html">Overview</a></li><li><a class="nav-link active" href="index.html">Account Setup</a></li><li><a class="nav-link" href="../deploy/index.html">Deploy on Cloud Run</a></li><li><a class="nav-link" href="../services/index.html">Services &amp; Tools</a></li></ul><div class="section-title">NorgesGruppen Data</div><ul class="nav-list"><li><a class="nav-link" href="../../norgesgruppen-data/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../norgesgruppen-data/submission/index.html">Submission</a></li><li><a class="nav-link" href="../../norgesgruppen-data/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../norgesgruppen-data/examples/index.html">Examples</a></li></ul><div class="section-title">Tripletex</div><ul class="nav-list"><li><a class="nav-link" href="../../tripletex/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../tripletex/sandbox/index.html">Sandbox Account</a></li><li><a class="nav-link" href="../../tripletex/endpoint/index.html">Endpoint Spec</a></li><li><a class="nav-link" href="../../tripletex/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../tripletex/examples/index.html">Examples</a></li></ul><div class="section-title">Astar Island</div><ul class="nav-list"><li><a class="nav-link" href="../../astar-island/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../astar-island/mechanics/index.html">Simulation Mechanics</a></li><li><a class="nav-link" href="../../astar-island/endpoint/index.html">API Endpoints</a></li><li><a class="nav-link" href="../../astar-island/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../astar-island/quickstart/index.html">Quickstart</a></li></ul>
+      </aside>
+      <main class="content panel">
+        <div class="eyebrow"><span>Google Cloud</span><span>/</span><span>Account Setup</span></div>
+        <div class="meta">Source route: <a href="https://app.ainm.no/docs/google-cloud/setup">/docs/google-cloud/setup</a></div>
+        <article class="prose">
+          <h1 id="account-setup">Account Setup</h1>
+<p>Once your team receives GCP credentials, follow these steps to get started.</p>
+<h2 id="log-in">Log In</h2>
+<ol>
+<li>Open a <strong>new Chrome profile</strong> or an <strong>incognito window</strong></li>
+<li>Go to <a href="https://console.cloud.google.com">console.cloud.google.com</a></li>
+<li>Sign in with your <code>@gcplab.me</code> email and password</li>
+<li>Select your assigned project from the project dropdown</li>
+</ol>
+<blockquote>
+<p><strong>Tip:</strong> Use a separate Chrome profile to keep your competition account separate from personal Google accounts.</p>
+</blockquote>
+<h2 id="cloud-shell">Cloud Shell</h2>
+<p>Cloud Shell is a free terminal built into the Google Cloud console. It comes with Python, git, gcloud CLI, and Docker pre-installed — everything you need to build and deploy.</p>
+<p>Open it by clicking the terminal icon in the top-right corner of the console:</p>
+<pre><code>┌─────────────────────────────────────────┐
+│  Google Cloud    [Search]    >_ 🔔 ❓   │
+│                              ↑          │
+│                     Click this icon     │
+└─────────────────────────────────────────┘
+</code></pre>
+<p>Cloud Shell gives you:</p>
+<ul>
+<li>A Linux VM with 5 GB persistent home directory</li>
+<li>Python 3, Node.js, Go, Java pre-installed</li>
+<li>Docker for building container images</li>
+<li><code>gcloud</code> CLI already authenticated with your project</li>
+<li>Free to use — no compute charges</li>
+</ul>
+<h2 id="cloud-shell-editor">Cloud Shell Editor</h2>
+<p>Need a full IDE? Click <strong>"Open Editor"</strong> in Cloud Shell or go directly to <a href="https://ide.cloud.google.com">ide.cloud.google.com</a>.</p>
+<p>This is a VS Code-based editor in the browser with:</p>
+<ul>
+<li>File explorer, terminal, extensions</li>
+<li><strong>Gemini Code Assist</strong> — AI coding companion built in</li>
+<li>Direct access to your Cloud Shell files</li>
+</ul>
+<h2 id="gemini-tools">Gemini Tools</h2>
+<p>Your GCP account includes several AI assistants:</p>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Where</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Gemini Code Assist</strong></td>
+<td>Cloud Shell Editor</td>
+<td>AI coding companion in the IDE</td>
+</tr>
+<tr>
+<td><strong>Gemini CLI</strong></td>
+<td>Cloud Shell terminal</td>
+<td>Type <code>gemini</code> in the terminal for CLI-based AI help</td>
+</tr>
+<tr>
+<td><strong>Gemini Cloud Assist</strong></td>
+<td>Console sidebar</td>
+<td>Ask questions about GCP services and configuration</td>
+</tr>
+<tr>
+<td><strong>AI Studio</strong></td>
+<td><a href="https://aistudio.google.com">aistudio.google.com</a></td>
+<td>Experiment with Gemini models directly</td>
+</tr>
+</tbody>
+</table></div>
+<p>To enable Gemini Cloud Assist, click the Gemini icon in the console and hit <strong>"Enable"</strong>.</p>
+        </article>
+        <div class="pager"><a href="../overview/index.html"><strong>Previous</strong><br>Overview</a><a class="next" href="../deploy/index.html"><strong>Next</strong><br>Deploy on Cloud Run</a></div>
+      </main>
+      <aside class="toc panel">
+        <div class="section-title">On This Page</div>
+        <ul class="toc-list"><li><a class="toc-link" style="padding-left: 10px" href="#log-in">Log In</a></li><li><a class="toc-link" style="padding-left: 10px" href="#cloud-shell">Cloud Shell</a></li><li><a class="toc-link" style="padding-left: 10px" href="#cloud-shell-editor">Cloud Shell Editor</a></li><li><a class="toc-link" style="padding-left: 10px" href="#gemini-tools">Gemini Tools</a></li></ul>
+      </aside>
+    </div>
+  </div>
+</body>
+</html>

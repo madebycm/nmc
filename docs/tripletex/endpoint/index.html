@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tripletex — Endpoint Specification | NM i AI Docs Mirror</title>
+  <link rel="stylesheet" href="../../_assets/docs.css">
+</head>
+<body>
+  <div class="layout">
+    <div class="topbar panel">
+      <h1>NM i AI Docs Mirror</h1>
+      <p>Local snapshot of <a href="https://app.ainm.no/docs/tripletex/endpoint">https://app.ainm.no/docs/tripletex/endpoint</a> generated 2026-03-19 21:15:01 UTC.</p>
+    </div>
+    <div class="shell">
+      <aside class="sidebar panel">
+        <div class="section-title">Overview</div><ul class="nav-list"><li><a class="nav-link" href="../../index.html">Getting Started</a></li></ul><div class="section-title">Google Cloud</div><ul class="nav-list"><li><a class="nav-link" href="../../google-cloud/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../google-cloud/setup/index.html">Account Setup</a></li><li><a class="nav-link" href="../../google-cloud/deploy/index.html">Deploy on Cloud Run</a></li><li><a class="nav-link" href="../../google-cloud/services/index.html">Services &amp; Tools</a></li></ul><div class="section-title">NorgesGruppen Data</div><ul class="nav-list"><li><a class="nav-link" href="../../norgesgruppen-data/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../norgesgruppen-data/submission/index.html">Submission</a></li><li><a class="nav-link" href="../../norgesgruppen-data/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../norgesgruppen-data/examples/index.html">Examples</a></li></ul><div class="section-title">Tripletex</div><ul class="nav-list"><li><a class="nav-link" href="../overview/index.html">Overview</a></li><li><a class="nav-link" href="../sandbox/index.html">Sandbox Account</a></li><li><a class="nav-link active" href="index.html">Endpoint Spec</a></li><li><a class="nav-link" href="../scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../examples/index.html">Examples</a></li></ul><div class="section-title">Astar Island</div><ul class="nav-list"><li><a class="nav-link" href="../../astar-island/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../astar-island/mechanics/index.html">Simulation Mechanics</a></li><li><a class="nav-link" href="../../astar-island/endpoint/index.html">API Endpoints</a></li><li><a class="nav-link" href="../../astar-island/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../astar-island/quickstart/index.html">Quickstart</a></li></ul>
+      </aside>
+      <main class="content panel">
+        <div class="eyebrow"><span>Tripletex</span><span>/</span><span>Endpoint Spec</span></div>
+        <div class="meta">Source route: <a href="https://app.ainm.no/docs/tripletex/endpoint">/docs/tripletex/endpoint</a></div>
+        <article class="prose">
+          <h1 id="tripletex--endpoint-specification">Tripletex — Endpoint Specification</h1>
+<p>Your agent must expose a single HTTPS endpoint that accepts POST requests.</p>
+<h2 id="solve-endpoint"><code>/solve</code> Endpoint</h2>
+<p><strong>Method:</strong> POST
+<strong>Content-Type:</strong> application/json
+<strong>Timeout:</strong> 300 seconds (5 minutes)</p>
+<h2 id="request-format">Request Format</h2>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="json" data-theme="github-dark-default"><code data-language="json" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#E6EDF3">{</span></span>
+<span data-line=""><span style="color:#7EE787">  "prompt"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"Opprett en ansatt med navn Ola Nordmann, ola@example.org. Han skal være kontoadministrator."</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">  "files"</span><span style="color:#E6EDF3">: [</span></span>
+<span data-line=""><span style="color:#E6EDF3">    {</span></span>
+<span data-line=""><span style="color:#7EE787">      "filename"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"faktura.pdf"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">      "content_base64"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"JVBERi0xLjQg..."</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">      "mime_type"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"application/pdf"</span></span>
+<span data-line=""><span style="color:#E6EDF3">    }</span></span>
+<span data-line=""><span style="color:#E6EDF3">  ],</span></span>
+<span data-line=""><span style="color:#7EE787">  "tripletex_credentials"</span><span style="color:#E6EDF3">: {</span></span>
+<span data-line=""><span style="color:#7EE787">    "base_url"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"https://tx-proxy.ainm.no/v2"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "session_token"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"abc123..."</span></span>
+<span data-line=""><span style="color:#E6EDF3">  }</span></span>
+<span data-line=""><span style="color:#E6EDF3">}</span></span></code></pre></figure>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>prompt</code></td>
+<td>string</td>
+<td>The task in Norwegian natural language</td>
+</tr>
+<tr>
+<td><code>files</code></td>
+<td>array</td>
+<td>Attachments (PDFs, images) — may be empty</td>
+</tr>
+<tr>
+<td><code>files[].filename</code></td>
+<td>string</td>
+<td>Original filename</td>
+</tr>
+<tr>
+<td><code>files[].content_base64</code></td>
+<td>string</td>
+<td>Base64-encoded file content</td>
+</tr>
+<tr>
+<td><code>files[].mime_type</code></td>
+<td>string</td>
+<td>MIME type (<code>application/pdf</code>, <code>image/png</code>, etc.)</td>
+</tr>
+<tr>
+<td><code>tripletex_credentials.base_url</code></td>
+<td>string</td>
+<td>Proxy API URL — use this instead of the standard Tripletex URL</td>
+</tr>
+<tr>
+<td><code>tripletex_credentials.session_token</code></td>
+<td>string</td>
+<td>Session token for authentication</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="response-format">Response Format</h2>
+<p>Return this JSON when your agent has finished executing the task:</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="json" data-theme="github-dark-default"><code data-language="json" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#E6EDF3">{</span></span>
+<span data-line=""><span style="color:#7EE787">  "status"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"completed"</span></span>
+<span data-line=""><span style="color:#E6EDF3">}</span></span></code></pre></figure>
+<h2 id="authentication">Authentication</h2>
+<p>Your agent authenticates with the Tripletex API using <strong>Basic Auth</strong>:</p>
+<ul>
+<li><strong>Username:</strong> <code>0</code> (zero)</li>
+<li><strong>Password:</strong> the <code>session_token</code> value from the request</li>
+</ul>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="python" data-theme="github-dark-default"><code data-language="python" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> requests</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#E6EDF3">response </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> requests.get(</span></span>
+<span data-line=""><span style="color:#FF7B72">    f</span><span style="color:#A5D6FF">"</span><span style="color:#FF7B72">{</span><span style="color:#E6EDF3">base_url</span><span style="color:#FF7B72">}</span><span style="color:#A5D6FF">/employee"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#FFA657">    auth</span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"0"</span><span style="color:#E6EDF3">, session_token),</span></span>
+<span data-line=""><span style="color:#FFA657">    params</span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3">{</span><span style="color:#A5D6FF">"fields"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"id,firstName,lastName,email"</span><span style="color:#E6EDF3">}</span></span>
+<span data-line=""><span style="color:#E6EDF3">)</span></span></code></pre></figure>
+<h2 id="api-key-optional">API Key (Optional)</h2>
+<p>If you set an API key when submitting your endpoint, we send it as a Bearer token:</p>
+<pre><code>Authorization: Bearer &#x3C;your-api-key>
+</code></pre>
+<p>Use this to protect your endpoint from unauthorized access.</p>
+<h2 id="requirements">Requirements</h2>
+<ul>
+<li>Endpoint must be <strong>HTTPS</strong></li>
+<li>Must respond within <strong>5 minutes</strong> (300 seconds)</li>
+<li>Must return <code>{"status": "completed"}</code> with HTTP 200</li>
+<li>All Tripletex API calls must go through the provided <code>base_url</code> (proxy)</li>
+</ul>
+<h2 id="tripletex-api-reference">Tripletex API Reference</h2>
+<p>All standard Tripletex v2 endpoints are available through the proxy. Common endpoints:</p>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Endpoint</th>
+<th>Methods</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/employee</code></td>
+<td>GET, POST, PUT</td>
+<td>Manage employees</td>
+</tr>
+<tr>
+<td><code>/customer</code></td>
+<td>GET, POST, PUT</td>
+<td>Manage customers</td>
+</tr>
+<tr>
+<td><code>/product</code></td>
+<td>GET, POST</td>
+<td>Manage products</td>
+</tr>
+<tr>
+<td><code>/invoice</code></td>
+<td>GET, POST</td>
+<td>Create and query invoices</td>
+</tr>
+<tr>
+<td><code>/order</code></td>
+<td>GET, POST</td>
+<td>Manage orders</td>
+</tr>
+<tr>
+<td><code>/travelExpense</code></td>
+<td>GET, POST, PUT, DELETE</td>
+<td>Travel expense reports</td>
+</tr>
+<tr>
+<td><code>/project</code></td>
+<td>GET, POST</td>
+<td>Manage projects</td>
+</tr>
+<tr>
+<td><code>/department</code></td>
+<td>GET, POST</td>
+<td>Manage departments</td>
+</tr>
+<tr>
+<td><code>/ledger/account</code></td>
+<td>GET</td>
+<td>Query chart of accounts</td>
+</tr>
+<tr>
+<td><code>/ledger/posting</code></td>
+<td>GET</td>
+<td>Query ledger postings</td>
+</tr>
+<tr>
+<td><code>/ledger/voucher</code></td>
+<td>GET, POST, DELETE</td>
+<td>Manage vouchers</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="api-tips">API Tips</h2>
+<ul>
+<li>Use the <code>fields</code> parameter to select specific fields: <code>?fields=id,firstName,lastName,*</code></li>
+<li>Use <code>count</code> and <code>from</code> for pagination: <code>?from=0&#x26;count=100</code></li>
+<li>POST/PUT requests take JSON body</li>
+<li>DELETE requests use the ID in the URL path: <code>DELETE /employee/123</code></li>
+<li>List responses are wrapped: <code>{"fullResultSize": N, "values": [...]}</code></li>
+</ul>
+        </article>
+        <div class="pager"><a href="../sandbox/index.html"><strong>Previous</strong><br>Sandbox Account</a><a class="next" href="../scoring/index.html"><strong>Next</strong><br>Scoring</a></div>
+      </main>
+      <aside class="toc panel">
+        <div class="section-title">On This Page</div>
+        <ul class="toc-list"><li><a class="toc-link" style="padding-left: 10px" href="#solve-endpoint">/solve Endpoint</a></li><li><a class="toc-link" style="padding-left: 10px" href="#request-format">Request Format</a></li><li><a class="toc-link" style="padding-left: 10px" href="#response-format">Response Format</a></li><li><a class="toc-link" style="padding-left: 10px" href="#authentication">Authentication</a></li><li><a class="toc-link" style="padding-left: 10px" href="#api-key-optional">API Key (Optional)</a></li><li><a class="toc-link" style="padding-left: 10px" href="#requirements">Requirements</a></li><li><a class="toc-link" style="padding-left: 10px" href="#tripletex-api-reference">Tripletex API Reference</a></li><li><a class="toc-link" style="padding-left: 10px" href="#api-tips">API Tips</a></li></ul>
+      </aside>
+    </div>
+  </div>
+</body>
+</html>

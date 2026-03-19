@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tripletex — Scoring | NM i AI Docs Mirror</title>
+  <link rel="stylesheet" href="../../_assets/docs.css">
+</head>
+<body>
+  <div class="layout">
+    <div class="topbar panel">
+      <h1>NM i AI Docs Mirror</h1>
+      <p>Local snapshot of <a href="https://app.ainm.no/docs/tripletex/scoring">https://app.ainm.no/docs/tripletex/scoring</a> generated 2026-03-19 21:15:01 UTC.</p>
+    </div>
+    <div class="shell">
+      <aside class="sidebar panel">
+        <div class="section-title">Overview</div><ul class="nav-list"><li><a class="nav-link" href="../../index.html">Getting Started</a></li></ul><div class="section-title">Google Cloud</div><ul class="nav-list"><li><a class="nav-link" href="../../google-cloud/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../google-cloud/setup/index.html">Account Setup</a></li><li><a class="nav-link" href="../../google-cloud/deploy/index.html">Deploy on Cloud Run</a></li><li><a class="nav-link" href="../../google-cloud/services/index.html">Services &amp; Tools</a></li></ul><div class="section-title">NorgesGruppen Data</div><ul class="nav-list"><li><a class="nav-link" href="../../norgesgruppen-data/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../norgesgruppen-data/submission/index.html">Submission</a></li><li><a class="nav-link" href="../../norgesgruppen-data/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../norgesgruppen-data/examples/index.html">Examples</a></li></ul><div class="section-title">Tripletex</div><ul class="nav-list"><li><a class="nav-link" href="../overview/index.html">Overview</a></li><li><a class="nav-link" href="../sandbox/index.html">Sandbox Account</a></li><li><a class="nav-link" href="../endpoint/index.html">Endpoint Spec</a></li><li><a class="nav-link active" href="index.html">Scoring</a></li><li><a class="nav-link" href="../examples/index.html">Examples</a></li></ul><div class="section-title">Astar Island</div><ul class="nav-list"><li><a class="nav-link" href="../../astar-island/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../astar-island/mechanics/index.html">Simulation Mechanics</a></li><li><a class="nav-link" href="../../astar-island/endpoint/index.html">API Endpoints</a></li><li><a class="nav-link" href="../../astar-island/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../astar-island/quickstart/index.html">Quickstart</a></li></ul>
+      </aside>
+      <main class="content panel">
+        <div class="eyebrow"><span>Tripletex</span><span>/</span><span>Scoring</span></div>
+        <div class="meta">Source route: <a href="https://app.ainm.no/docs/tripletex/scoring">/docs/tripletex/scoring</a></div>
+        <article class="prose">
+          <h1 id="tripletex--scoring">Tripletex — Scoring</h1>
+<h2 id="field-by-field-verification-correctness">Field-by-Field Verification (Correctness)</h2>
+<p>After your agent responds, we query the Tripletex API to verify what was created or modified. Each task has specific checks worth different point values.</p>
+<p>Example for a "Create employee" task (max 10 points):</p>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Points</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Employee found</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Correct first name</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Correct last name</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Correct email</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Administrator role assigned</td>
+<td>5</td>
+</tr>
+</tbody>
+</table></div>
+<p>The raw score is normalized to 0–1: <code>correctness = points_earned / max_points</code> (e.g., 8/10 = 0.8).</p>
+<h2 id="tier-multiplier">Tier Multiplier</h2>
+<p>Each task has a difficulty tier that multiplies your correctness score:</p>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Multiplier</th>
+<th>Example tasks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tier 1</td>
+<td>×1</td>
+<td>Create employee, create customer</td>
+</tr>
+<tr>
+<td>Tier 2</td>
+<td>×2</td>
+<td>Create invoice, register payment</td>
+</tr>
+<tr>
+<td>Tier 3</td>
+<td>×3</td>
+<td>Complex multi-step workflows</td>
+</tr>
+</tbody>
+</table></div>
+<p>So a perfect score on a Tier 2 task = <code>1.0 × 2 = 2.0</code> base score.</p>
+<h2 id="efficiency-bonus">Efficiency Bonus</h2>
+<p>If your agent achieves a <strong>perfect correctness score</strong> (1.0), you receive an efficiency bonus that can up to <strong>double</strong> your tier score.</p>
+<p>Two factors determine the bonus:</p>
+<p><strong>Call efficiency</strong> — How many API calls did your agent make compared to the best known solution for this task? Fewer calls = higher bonus.</p>
+<p><strong>Error cleanliness</strong> — How many of your API calls resulted in 4xx errors (400, 404, 422, etc.)? Errors reduce the bonus. An agent that gets it right without trial-and-error is rewarded.</p>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Scenario (Tier 2 task)</th>
+<th>Score</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Failed all checks</td>
+<td>0.0</td>
+</tr>
+<tr>
+<td>80% of checks passed</td>
+<td>1.6</td>
+</tr>
+<tr>
+<td>Perfect, but many errors and extra calls</td>
+<td>~2.1</td>
+</tr>
+<tr>
+<td>Perfect, efficient, a few errors</td>
+<td>~2.6</td>
+</tr>
+<tr>
+<td>Perfect, best-in-class efficiency, zero errors</td>
+<td>4.0</td>
+</tr>
+</tbody>
+</table></div>
+<p>The efficiency bonus only applies to perfect submissions. Non-perfect submissions score <code>correctness × tier</code>.</p>
+<p><strong>Efficiency benchmarks are recalculated periodically.</strong> As teams find more efficient solutions, the bar rises for everyone. Your best score per task is recalculated against current benchmarks every 12 hours.</p>
+<h2 id="best-score-per-task">Best Score Per Task</h2>
+<p>Your score per task is your <strong>all-time best</strong>. Bad runs never lower your score — only improvements count.</p>
+<ul>
+<li>One good run is enough to lock in a score</li>
+<li>You can always improve by submitting again</li>
+<li>Focus on building a better agent, not grinding to recover from bad luck</li>
+<li>Each of the 30 tasks tracks independently</li>
+</ul>
+<h2 id="leaderboard">Leaderboard</h2>
+<p><strong>Total leaderboard score</strong> = sum of best scores across all task types.</p>
+<p>The more task types your agent handles well, the higher your potential score.</p>
+<h2 id="task-assignment">Task Assignment</h2>
+<p>Each submission receives one task, weighted toward tasks you've attempted less. Over many submissions, you'll encounter all task types. Tasks are grouped into three tiers:</p>
+<ul>
+<li><strong>Tier 1</strong> — foundational tasks (e.g., create employee, create customer, create invoice)</li>
+<li><strong>Tier 2</strong> — multi-step workflows (e.g., invoice with payment, credit notes, project billing)</li>
+<li><strong>Tier 3</strong> — complex scenarios (e.g., bank reconciliation from CSV, error correction in ledger, year-end closing)</li>
+</ul>
+<p>Each task has 56 unique variants (7 languages × 8 data sets), so you'll rarely see the same prompt twice.</p>
+<h3 id="tier-release-schedule">Tier Release Schedule</h3>
+<p>Tasks are released in tiers throughout the competition:</p>
+<ul>
+<li><strong>Tier 1</strong> — available from competition start</li>
+<li><strong>Tier 2</strong> — opens early Friday. Check this page for updates.</li>
+<li><strong>Tier 3</strong> — opens early Saturday. Check this page for updates.</li>
+</ul>
+<p>This gives you time to build a solid agent on simpler tasks before tackling the harder ones.</p>
+<h2 id="rate-limits">Rate Limits</h2>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Limit</th>
+<th>Verified teams</th>
+<th>Unverified teams</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Concurrent submissions</td>
+<td>3</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Per task per day</td>
+<td>5</td>
+<td>2</td>
+</tr>
+</tbody>
+</table></div>
+        </article>
+        <div class="pager"><a href="../endpoint/index.html"><strong>Previous</strong><br>Endpoint Spec</a><a class="next" href="../examples/index.html"><strong>Next</strong><br>Examples</a></div>
+      </main>
+      <aside class="toc panel">
+        <div class="section-title">On This Page</div>
+        <ul class="toc-list"><li><a class="toc-link" style="padding-left: 10px" href="#field-by-field-verification-correctness">Field-by-Field Verification (Correctness)</a></li><li><a class="toc-link" style="padding-left: 10px" href="#tier-multiplier">Tier Multiplier</a></li><li><a class="toc-link" style="padding-left: 10px" href="#efficiency-bonus">Efficiency Bonus</a></li><li><a class="toc-link" style="padding-left: 10px" href="#best-score-per-task">Best Score Per Task</a></li><li><a class="toc-link" style="padding-left: 10px" href="#leaderboard">Leaderboard</a></li><li><a class="toc-link" style="padding-left: 10px" href="#task-assignment">Task Assignment</a></li><li><a class="toc-link" style="padding-left: 22px" href="#tier-release-schedule">Tier Release Schedule</a></li><li><a class="toc-link" style="padding-left: 10px" href="#rate-limits">Rate Limits</a></li></ul>
+      </aside>
+    </div>
+  </div>
+</body>
+</html>

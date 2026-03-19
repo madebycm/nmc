@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NorgesGruppen Data: Object Detection | NM i AI Docs Mirror</title>
+  <link rel="stylesheet" href="../../_assets/docs.css">
+</head>
+<body>
+  <div class="layout">
+    <div class="topbar panel">
+      <h1>NM i AI Docs Mirror</h1>
+      <p>Local snapshot of <a href="https://app.ainm.no/docs/norgesgruppen-data/overview">https://app.ainm.no/docs/norgesgruppen-data/overview</a> generated 2026-03-19 21:15:01 UTC.</p>
+    </div>
+    <div class="shell">
+      <aside class="sidebar panel">
+        <div class="section-title">Overview</div><ul class="nav-list"><li><a class="nav-link" href="../../index.html">Getting Started</a></li></ul><div class="section-title">Google Cloud</div><ul class="nav-list"><li><a class="nav-link" href="../../google-cloud/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../google-cloud/setup/index.html">Account Setup</a></li><li><a class="nav-link" href="../../google-cloud/deploy/index.html">Deploy on Cloud Run</a></li><li><a class="nav-link" href="../../google-cloud/services/index.html">Services &amp; Tools</a></li></ul><div class="section-title">NorgesGruppen Data</div><ul class="nav-list"><li><a class="nav-link active" href="index.html">Overview</a></li><li><a class="nav-link" href="../submission/index.html">Submission</a></li><li><a class="nav-link" href="../scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../examples/index.html">Examples</a></li></ul><div class="section-title">Tripletex</div><ul class="nav-list"><li><a class="nav-link" href="../../tripletex/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../tripletex/sandbox/index.html">Sandbox Account</a></li><li><a class="nav-link" href="../../tripletex/endpoint/index.html">Endpoint Spec</a></li><li><a class="nav-link" href="../../tripletex/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../tripletex/examples/index.html">Examples</a></li></ul><div class="section-title">Astar Island</div><ul class="nav-list"><li><a class="nav-link" href="../../astar-island/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../astar-island/mechanics/index.html">Simulation Mechanics</a></li><li><a class="nav-link" href="../../astar-island/endpoint/index.html">API Endpoints</a></li><li><a class="nav-link" href="../../astar-island/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../astar-island/quickstart/index.html">Quickstart</a></li></ul>
+      </aside>
+      <main class="content panel">
+        <div class="eyebrow"><span>NorgesGruppen Data</span><span>/</span><span>Overview</span></div>
+        <div class="meta">Source route: <a href="https://app.ainm.no/docs/norgesgruppen-data/overview">/docs/norgesgruppen-data/overview</a></div>
+        <article class="prose">
+          <h1 id="norgesgruppen-data-object-detection">NorgesGruppen Data: Object Detection</h1>
+<p>Detect grocery products on store shelves. Upload your model code as a <code>.zip</code> file — it runs in a sandboxed Docker container on our servers.</p>
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+<li>Download the training data from the competition website (requires login)</li>
+<li>Train your object detection model locally</li>
+<li>Write a <code>run.py</code> that takes shelf images as input and outputs predictions</li>
+<li>Zip your code + model weights</li>
+<li>Upload at the submit page</li>
+<li>Our server runs your code in a sandbox with GPU (NVIDIA L4, 24 GB VRAM) — no network access</li>
+<li>Your predictions are scored: <strong>70% detection</strong> (did you find products?) + <strong>30% classification</strong> (did you identify the right product?)</li>
+<li>Score appears on the leaderboard</li>
+</ol>
+<h2 id="downloads">Downloads</h2>
+<p>Download training data and product reference images from the <strong>Submit</strong> page on the competition website (login required).</p>
+<h2 id="training-data">Training Data</h2>
+<p>Two files are available for download:</p>
+<p><strong>COCO Dataset</strong> (<code>NM_NGD_coco_dataset.zip</code>, ~864 MB)</p>
+<ul>
+<li>248 shelf images from Norwegian grocery stores</li>
+<li>~22,700 COCO-format bounding box annotations</li>
+<li>356 product categories (category_id 0-355) — detect and identify grocery products</li>
+<li>Images from 4 store sections: Egg, Frokost, Knekkebrod, Varmedrikker</li>
+</ul>
+<p><strong>Product Reference Images</strong> (<code>NM_NGD_product_images.zip</code>, ~60 MB)</p>
+<ul>
+<li>327 individual products with multi-angle photos (main, front, back, left, right, top, bottom)</li>
+<li>Organized by barcode: <code>{product_code}/main.jpg</code>, <code>{product_code}/front.jpg</code>, etc.</li>
+<li>Includes <code>metadata.json</code> with product names and annotation counts</li>
+</ul>
+<h3 id="annotation-format">Annotation Format</h3>
+<p>The COCO annotations file (<code>annotations.json</code>) contains:</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="json" data-theme="github-dark-default"><code data-language="json" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#E6EDF3">{</span></span>
+<span data-line=""><span style="color:#7EE787">  "images"</span><span style="color:#E6EDF3">: [</span></span>
+<span data-line=""><span style="color:#E6EDF3">    {</span><span style="color:#7EE787">"id"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"file_name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"img_00001.jpg"</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"width"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">2000</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"height"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">1500</span><span style="color:#E6EDF3">}</span></span>
+<span data-line=""><span style="color:#E6EDF3">  ],</span></span>
+<span data-line=""><span style="color:#7EE787">  "categories"</span><span style="color:#E6EDF3">: [</span></span>
+<span data-line=""><span style="color:#E6EDF3">    {</span><span style="color:#7EE787">"id"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">0</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"VESTLANDSLEFSA TØRRE 10STK 360G"</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"supercategory"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"product"</span><span style="color:#E6EDF3">},</span></span>
+<span data-line=""><span style="color:#E6EDF3">    {</span><span style="color:#7EE787">"id"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"COFFEE MATE 180G NESTLE"</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"supercategory"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"product"</span><span style="color:#E6EDF3">},</span></span>
+<span data-line=""><span style="color:#FFA198;font-style:italic">    ...</span></span>
+<span data-line=""><span style="color:#E6EDF3">    {</span><span style="color:#7EE787">"id"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">356</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"unknown_product"</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"supercategory"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"product"</span><span style="color:#E6EDF3">}</span></span>
+<span data-line=""><span style="color:#E6EDF3">  ],</span></span>
+<span data-line=""><span style="color:#7EE787">  "annotations"</span><span style="color:#E6EDF3">: [</span></span>
+<span data-line=""><span style="color:#E6EDF3">    {</span></span>
+<span data-line=""><span style="color:#7EE787">      "id"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">      "image_id"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">      "category_id"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">42</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">      "bbox"</span><span style="color:#E6EDF3">: [</span><span style="color:#79C0FF">141</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">49</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">169</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">152</span><span style="color:#E6EDF3">],</span></span>
+<span data-line=""><span style="color:#7EE787">      "area"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">25688</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">      "iscrowd"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">0</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">      "product_code"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"8445291513365"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">      "product_name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"NESCAFE VANILLA LATTE 136G NESTLE"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">      "corrected"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">true</span></span>
+<span data-line=""><span style="color:#E6EDF3">    }</span></span>
+<span data-line=""><span style="color:#E6EDF3">  ]</span></span>
+<span data-line=""><span style="color:#E6EDF3">}</span></span></code></pre></figure>
+<p>Key fields: <code>bbox</code> is <code>[x, y, width, height]</code> in pixels (COCO format). <code>product_code</code> is the barcode. <code>corrected</code> indicates manually verified annotations.</p>
+<h2 id="what-annotations-look-like">What Annotations Look Like</h2>
+<p>A training image with all ground truth boxes (green = correctly detected product):</p>
+<img src="../../shelf-annotations-full.png" alt="Shelf image with all 76 products annotated in green bounding boxes — this represents a perfect mAP of 1.0" style="max-width:100%; border-radius:8px; margin:8px 0" />
+<p>Compare with a ~50% mAP result — half the products are missed entirely, and some detected boxes (red) are imprecise:</p>
+<img src="../../shelf-annotations-partial.png" alt="Same shelf image with only half the products detected, some with imprecise boxes shown in red — approximately 50% mAP" style="max-width:100%; border-radius:8px; margin:8px 0" />
+<h2 id="submit">Submit</h2>
+<p>Upload your <code>.zip</code> at the submission page on the competition website.</p>
+<h2 id="mcp-setup">MCP Setup</h2>
+<p>Connect this docs server to your AI coding tool:</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="bash" data-theme="github-dark-default"><code data-language="bash" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#FFA657">claude</span><span style="color:#A5D6FF"> mcp</span><span style="color:#A5D6FF"> add</span><span style="color:#79C0FF"> --transport</span><span style="color:#A5D6FF"> http</span><span style="color:#A5D6FF"> nmiai</span><span style="color:#A5D6FF"> https://mcp-docs.ainm.no/mcp</span></span></code></pre></figure>
+        </article>
+        <div class="pager"><a href="../../google-cloud/services/index.html"><strong>Previous</strong><br>Services &amp; Tools</a><a class="next" href="../submission/index.html"><strong>Next</strong><br>Submission</a></div>
+      </main>
+      <aside class="toc panel">
+        <div class="section-title">On This Page</div>
+        <ul class="toc-list"><li><a class="toc-link" style="padding-left: 10px" href="#how-it-works">How It Works</a></li><li><a class="toc-link" style="padding-left: 10px" href="#downloads">Downloads</a></li><li><a class="toc-link" style="padding-left: 10px" href="#training-data">Training Data</a></li><li><a class="toc-link" style="padding-left: 22px" href="#annotation-format">Annotation Format</a></li><li><a class="toc-link" style="padding-left: 10px" href="#what-annotations-look-like">What Annotations Look Like</a></li><li><a class="toc-link" style="padding-left: 10px" href="#submit">Submit</a></li><li><a class="toc-link" style="padding-left: 10px" href="#mcp-setup">MCP Setup</a></li></ul>
+      </aside>
+    </div>
+  </div>
+</body>
+</html>

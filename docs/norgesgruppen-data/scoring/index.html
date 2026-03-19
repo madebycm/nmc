@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NorgesGruppen Data: Scoring | NM i AI Docs Mirror</title>
+  <link rel="stylesheet" href="../../_assets/docs.css">
+</head>
+<body>
+  <div class="layout">
+    <div class="topbar panel">
+      <h1>NM i AI Docs Mirror</h1>
+      <p>Local snapshot of <a href="https://app.ainm.no/docs/norgesgruppen-data/scoring">https://app.ainm.no/docs/norgesgruppen-data/scoring</a> generated 2026-03-19 21:15:01 UTC.</p>
+    </div>
+    <div class="shell">
+      <aside class="sidebar panel">
+        <div class="section-title">Overview</div><ul class="nav-list"><li><a class="nav-link" href="../../index.html">Getting Started</a></li></ul><div class="section-title">Google Cloud</div><ul class="nav-list"><li><a class="nav-link" href="../../google-cloud/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../google-cloud/setup/index.html">Account Setup</a></li><li><a class="nav-link" href="../../google-cloud/deploy/index.html">Deploy on Cloud Run</a></li><li><a class="nav-link" href="../../google-cloud/services/index.html">Services &amp; Tools</a></li></ul><div class="section-title">NorgesGruppen Data</div><ul class="nav-list"><li><a class="nav-link" href="../overview/index.html">Overview</a></li><li><a class="nav-link" href="../submission/index.html">Submission</a></li><li><a class="nav-link active" href="index.html">Scoring</a></li><li><a class="nav-link" href="../examples/index.html">Examples</a></li></ul><div class="section-title">Tripletex</div><ul class="nav-list"><li><a class="nav-link" href="../../tripletex/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../tripletex/sandbox/index.html">Sandbox Account</a></li><li><a class="nav-link" href="../../tripletex/endpoint/index.html">Endpoint Spec</a></li><li><a class="nav-link" href="../../tripletex/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../tripletex/examples/index.html">Examples</a></li></ul><div class="section-title">Astar Island</div><ul class="nav-list"><li><a class="nav-link" href="../../astar-island/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../astar-island/mechanics/index.html">Simulation Mechanics</a></li><li><a class="nav-link" href="../../astar-island/endpoint/index.html">API Endpoints</a></li><li><a class="nav-link" href="../../astar-island/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../astar-island/quickstart/index.html">Quickstart</a></li></ul>
+      </aside>
+      <main class="content panel">
+        <div class="eyebrow"><span>NorgesGruppen Data</span><span>/</span><span>Scoring</span></div>
+        <div class="meta">Source route: <a href="https://app.ainm.no/docs/norgesgruppen-data/scoring">/docs/norgesgruppen-data/scoring</a></div>
+        <article class="prose">
+          <h1 id="norgesgruppen-data-scoring">NorgesGruppen Data: Scoring</h1>
+<h2 id="hybrid-scoring">Hybrid Scoring</h2>
+<p>Your final score combines detection and classification:</p>
+<pre><code>Score = 0.7 × detection_mAP + 0.3 × classification_mAP
+</code></pre>
+<p>Both components use mAP@0.5 (Mean Average Precision at IoU threshold 0.5).</p>
+<h3 id="detection-map-70-of-score">Detection mAP (70% of score)</h3>
+<p>Measures whether you found the products, ignoring category:</p>
+<ul>
+<li>Each prediction is matched to the closest ground truth box</li>
+<li>A prediction is a true positive if IoU ≥ 0.5 (category is ignored)</li>
+<li>This rewards accurate bounding box localization</li>
+</ul>
+<h3 id="classification-map-30-of-score">Classification mAP (30% of score)</h3>
+<p>Measures whether you identified the correct product:</p>
+<ul>
+<li>A prediction is a true positive if IoU ≥ 0.5 AND the <code>category_id</code> matches the ground truth</li>
+<li>356 product categories (IDs 0-355) from the training data <code>annotations.json</code></li>
+</ul>
+<h3 id="detection-only-submissions">Detection-Only Submissions</h3>
+<p>If you set <code>category_id: 0</code> for all predictions, you can score up to <strong>0.70</strong> (70%) from the detection component alone. Adding correct product identification unlocks the remaining 30%.</p>
+<ul>
+<li>Score range: 0.0 (worst) to 1.0 (perfect)</li>
+</ul>
+<h2 id="submission-limits">Submission Limits</h2>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Limit</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Submissions in-flight</td>
+<td>2 per team</td>
+</tr>
+<tr>
+<td>Submissions per day</td>
+<td>3 per team</td>
+</tr>
+<tr>
+<td>Infrastructure failure freebies</td>
+<td>2 per day (don't count against your 3)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Limits reset at midnight UTC. If you hit an infrastructure error (our fault), it doesn't count against your daily limit — up to 2 per day. After that, infrastructure failures consume a regular submission slot.</p>
+<h2 id="leaderboard">Leaderboard</h2>
+<p>The public leaderboard shows scores from the public test set. The final ranking uses the private test set which is never revealed to participants.</p>
+<h2 id="select-for-final-evaluation">Select for Final Evaluation</h2>
+<p>By default, your best-scoring submission is used for the final private evaluation. You can override this by clicking <strong>Select for final</strong> on any completed submission in your submission history. This lets you choose a submission you trust, even if it's not your highest public score. You can change your selection at any time before the competition ends.</p>
+        </article>
+        <div class="pager"><a href="../submission/index.html"><strong>Previous</strong><br>Submission</a><a class="next" href="../examples/index.html"><strong>Next</strong><br>Examples</a></div>
+      </main>
+      <aside class="toc panel">
+        <div class="section-title">On This Page</div>
+        <ul class="toc-list"><li><a class="toc-link" style="padding-left: 10px" href="#hybrid-scoring">Hybrid Scoring</a></li><li><a class="toc-link" style="padding-left: 22px" href="#detection-map-70-of-score">Detection mAP (70% of score)</a></li><li><a class="toc-link" style="padding-left: 22px" href="#classification-map-30-of-score">Classification mAP (30% of score)</a></li><li><a class="toc-link" style="padding-left: 22px" href="#detection-only-submissions">Detection-Only Submissions</a></li><li><a class="toc-link" style="padding-left: 10px" href="#submission-limits">Submission Limits</a></li><li><a class="toc-link" style="padding-left: 10px" href="#leaderboard">Leaderboard</a></li><li><a class="toc-link" style="padding-left: 10px" href="#select-for-final-evaluation">Select for Final Evaluation</a></li></ul>
+      </aside>
+    </div>
+  </div>
+</body>
+</html>

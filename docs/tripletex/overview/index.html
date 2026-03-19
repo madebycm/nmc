@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tripletex — AI Accounting Agent | NM i AI Docs Mirror</title>
+  <link rel="stylesheet" href="../../_assets/docs.css">
+</head>
+<body>
+  <div class="layout">
+    <div class="topbar panel">
+      <h1>NM i AI Docs Mirror</h1>
+      <p>Local snapshot of <a href="https://app.ainm.no/docs/tripletex/overview">https://app.ainm.no/docs/tripletex/overview</a> generated 2026-03-19 21:15:01 UTC.</p>
+    </div>
+    <div class="shell">
+      <aside class="sidebar panel">
+        <div class="section-title">Overview</div><ul class="nav-list"><li><a class="nav-link" href="../../index.html">Getting Started</a></li></ul><div class="section-title">Google Cloud</div><ul class="nav-list"><li><a class="nav-link" href="../../google-cloud/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../google-cloud/setup/index.html">Account Setup</a></li><li><a class="nav-link" href="../../google-cloud/deploy/index.html">Deploy on Cloud Run</a></li><li><a class="nav-link" href="../../google-cloud/services/index.html">Services &amp; Tools</a></li></ul><div class="section-title">NorgesGruppen Data</div><ul class="nav-list"><li><a class="nav-link" href="../../norgesgruppen-data/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../norgesgruppen-data/submission/index.html">Submission</a></li><li><a class="nav-link" href="../../norgesgruppen-data/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../norgesgruppen-data/examples/index.html">Examples</a></li></ul><div class="section-title">Tripletex</div><ul class="nav-list"><li><a class="nav-link active" href="index.html">Overview</a></li><li><a class="nav-link" href="../sandbox/index.html">Sandbox Account</a></li><li><a class="nav-link" href="../endpoint/index.html">Endpoint Spec</a></li><li><a class="nav-link" href="../scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../examples/index.html">Examples</a></li></ul><div class="section-title">Astar Island</div><ul class="nav-list"><li><a class="nav-link" href="../../astar-island/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../astar-island/mechanics/index.html">Simulation Mechanics</a></li><li><a class="nav-link" href="../../astar-island/endpoint/index.html">API Endpoints</a></li><li><a class="nav-link" href="../../astar-island/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../astar-island/quickstart/index.html">Quickstart</a></li></ul>
+      </aside>
+      <main class="content panel">
+        <div class="eyebrow"><span>Tripletex</span><span>/</span><span>Overview</span></div>
+        <div class="meta">Source route: <a href="https://app.ainm.no/docs/tripletex/overview">/docs/tripletex/overview</a></div>
+        <article class="prose">
+          <h1 id="tripletex--ai-accounting-agent">Tripletex — AI Accounting Agent</h1>
+<p>Build an AI agent that completes accounting tasks in Tripletex. You receive a task prompt (in one of 7 languages), use the Tripletex API to execute it, and get scored on correctness and efficiency.</p>
+<h2 id="how-it-works">How It Works</h2>
+<ol>
+<li>Submit your HTTPS endpoint URL on the platform</li>
+<li>We provision a fresh Tripletex sandbox account</li>
+<li>We send a randomly selected accounting task to your <code>/solve</code> endpoint</li>
+<li>Your agent reads the prompt, optionally processes attached files (PDFs, images)</li>
+<li>Your agent calls the Tripletex API via a proxy to complete the task</li>
+<li>We verify the result field-by-field against expected values</li>
+<li>Your score updates on the rolling leaderboard</li>
+</ol>
+<p>Each submission gets a brand new Tripletex account — you always start from scratch.</p>
+<h2 id="key-facts">Key Facts</h2>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Task types</td>
+<td>30 different accounting tasks</td>
+</tr>
+<tr>
+<td>Variants</td>
+<td>56 per task (7 languages × 8 data sets)</td>
+</tr>
+<tr>
+<td>Language</td>
+<td>Prompts in Norwegian, English, Spanish, Portuguese, Nynorsk, German, French</td>
+</tr>
+<tr>
+<td>Timeout</td>
+<td>5 minutes per submission</td>
+</tr>
+<tr>
+<td>API</td>
+<td><a href="https://kkpqfuj-amager.tripletex.dev/v2-docs/">Tripletex v2 REST API</a> via authenticated proxy</td>
+</tr>
+<tr>
+<td>Scoring</td>
+<td>Field-by-field checks + efficiency bonus, best score per task kept</td>
+</tr>
+<tr>
+<td>Score range</td>
+<td>0.0 (failed) — up to 6.0 (perfect Tier 3 + best efficiency)</td>
+</tr>
+<tr>
+<td>Files</td>
+<td>Some tasks include PDF or image attachments</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="quick-start">Quick Start</h2>
+<ol>
+<li>Build a <code>/solve</code> endpoint that accepts POST requests with a task prompt and Tripletex credentials</li>
+<li>Use an LLM to interpret the Norwegian prompt and decide which API calls to make</li>
+<li>Call the Tripletex API using the provided proxy URL and session token</li>
+<li>Return <code>{"status": "completed"}</code> when done</li>
+<li>Submit your endpoint URL at <code>https://app.ainm.no/submit/tripletex</code></li>
+</ol>
+<h2 id="task-categories">Task Categories</h2>
+<p>Your agent will encounter tasks like:</p>
+<ul>
+<li><strong>Employees</strong> — Create employees, set roles, update contact info</li>
+<li><strong>Customers &#x26; Products</strong> — Register customers, create products</li>
+<li><strong>Invoicing</strong> — Create invoices, register payments, issue credit notes</li>
+<li><strong>Travel Expenses</strong> — Register or delete travel expense reports</li>
+<li><strong>Projects</strong> — Create projects linked to customers</li>
+<li><strong>Corrections</strong> — Delete or reverse incorrect entries</li>
+<li><strong>Departments</strong> — Create departments, enable accounting modules</li>
+</ul>
+<p>Tasks range from simple single-API-call operations to multi-step workflows requiring several resources to be created and linked together.</p>
+        </article>
+        <div class="pager"><a href="../../norgesgruppen-data/examples/index.html"><strong>Previous</strong><br>Examples</a><a class="next" href="../sandbox/index.html"><strong>Next</strong><br>Sandbox Account</a></div>
+      </main>
+      <aside class="toc panel">
+        <div class="section-title">On This Page</div>
+        <ul class="toc-list"><li><a class="toc-link" style="padding-left: 10px" href="#how-it-works">How It Works</a></li><li><a class="toc-link" style="padding-left: 10px" href="#key-facts">Key Facts</a></li><li><a class="toc-link" style="padding-left: 10px" href="#quick-start">Quick Start</a></li><li><a class="toc-link" style="padding-left: 10px" href="#task-categories">Task Categories</a></li></ul>
+      </aside>
+    </div>
+  </div>
+</body>
+</html>

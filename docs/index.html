@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Getting Started | NM i AI Docs Mirror</title>
+  <link rel="stylesheet" href="_assets/docs.css">
+</head>
+<body>
+  <div class="layout">
+    <div class="topbar panel">
+      <h1>NM i AI Docs Mirror</h1>
+      <p>Local snapshot of <a href="https://app.ainm.no/docs">https://app.ainm.no/docs</a> generated 2026-03-19 21:15:01 UTC.</p>
+    </div>
+    <div class="shell">
+      <aside class="sidebar panel">
+        <div class="section-title">Overview</div><ul class="nav-list"><li><a class="nav-link active" href="index.html">Getting Started</a></li></ul><div class="section-title">Google Cloud</div><ul class="nav-list"><li><a class="nav-link" href="google-cloud/overview/index.html">Overview</a></li><li><a class="nav-link" href="google-cloud/setup/index.html">Account Setup</a></li><li><a class="nav-link" href="google-cloud/deploy/index.html">Deploy on Cloud Run</a></li><li><a class="nav-link" href="google-cloud/services/index.html">Services &amp; Tools</a></li></ul><div class="section-title">NorgesGruppen Data</div><ul class="nav-list"><li><a class="nav-link" href="norgesgruppen-data/overview/index.html">Overview</a></li><li><a class="nav-link" href="norgesgruppen-data/submission/index.html">Submission</a></li><li><a class="nav-link" href="norgesgruppen-data/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="norgesgruppen-data/examples/index.html">Examples</a></li></ul><div class="section-title">Tripletex</div><ul class="nav-list"><li><a class="nav-link" href="tripletex/overview/index.html">Overview</a></li><li><a class="nav-link" href="tripletex/sandbox/index.html">Sandbox Account</a></li><li><a class="nav-link" href="tripletex/endpoint/index.html">Endpoint Spec</a></li><li><a class="nav-link" href="tripletex/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="tripletex/examples/index.html">Examples</a></li></ul><div class="section-title">Astar Island</div><ul class="nav-list"><li><a class="nav-link" href="astar-island/overview/index.html">Overview</a></li><li><a class="nav-link" href="astar-island/mechanics/index.html">Simulation Mechanics</a></li><li><a class="nav-link" href="astar-island/endpoint/index.html">API Endpoints</a></li><li><a class="nav-link" href="astar-island/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="astar-island/quickstart/index.html">Quickstart</a></li></ul>
+      </aside>
+      <main class="content panel">
+        <div class="eyebrow"><span>Overview</span><span>/</span><span>Getting Started</span></div>
+        <div class="meta">Source route: <a href="https://app.ainm.no/docs">/docs</a></div>
+        <article class="prose">
+          <h1 id="getting-started">Getting Started</h1>
+<p>Welcome to the NM i AI 2026 documentation. The competition runs from <strong>March 19 at 18:00 CET</strong> to <strong>March 22 at 15:00 CET</strong> — 69 hours of non-stop AI challenges with a <strong>1,000,000 NOK</strong> prize pool.</p>
+<h2 id="the-three-tasks">The Three Tasks</h2>
+<p>NM i AI 2026 consists of three independent AI challenges. Your overall score is the average of your normalized scores across all three tasks (33% each).</p>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Type</th>
+<th>Submission</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Tripletex</strong></td>
+<td>AI accounting agent</td>
+<td>HTTPS API endpoint</td>
+</tr>
+<tr>
+<td><strong>Astar Island</strong></td>
+<td>Norse world prediction</td>
+<td>REST API predictions</td>
+</tr>
+<tr>
+<td><strong>NorgesGruppen Data</strong></td>
+<td>Grocery shelf object detection</td>
+<td>Code upload (ZIP)</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="quick-start">Quick Start</h2>
+<ol>
+<li>Sign in at <a href="https://app.ainm.no">app.ainm.no</a> with Google</li>
+<li>Create or join a team (max 4 members)</li>
+<li>Complete Vipps verification for prize eligibility</li>
+<li>Explore the task documentation in the sidebar</li>
+<li>Submit to as many tasks as you can</li>
+</ol>
+<h2 id="mcp-server">MCP Server</h2>
+<p>Connect this docs server to Claude Code for AI-assisted development:</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="bash" data-theme="github-dark-default"><code data-language="bash" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#FFA657">claude</span><span style="color:#A5D6FF"> mcp</span><span style="color:#A5D6FF"> add</span><span style="color:#79C0FF"> --transport</span><span style="color:#A5D6FF"> http</span><span style="color:#A5D6FF"> nmiai</span><span style="color:#A5D6FF"> https://mcp-docs.ainm.no/mcp</span></span></code></pre></figure>
+<h2 id="need-help">Need Help?</h2>
+<ul>
+<li>Join the competition <strong>Slack</strong> for questions and discussion</li>
+<li>Browse the task-specific documentation in the sidebar</li>
+<li>Check the <a href="https://app.ainm.no/rules">Rules</a> page for competition regulations</li>
+</ul>
+        </article>
+        <div class="pager"><span></span><a class="next" href="google-cloud/overview/index.html"><strong>Next</strong><br>Overview</a></div>
+      </main>
+      <aside class="toc panel">
+        <div class="section-title">On This Page</div>
+        <ul class="toc-list"><li><a class="toc-link" style="padding-left: 10px" href="#the-three-tasks">The Three Tasks</a></li><li><a class="toc-link" style="padding-left: 10px" href="#quick-start">Quick Start</a></li><li><a class="toc-link" style="padding-left: 10px" href="#mcp-server">MCP Server</a></li><li><a class="toc-link" style="padding-left: 10px" href="#need-help">Need Help?</a></li></ul>
+      </aside>
+    </div>
+  </div>
+</body>
+</html>

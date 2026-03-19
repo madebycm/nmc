@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Deploy on Cloud Run | NM i AI Docs Mirror</title>
+  <link rel="stylesheet" href="../../_assets/docs.css">
+</head>
+<body>
+  <div class="layout">
+    <div class="topbar panel">
+      <h1>NM i AI Docs Mirror</h1>
+      <p>Local snapshot of <a href="https://app.ainm.no/docs/google-cloud/deploy">https://app.ainm.no/docs/google-cloud/deploy</a> generated 2026-03-19 21:15:01 UTC.</p>
+    </div>
+    <div class="shell">
+      <aside class="sidebar panel">
+        <div class="section-title">Overview</div><ul class="nav-list"><li><a class="nav-link" href="../../index.html">Getting Started</a></li></ul><div class="section-title">Google Cloud</div><ul class="nav-list"><li><a class="nav-link" href="../overview/index.html">Overview</a></li><li><a class="nav-link" href="../setup/index.html">Account Setup</a></li><li><a class="nav-link active" href="index.html">Deploy on Cloud Run</a></li><li><a class="nav-link" href="../services/index.html">Services &amp; Tools</a></li></ul><div class="section-title">NorgesGruppen Data</div><ul class="nav-list"><li><a class="nav-link" href="../../norgesgruppen-data/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../norgesgruppen-data/submission/index.html">Submission</a></li><li><a class="nav-link" href="../../norgesgruppen-data/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../norgesgruppen-data/examples/index.html">Examples</a></li></ul><div class="section-title">Tripletex</div><ul class="nav-list"><li><a class="nav-link" href="../../tripletex/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../tripletex/sandbox/index.html">Sandbox Account</a></li><li><a class="nav-link" href="../../tripletex/endpoint/index.html">Endpoint Spec</a></li><li><a class="nav-link" href="../../tripletex/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../tripletex/examples/index.html">Examples</a></li></ul><div class="section-title">Astar Island</div><ul class="nav-list"><li><a class="nav-link" href="../../astar-island/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../astar-island/mechanics/index.html">Simulation Mechanics</a></li><li><a class="nav-link" href="../../astar-island/endpoint/index.html">API Endpoints</a></li><li><a class="nav-link" href="../../astar-island/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../astar-island/quickstart/index.html">Quickstart</a></li></ul>
+      </aside>
+      <main class="content panel">
+        <div class="eyebrow"><span>Google Cloud</span><span>/</span><span>Deploy on Cloud Run</span></div>
+        <div class="meta">Source route: <a href="https://app.ainm.no/docs/google-cloud/deploy">/docs/google-cloud/deploy</a></div>
+        <article class="prose">
+          <h1 id="deploy-on-cloud-run">Deploy on Cloud Run</h1>
+<p>Two of the three competition tasks — <strong>Tripletex</strong> and <strong>Astar Island</strong> — require you to host a public HTTPS endpoint that our validators call. Cloud Run is the easiest way to deploy one.</p>
+<h2 id="what-is-cloud-run">What is Cloud Run?</h2>
+<p>Cloud Run takes a Docker container and gives you a public HTTPS URL. You push your code, it handles scaling, TLS, and everything else. You only pay for actual requests (and with your GCP account, it's free).</p>
+<h2 id="step-1-write-your-endpoint">Step 1: Write Your Endpoint</h2>
+<p>Here's a minimal FastAPI endpoint that matches the competition format:</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="python" data-theme="github-dark-default"><code data-language="python" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#FF7B72">from</span><span style="color:#E6EDF3"> fastapi </span><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> FastAPI</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#E6EDF3">app </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> FastAPI()</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#D2A8FF">@app.get</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"/health"</span><span style="color:#E6EDF3">)</span></span>
+<span data-line=""><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> health</span><span style="color:#E6EDF3">():</span></span>
+<span data-line=""><span style="color:#FF7B72">    return</span><span style="color:#E6EDF3"> {</span><span style="color:#A5D6FF">"status"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"ok"</span><span style="color:#E6EDF3">}</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#D2A8FF">@app.post</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"/solve"</span><span style="color:#E6EDF3">)</span></span>
+<span data-line=""><span style="color:#FF7B72">async</span><span style="color:#FF7B72"> def</span><span style="color:#D2A8FF"> solve</span><span style="color:#E6EDF3">(request: </span><span style="color:#79C0FF">dict</span><span style="color:#E6EDF3">):</span></span>
+<span data-line=""><span style="color:#E6EDF3">    prompt </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> request.get(</span><span style="color:#A5D6FF">"prompt"</span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">""</span><span style="color:#E6EDF3">)</span></span>
+<span data-line=""><span style="color:#E6EDF3">    credentials </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> request.get(</span><span style="color:#A5D6FF">"tripletex_credentials"</span><span style="color:#E6EDF3">, {})</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#8B949E">    # Your AI agent logic here:</span></span>
+<span data-line=""><span style="color:#8B949E">    # 1. Parse the prompt</span></span>
+<span data-line=""><span style="color:#8B949E">    # 2. Call the Tripletex API using the provided credentials</span></span>
+<span data-line=""><span style="color:#8B949E">    # 3. Complete the accounting task</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#FF7B72">    return</span><span style="color:#E6EDF3"> {</span><span style="color:#A5D6FF">"status"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"completed"</span><span style="color:#E6EDF3">}</span></span></code></pre></figure>
+<h2 id="step-2-create-a-dockerfile">Step 2: Create a Dockerfile</h2>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="dockerfile" data-theme="github-dark-default"><code data-language="dockerfile" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#FF7B72">FROM</span><span style="color:#E6EDF3"> python:3.11-slim</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#FF7B72">WORKDIR</span><span style="color:#E6EDF3"> /app</span></span>
+<span data-line=""><span style="color:#FF7B72">COPY</span><span style="color:#E6EDF3"> requirements.txt .</span></span>
+<span data-line=""><span style="color:#FF7B72">RUN</span><span style="color:#E6EDF3"> pip install --no-cache-dir -r requirements.txt</span></span>
+<span data-line=""><span style="color:#FF7B72">COPY</span><span style="color:#E6EDF3"> . .</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#FF7B72">CMD</span><span style="color:#E6EDF3"> [</span><span style="color:#A5D6FF">"uvicorn"</span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">"main:app"</span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">"--host"</span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">"0.0.0.0"</span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">"--port"</span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">"8080"</span><span style="color:#E6EDF3">]</span></span></code></pre></figure>
+<p>And a <code>requirements.txt</code>:</p>
+<pre><code>fastapi
+uvicorn[standard]
+requests
+</code></pre>
+<h2 id="step-3-deploy">Step 3: Deploy</h2>
+<p>Open Cloud Shell and run:</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="bash" data-theme="github-dark-default"><code data-language="bash" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#8B949E"># Clone your repo (or upload files via Cloud Shell Editor)</span></span>
+<span data-line=""><span style="color:#79C0FF">cd</span><span style="color:#A5D6FF"> ~</span></span>
+<span data-line=""><span style="color:#FFA657">git</span><span style="color:#A5D6FF"> clone</span><span style="color:#FF7B72"> &#x3C;</span><span style="color:#A5D6FF">your-repo-ur</span><span style="color:#E6EDF3">l</span><span style="color:#FF7B72">></span></span>
+<span data-line=""><span style="color:#79C0FF">cd</span><span style="color:#A5D6FF"> your-project</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#8B949E"># Deploy to Cloud Run (builds and deploys in one command)</span></span>
+<span data-line=""><span style="color:#FFA657">gcloud</span><span style="color:#A5D6FF"> run</span><span style="color:#A5D6FF"> deploy</span><span style="color:#A5D6FF"> my-agent</span><span style="color:#FF7B72"> \</span></span>
+<span data-line=""><span style="color:#79C0FF">  --source</span><span style="color:#A5D6FF"> .</span><span style="color:#FF7B72"> \</span></span>
+<span data-line=""><span style="color:#79C0FF">  --region</span><span style="color:#A5D6FF"> europe-north1</span><span style="color:#FF7B72"> \</span></span>
+<span data-line=""><span style="color:#79C0FF">  --allow-unauthenticated</span><span style="color:#FF7B72"> \</span></span>
+<span data-line=""><span style="color:#79C0FF">  --memory</span><span style="color:#A5D6FF"> 1Gi</span><span style="color:#FF7B72"> \</span></span>
+<span data-line=""><span style="color:#79C0FF">  --timeout</span><span style="color:#79C0FF"> 300</span></span></code></pre></figure>
+<p>That's it. Cloud Run builds the Docker image, deploys it, and gives you a URL like:</p>
+<pre><code>https://my-agent-xxxxx-lz.a.run.app
+</code></pre>
+<h2 id="step-4-submit-your-url">Step 4: Submit Your URL</h2>
+<ol>
+<li>Copy the Cloud Run URL</li>
+<li>Go to the submission page for your task at <a href="https://app.ainm.no">app.ainm.no</a></li>
+<li>Paste the URL and submit</li>
+<li>Our validators will start calling your endpoint</li>
+</ol>
+<h2 id="tips">Tips</h2>
+<h3 id="use-europe-north1-region">Use <code>europe-north1</code> Region</h3>
+<p>Deploy in <code>europe-north1</code> (Finland) — same region as our validators. Lower latency = faster scoring.</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="bash" data-theme="github-dark-default"><code data-language="bash" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#FFA657">gcloud</span><span style="color:#A5D6FF"> run</span><span style="color:#A5D6FF"> deploy</span><span style="color:#A5D6FF"> my-agent</span><span style="color:#79C0FF"> --region</span><span style="color:#A5D6FF"> europe-north1</span><span style="color:#A5D6FF"> ...</span></span></code></pre></figure>
+<h3 id="handle-cold-starts">Handle Cold Starts</h3>
+<p>Cloud Run scales to zero when idle. The first request after idle may take a few seconds. To keep it warm:</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="bash" data-theme="github-dark-default"><code data-language="bash" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#FFA657">gcloud</span><span style="color:#A5D6FF"> run</span><span style="color:#A5D6FF"> deploy</span><span style="color:#A5D6FF"> my-agent</span><span style="color:#79C0FF"> --min-instances</span><span style="color:#79C0FF"> 1</span><span style="color:#A5D6FF"> ...</span></span></code></pre></figure>
+<p>This keeps one instance always running — useful during active competition.</p>
+<h3 id="increase-memory-for-llms">Increase Memory for LLMs</h3>
+<p>If you're calling external LLM APIs (like Vertex AI), the default 512 MB is fine. If you're running a local model, increase memory:</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="bash" data-theme="github-dark-default"><code data-language="bash" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#FFA657">gcloud</span><span style="color:#A5D6FF"> run</span><span style="color:#A5D6FF"> deploy</span><span style="color:#A5D6FF"> my-agent</span><span style="color:#79C0FF"> --memory</span><span style="color:#A5D6FF"> 2Gi</span><span style="color:#79C0FF"> --cpu</span><span style="color:#79C0FF"> 2</span><span style="color:#A5D6FF"> ...</span></span></code></pre></figure>
+<h3 id="update-your-deployment">Update Your Deployment</h3>
+<p>After making changes, just run the same deploy command again:</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="bash" data-theme="github-dark-default"><code data-language="bash" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#FFA657">gcloud</span><span style="color:#A5D6FF"> run</span><span style="color:#A5D6FF"> deploy</span><span style="color:#A5D6FF"> my-agent</span><span style="color:#79C0FF"> --source</span><span style="color:#A5D6FF"> .</span><span style="color:#79C0FF"> --region</span><span style="color:#A5D6FF"> europe-north1</span><span style="color:#79C0FF"> --allow-unauthenticated</span></span></code></pre></figure>
+<p>Cloud Run builds and deploys a new revision automatically.</p>
+<h3 id="view-logs">View Logs</h3>
+<p>Check what your endpoint is doing:</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="bash" data-theme="github-dark-default"><code data-language="bash" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#FFA657">gcloud</span><span style="color:#A5D6FF"> run</span><span style="color:#A5D6FF"> services</span><span style="color:#A5D6FF"> logs</span><span style="color:#A5D6FF"> read</span><span style="color:#A5D6FF"> my-agent</span><span style="color:#79C0FF"> --region</span><span style="color:#A5D6FF"> europe-north1</span><span style="color:#79C0FF"> --limit</span><span style="color:#79C0FF"> 50</span></span></code></pre></figure>
+<p>Or view logs in the <a href="https://console.cloud.google.com/run">Cloud Console</a> under your service → Logs tab.</p>
+<h2 id="which-tasks-need-cloud-run">Which Tasks Need Cloud Run?</h2>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Submission type</th>
+<th>Cloud Run?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tripletex</td>
+<td>HTTPS endpoint (<code>/solve</code>)</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Astar Island</td>
+<td>HTTPS endpoint (<code>/solve</code>)</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>NorgesGruppen Data</td>
+<td>Code upload (<code>.zip</code>)</td>
+<td>No</td>
+</tr>
+</tbody>
+</table></div>
+        </article>
+        <div class="pager"><a href="../setup/index.html"><strong>Previous</strong><br>Account Setup</a><a class="next" href="../services/index.html"><strong>Next</strong><br>Services &amp; Tools</a></div>
+      </main>
+      <aside class="toc panel">
+        <div class="section-title">On This Page</div>
+        <ul class="toc-list"><li><a class="toc-link" style="padding-left: 10px" href="#what-is-cloud-run">What is Cloud Run?</a></li><li><a class="toc-link" style="padding-left: 10px" href="#step-1-write-your-endpoint">Step 1: Write Your Endpoint</a></li><li><a class="toc-link" style="padding-left: 10px" href="#step-2-create-a-dockerfile">Step 2: Create a Dockerfile</a></li><li><a class="toc-link" style="padding-left: 10px" href="#step-3-deploy">Step 3: Deploy</a></li><li><a class="toc-link" style="padding-left: 10px" href="#step-4-submit-your-url">Step 4: Submit Your URL</a></li><li><a class="toc-link" style="padding-left: 10px" href="#tips">Tips</a></li><li><a class="toc-link" style="padding-left: 22px" href="#use-europe-north1-region">Use europe-north1 Region</a></li><li><a class="toc-link" style="padding-left: 22px" href="#handle-cold-starts">Handle Cold Starts</a></li><li><a class="toc-link" style="padding-left: 22px" href="#increase-memory-for-llms">Increase Memory for LLMs</a></li><li><a class="toc-link" style="padding-left: 22px" href="#update-your-deployment">Update Your Deployment</a></li><li><a class="toc-link" style="padding-left: 22px" href="#view-logs">View Logs</a></li><li><a class="toc-link" style="padding-left: 10px" href="#which-tasks-need-cloud-run">Which Tasks Need Cloud Run?</a></li></ul>
+      </aside>
+    </div>
+  </div>
+</body>
+</html>

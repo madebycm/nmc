@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tripletex — Examples | NM i AI Docs Mirror</title>
+  <link rel="stylesheet" href="../../_assets/docs.css">
+</head>
+<body>
+  <div class="layout">
+    <div class="topbar panel">
+      <h1>NM i AI Docs Mirror</h1>
+      <p>Local snapshot of <a href="https://app.ainm.no/docs/tripletex/examples">https://app.ainm.no/docs/tripletex/examples</a> generated 2026-03-19 21:15:01 UTC.</p>
+    </div>
+    <div class="shell">
+      <aside class="sidebar panel">
+        <div class="section-title">Overview</div><ul class="nav-list"><li><a class="nav-link" href="../../index.html">Getting Started</a></li></ul><div class="section-title">Google Cloud</div><ul class="nav-list"><li><a class="nav-link" href="../../google-cloud/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../google-cloud/setup/index.html">Account Setup</a></li><li><a class="nav-link" href="../../google-cloud/deploy/index.html">Deploy on Cloud Run</a></li><li><a class="nav-link" href="../../google-cloud/services/index.html">Services &amp; Tools</a></li></ul><div class="section-title">NorgesGruppen Data</div><ul class="nav-list"><li><a class="nav-link" href="../../norgesgruppen-data/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../norgesgruppen-data/submission/index.html">Submission</a></li><li><a class="nav-link" href="../../norgesgruppen-data/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../norgesgruppen-data/examples/index.html">Examples</a></li></ul><div class="section-title">Tripletex</div><ul class="nav-list"><li><a class="nav-link" href="../overview/index.html">Overview</a></li><li><a class="nav-link" href="../sandbox/index.html">Sandbox Account</a></li><li><a class="nav-link" href="../endpoint/index.html">Endpoint Spec</a></li><li><a class="nav-link" href="../scoring/index.html">Scoring</a></li><li><a class="nav-link active" href="index.html">Examples</a></li></ul><div class="section-title">Astar Island</div><ul class="nav-list"><li><a class="nav-link" href="../../astar-island/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../astar-island/mechanics/index.html">Simulation Mechanics</a></li><li><a class="nav-link" href="../../astar-island/endpoint/index.html">API Endpoints</a></li><li><a class="nav-link" href="../../astar-island/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../astar-island/quickstart/index.html">Quickstart</a></li></ul>
+      </aside>
+      <main class="content panel">
+        <div class="eyebrow"><span>Tripletex</span><span>/</span><span>Examples</span></div>
+        <div class="meta">Source route: <a href="https://app.ainm.no/docs/tripletex/examples">/docs/tripletex/examples</a></div>
+        <article class="prose">
+          <h1 id="tripletex--examples">Tripletex — Examples</h1>
+<h2 id="minimal-solve-endpoint">Minimal <code>/solve</code> Endpoint</h2>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="python" data-theme="github-dark-default"><code data-language="python" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> base64</span></span>
+<span data-line=""><span style="color:#FF7B72">from</span><span style="color:#E6EDF3"> pathlib </span><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> Path</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> requests</span></span>
+<span data-line=""><span style="color:#FF7B72">from</span><span style="color:#E6EDF3"> fastapi </span><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> FastAPI, Request</span></span>
+<span data-line=""><span style="color:#FF7B72">from</span><span style="color:#E6EDF3"> fastapi.responses </span><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> JSONResponse</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#E6EDF3">app </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> FastAPI()</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#D2A8FF">@app.post</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"/solve"</span><span style="color:#E6EDF3">)</span></span>
+<span data-line=""><span style="color:#FF7B72">async</span><span style="color:#FF7B72"> def</span><span style="color:#D2A8FF"> solve</span><span style="color:#E6EDF3">(request: Request):</span></span>
+<span data-line=""><span style="color:#E6EDF3">    body </span><span style="color:#FF7B72">=</span><span style="color:#FF7B72"> await</span><span style="color:#E6EDF3"> request.json()</span></span>
+<span data-line=""><span style="color:#E6EDF3">    prompt </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> body[</span><span style="color:#A5D6FF">"prompt"</span><span style="color:#E6EDF3">]</span></span>
+<span data-line=""><span style="color:#E6EDF3">    files </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> body.get(</span><span style="color:#A5D6FF">"files"</span><span style="color:#E6EDF3">, [])</span></span>
+<span data-line=""><span style="color:#E6EDF3">    creds </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> body[</span><span style="color:#A5D6FF">"tripletex_credentials"</span><span style="color:#E6EDF3">]</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#E6EDF3">    base_url </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> creds[</span><span style="color:#A5D6FF">"base_url"</span><span style="color:#E6EDF3">]</span></span>
+<span data-line=""><span style="color:#E6EDF3">    token </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> creds[</span><span style="color:#A5D6FF">"session_token"</span><span style="color:#E6EDF3">]</span></span>
+<span data-line=""><span style="color:#E6EDF3">    auth </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> (</span><span style="color:#A5D6FF">"0"</span><span style="color:#E6EDF3">, token)</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#FF7B72">    for</span><span style="color:#E6EDF3"> f </span><span style="color:#FF7B72">in</span><span style="color:#E6EDF3"> files:</span></span>
+<span data-line=""><span style="color:#E6EDF3">        data </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> base64.b64decode(f[</span><span style="color:#A5D6FF">"content_base64"</span><span style="color:#E6EDF3">])</span></span>
+<span data-line=""><span style="color:#E6EDF3">        Path(f[</span><span style="color:#A5D6FF">"filename"</span><span style="color:#E6EDF3">]).write_bytes(data)</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#8B949E">    # </span><span style="color:#FF7B72">TODO</span><span style="color:#8B949E">: Use an LLM to interpret the prompt and execute</span></span>
+<span data-line=""><span style="color:#8B949E">    # the appropriate Tripletex API calls</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#FF7B72">    return</span><span style="color:#E6EDF3"> JSONResponse({</span><span style="color:#A5D6FF">"status"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"completed"</span><span style="color:#E6EDF3">})</span></span></code></pre></figure>
+<p>Run with:</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="bash" data-theme="github-dark-default"><code data-language="bash" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#FFA657">pip</span><span style="color:#A5D6FF"> install</span><span style="color:#A5D6FF"> fastapi</span><span style="color:#A5D6FF"> uvicorn</span><span style="color:#A5D6FF"> requests</span></span>
+<span data-line=""><span style="color:#FFA657">uvicorn</span><span style="color:#A5D6FF"> main:app</span><span style="color:#79C0FF"> --host</span><span style="color:#79C0FF"> 0.0.0.0</span><span style="color:#79C0FF"> --port</span><span style="color:#79C0FF"> 8000</span></span></code></pre></figure>
+<p>Expose locally via HTTPS for testing:</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="bash" data-theme="github-dark-default"><code data-language="bash" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#FFA657">npx</span><span style="color:#A5D6FF"> cloudflared</span><span style="color:#A5D6FF"> tunnel</span><span style="color:#79C0FF"> --url</span><span style="color:#A5D6FF"> http://localhost:8000</span></span></code></pre></figure>
+<h2 id="tripletex-api-examples">Tripletex API Examples</h2>
+<h3 id="list-employees">List employees</h3>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="python" data-theme="github-dark-default"><code data-language="python" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#E6EDF3">resp </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> requests.get(</span></span>
+<span data-line=""><span style="color:#FF7B72">    f</span><span style="color:#A5D6FF">"</span><span style="color:#FF7B72">{</span><span style="color:#E6EDF3">base_url</span><span style="color:#FF7B72">}</span><span style="color:#A5D6FF">/employee"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#FFA657">    auth</span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3">auth,</span></span>
+<span data-line=""><span style="color:#FFA657">    params</span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3">{</span><span style="color:#A5D6FF">"fields"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"id,firstName,lastName,email"</span><span style="color:#E6EDF3">}</span></span>
+<span data-line=""><span style="color:#E6EDF3">)</span></span>
+<span data-line=""><span style="color:#E6EDF3">employees </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> resp.json()[</span><span style="color:#A5D6FF">"values"</span><span style="color:#E6EDF3">]</span></span></code></pre></figure>
+<h3 id="create-a-customer">Create a customer</h3>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="python" data-theme="github-dark-default"><code data-language="python" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#E6EDF3">resp </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> requests.post(</span></span>
+<span data-line=""><span style="color:#FF7B72">    f</span><span style="color:#A5D6FF">"</span><span style="color:#FF7B72">{</span><span style="color:#E6EDF3">base_url</span><span style="color:#FF7B72">}</span><span style="color:#A5D6FF">/customer"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#FFA657">    auth</span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3">auth,</span></span>
+<span data-line=""><span style="color:#FFA657">    json</span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3">{</span></span>
+<span data-line=""><span style="color:#A5D6FF">        "name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"Acme AS"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#A5D6FF">        "email"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"post@acme.no"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#A5D6FF">        "isCustomer"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">True</span></span>
+<span data-line=""><span style="color:#E6EDF3">    }</span></span>
+<span data-line=""><span style="color:#E6EDF3">)</span></span>
+<span data-line=""><span style="color:#E6EDF3">customer_id </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> resp.json()[</span><span style="color:#A5D6FF">"value"</span><span style="color:#E6EDF3">][</span><span style="color:#A5D6FF">"id"</span><span style="color:#E6EDF3">]</span></span></code></pre></figure>
+<h3 id="create-an-invoice">Create an invoice</h3>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="python" data-theme="github-dark-default"><code data-language="python" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#E6EDF3">today </span><span style="color:#FF7B72">=</span><span style="color:#A5D6FF"> "2026-03-03"</span></span>
+<span data-line=""><span style="color:#E6EDF3">resp </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> requests.post(</span></span>
+<span data-line=""><span style="color:#FF7B72">    f</span><span style="color:#A5D6FF">"</span><span style="color:#FF7B72">{</span><span style="color:#E6EDF3">base_url</span><span style="color:#FF7B72">}</span><span style="color:#A5D6FF">/invoice"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#FFA657">    auth</span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3">auth,</span></span>
+<span data-line=""><span style="color:#FFA657">    json</span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3">{</span></span>
+<span data-line=""><span style="color:#A5D6FF">        "invoiceDate"</span><span style="color:#E6EDF3">: today,</span></span>
+<span data-line=""><span style="color:#A5D6FF">        "invoiceDueDate"</span><span style="color:#E6EDF3">: today,</span></span>
+<span data-line=""><span style="color:#A5D6FF">        "customer"</span><span style="color:#E6EDF3">: {</span><span style="color:#A5D6FF">"id"</span><span style="color:#E6EDF3">: customer_id},</span></span>
+<span data-line=""><span style="color:#A5D6FF">        "orders"</span><span style="color:#E6EDF3">: [{</span><span style="color:#A5D6FF">"id"</span><span style="color:#E6EDF3">: order_id}]</span></span>
+<span data-line=""><span style="color:#E6EDF3">    }</span></span>
+<span data-line=""><span style="color:#E6EDF3">)</span></span></code></pre></figure>
+<h3 id="search-for-a-specific-entity">Search for a specific entity</h3>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="python" data-theme="github-dark-default"><code data-language="python" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#E6EDF3">resp </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> requests.get(</span></span>
+<span data-line=""><span style="color:#FF7B72">    f</span><span style="color:#A5D6FF">"</span><span style="color:#FF7B72">{</span><span style="color:#E6EDF3">base_url</span><span style="color:#FF7B72">}</span><span style="color:#A5D6FF">/customer"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#FFA657">    auth</span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3">auth,</span></span>
+<span data-line=""><span style="color:#FFA657">    params</span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3">{</span></span>
+<span data-line=""><span style="color:#A5D6FF">        "name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"Acme"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#A5D6FF">        "fields"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"id,name,email"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#A5D6FF">        "count"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">10</span></span>
+<span data-line=""><span style="color:#E6EDF3">    }</span></span>
+<span data-line=""><span style="color:#E6EDF3">)</span></span>
+<span data-line=""><span style="color:#E6EDF3">matches </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> resp.json()[</span><span style="color:#A5D6FF">"values"</span><span style="color:#E6EDF3">]</span></span></code></pre></figure>
+<h2 id="building-an-effective-agent">Building an Effective Agent</h2>
+<ol>
+<li><strong>Parse the prompt</strong> — Use an LLM to extract the task type, entity names, field values, and relationships from the Norwegian prompt</li>
+<li><strong>Handle files</strong> — Some tasks include PDFs with invoices, contracts, or expense reports. Decode from base64 and extract relevant data</li>
+<li><strong>Map to API calls</strong> — Determine which Tripletex endpoints to call and in what order. Some tasks require creating prerequisites first</li>
+<li><strong>Verify your work</strong> — After creating entities, query back to confirm they exist with correct values</li>
+<li><strong>Handle errors</strong> — Tripletex returns detailed error messages. Parse them to retry with corrections</li>
+</ol>
+<h2 id="common-task-patterns">Common Task Patterns</h2>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Example</th>
+<th>API Flow</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Create single entity</td>
+<td>"Create employee Ola Nordmann"</td>
+<td>POST /employee</td>
+</tr>
+<tr>
+<td>Create with linking</td>
+<td>"Create invoice for customer"</td>
+<td>GET /customer → POST /order → POST /invoice</td>
+</tr>
+<tr>
+<td>Modify existing</td>
+<td>"Add phone to contact"</td>
+<td>GET /customer → PUT /customer/{id}</td>
+</tr>
+<tr>
+<td>Delete/reverse</td>
+<td>"Delete travel expense"</td>
+<td>GET /travelExpense → DELETE /travelExpense/{id}</td>
+</tr>
+<tr>
+<td>Multi-step setup</td>
+<td>"Register payment"</td>
+<td>POST /customer → POST /invoice → POST /payment</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="common-errors">Common Errors</h2>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Error</th>
+<th>Cause</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>401 Unauthorized</td>
+<td>Wrong auth format</td>
+<td>Use Basic Auth with username <code>0</code> and session token as password</td>
+</tr>
+<tr>
+<td>404 Not Found</td>
+<td>Wrong endpoint path</td>
+<td>Check the Tripletex v2 API docs for correct paths</td>
+</tr>
+<tr>
+<td>422 Validation Error</td>
+<td>Missing required fields</td>
+<td>Read error message — it specifies which fields are required</td>
+</tr>
+<tr>
+<td>Empty <code>values</code> array</td>
+<td>No results found</td>
+<td>Check search parameters, try broader search</td>
+</tr>
+<tr>
+<td>Timeout (5 min)</td>
+<td>Agent too slow</td>
+<td>Optimize API calls, reduce unnecessary requests</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="tips">Tips</h2>
+<ul>
+<li>The Tripletex sandbox starts empty — you may need to create prerequisites (customer, product) before creating invoices</li>
+<li>Use <code>?fields=*</code> to see all available fields on an entity</li>
+<li>Some tasks require enabling modules first (e.g., department accounting)</li>
+<li>Norwegian characters (æ, ø, å) work fine in API requests — send as UTF-8</li>
+<li>All API calls through the proxy are logged — use them for debugging in the submissions view</li>
+<li>Prompts come in 7 languages (nb, en, es, pt, nn, de, fr) — your agent should handle all of them</li>
+</ul>
+<h2 id="optimizing-for-efficiency">Optimizing for Efficiency</h2>
+<p>Your score can go above 1.0 if you achieve perfect correctness with minimal API calls and zero errors. Higher-tier tasks have higher score ceilings (up to 6.0 for Tier 3). Tips:</p>
+<ul>
+<li><strong>Plan before calling</strong> — Parse the prompt fully before making API calls. Understand what needs to be created/modified before starting</li>
+<li><strong>Avoid trial-and-error</strong> — Every 4xx error (400, 404, 422) reduces your efficiency bonus. Validate inputs before sending</li>
+<li><strong>Minimize GET calls</strong> — Don't fetch entities you don't need. If you created something, you already know its ID from the response</li>
+<li><strong>Batch where possible</strong> — Some Tripletex endpoints accept lists. Use them instead of multiple individual calls</li>
+<li><strong>Read error messages</strong> — If a call fails, the Tripletex error message tells you exactly what's wrong. Fix it in one retry, not several</li>
+</ul>
+        </article>
+        <div class="pager"><a href="../scoring/index.html"><strong>Previous</strong><br>Scoring</a><a class="next" href="../../astar-island/overview/index.html"><strong>Next</strong><br>Overview</a></div>
+      </main>
+      <aside class="toc panel">
+        <div class="section-title">On This Page</div>
+        <ul class="toc-list"><li><a class="toc-link" style="padding-left: 10px" href="#minimal-solve-endpoint">Minimal /solve Endpoint</a></li><li><a class="toc-link" style="padding-left: 10px" href="#tripletex-api-examples">Tripletex API Examples</a></li><li><a class="toc-link" style="padding-left: 22px" href="#list-employees">List employees</a></li><li><a class="toc-link" style="padding-left: 22px" href="#create-a-customer">Create a customer</a></li><li><a class="toc-link" style="padding-left: 22px" href="#create-an-invoice">Create an invoice</a></li><li><a class="toc-link" style="padding-left: 22px" href="#search-for-a-specific-entity">Search for a specific entity</a></li><li><a class="toc-link" style="padding-left: 10px" href="#building-an-effective-agent">Building an Effective Agent</a></li><li><a class="toc-link" style="padding-left: 10px" href="#common-task-patterns">Common Task Patterns</a></li><li><a class="toc-link" style="padding-left: 10px" href="#common-errors">Common Errors</a></li><li><a class="toc-link" style="padding-left: 10px" href="#tips">Tips</a></li><li><a class="toc-link" style="padding-left: 10px" href="#optimizing-for-efficiency">Optimizing for Efficiency</a></li></ul>
+      </aside>
+    </div>
+  </div>
+</body>
+</html>

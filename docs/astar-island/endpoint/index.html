@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>API Endpoint Specification | NM i AI Docs Mirror</title>
+  <link rel="stylesheet" href="../../_assets/docs.css">
+</head>
+<body>
+  <div class="layout">
+    <div class="topbar panel">
+      <h1>NM i AI Docs Mirror</h1>
+      <p>Local snapshot of <a href="https://app.ainm.no/docs/astar-island/endpoint">https://app.ainm.no/docs/astar-island/endpoint</a> generated 2026-03-19 21:15:01 UTC.</p>
+    </div>
+    <div class="shell">
+      <aside class="sidebar panel">
+        <div class="section-title">Overview</div><ul class="nav-list"><li><a class="nav-link" href="../../index.html">Getting Started</a></li></ul><div class="section-title">Google Cloud</div><ul class="nav-list"><li><a class="nav-link" href="../../google-cloud/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../google-cloud/setup/index.html">Account Setup</a></li><li><a class="nav-link" href="../../google-cloud/deploy/index.html">Deploy on Cloud Run</a></li><li><a class="nav-link" href="../../google-cloud/services/index.html">Services &amp; Tools</a></li></ul><div class="section-title">NorgesGruppen Data</div><ul class="nav-list"><li><a class="nav-link" href="../../norgesgruppen-data/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../norgesgruppen-data/submission/index.html">Submission</a></li><li><a class="nav-link" href="../../norgesgruppen-data/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../norgesgruppen-data/examples/index.html">Examples</a></li></ul><div class="section-title">Tripletex</div><ul class="nav-list"><li><a class="nav-link" href="../../tripletex/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../tripletex/sandbox/index.html">Sandbox Account</a></li><li><a class="nav-link" href="../../tripletex/endpoint/index.html">Endpoint Spec</a></li><li><a class="nav-link" href="../../tripletex/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../tripletex/examples/index.html">Examples</a></li></ul><div class="section-title">Astar Island</div><ul class="nav-list"><li><a class="nav-link" href="../overview/index.html">Overview</a></li><li><a class="nav-link" href="../mechanics/index.html">Simulation Mechanics</a></li><li><a class="nav-link active" href="index.html">API Endpoints</a></li><li><a class="nav-link" href="../scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../quickstart/index.html">Quickstart</a></li></ul>
+      </aside>
+      <main class="content panel">
+        <div class="eyebrow"><span>Astar Island</span><span>/</span><span>API Endpoints</span></div>
+        <div class="meta">Source route: <a href="https://app.ainm.no/docs/astar-island/endpoint">/docs/astar-island/endpoint</a></div>
+        <article class="prose">
+          <h1 id="api-endpoint-specification">API Endpoint Specification</h1>
+<h2 id="base-url">Base URL</h2>
+<pre><code>https://api.ainm.no/astar-island
+</code></pre>
+<p>All endpoints require authentication. The API accepts either:</p>
+<ul>
+<li><strong>Cookie:</strong> <code>access_token</code> JWT cookie (set automatically when you log in at app.ainm.no)</li>
+<li><strong>Bearer token:</strong> <code>Authorization: Bearer &#x3C;token></code> header</li>
+</ul>
+<p>Both methods use the same JWT token. Use whichever is more convenient for your setup.</p>
+<h2 id="endpoints-overview">Endpoints Overview</h2>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Auth</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>/astar-island/rounds</code></td>
+<td>Public</td>
+<td>List all rounds</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/astar-island/rounds/{round_id}</code></td>
+<td>Public</td>
+<td>Round details + initial states</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/astar-island/budget</code></td>
+<td>Team</td>
+<td>Query budget for active round</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/astar-island/simulate</code></td>
+<td>Team</td>
+<td>Observe one simulation through viewport</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/astar-island/submit</code></td>
+<td>Team</td>
+<td>Submit prediction tensor</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/astar-island/my-rounds</code></td>
+<td>Team</td>
+<td>Rounds with your scores, rank, budget</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/astar-island/my-predictions/{round_id}</code></td>
+<td>Team</td>
+<td>Your predictions with argmax/confidence</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/astar-island/analysis/{round_id}/{seed_index}</code></td>
+<td>Team</td>
+<td>Post-round ground truth comparison</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/astar-island/leaderboard</code></td>
+<td>Public</td>
+<td>Astar Island leaderboard</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="get-astar-islandrounds">GET /astar-island/rounds</h2>
+<p>List all rounds with status and timing.</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="json" data-theme="github-dark-default"><code data-language="json" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#E6EDF3">[</span></span>
+<span data-line=""><span style="color:#E6EDF3">  {</span></span>
+<span data-line=""><span style="color:#7EE787">    "id"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"uuid"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "round_number"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "event_date"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"2026-03-19"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "status"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"active"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "map_width"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">40</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "map_height"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">40</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "prediction_window_minutes"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">165</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "started_at"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"2026-03-19T10:00:00Z"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "closes_at"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"2026-03-19T10:45:00Z"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "round_weight"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "created_at"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"2026-03-19T09:00:00Z"</span></span>
+<span data-line=""><span style="color:#E6EDF3">  }</span></span>
+<span data-line=""><span style="color:#E6EDF3">]</span></span></code></pre></figure>
+<h3 id="round-status">Round Status</h3>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pending</code></td>
+<td>Round created but not yet started</td>
+</tr>
+<tr>
+<td><code>active</code></td>
+<td>Queries and submissions open</td>
+</tr>
+<tr>
+<td><code>scoring</code></td>
+<td>Submissions closed, scoring in progress</td>
+</tr>
+<tr>
+<td><code>completed</code></td>
+<td>Scores finalized</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="get-astar-islandroundsround_id">GET /astar-island/rounds/{round_id}</h2>
+<p>Returns round details including <strong>initial map states</strong> for all seeds. Use this to reconstruct the starting terrain locally.</p>
+<p><strong>Note:</strong> Settlement data in initial states shows only position and port status. Internal stats (population, food, wealth, defense) are not exposed.</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="json" data-theme="github-dark-default"><code data-language="json" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#E6EDF3">{</span></span>
+<span data-line=""><span style="color:#7EE787">  "id"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"uuid"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">  "round_number"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">  "status"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"active"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">  "map_width"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">40</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">  "map_height"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">40</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">  "seeds_count"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">5</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">  "initial_states"</span><span style="color:#E6EDF3">: [</span></span>
+<span data-line=""><span style="color:#E6EDF3">    {</span></span>
+<span data-line=""><span style="color:#7EE787">      "grid"</span><span style="color:#E6EDF3">: [[</span><span style="color:#79C0FF">10</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">10</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">10</span><span style="color:#E6EDF3">, </span><span style="color:#FFA198;font-style:italic">...</span><span style="color:#E6EDF3">], </span><span style="color:#FFA198;font-style:italic">...</span><span style="color:#E6EDF3">],</span></span>
+<span data-line=""><span style="color:#7EE787">      "settlements"</span><span style="color:#E6EDF3">: [</span></span>
+<span data-line=""><span style="color:#E6EDF3">        {</span></span>
+<span data-line=""><span style="color:#7EE787">          "x"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">5</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"y"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">12</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">          "has_port"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">true</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">          "alive"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">true</span></span>
+<span data-line=""><span style="color:#E6EDF3">        }</span></span>
+<span data-line=""><span style="color:#E6EDF3">      ]</span></span>
+<span data-line=""><span style="color:#E6EDF3">    }</span></span>
+<span data-line=""><span style="color:#E6EDF3">  ]</span></span>
+<span data-line=""><span style="color:#E6EDF3">}</span></span></code></pre></figure>
+<h3 id="grid-cell-values">Grid Cell Values</h3>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Terrain</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>Empty</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Settlement</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Port</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Ruin</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Forest</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Mountain</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Ocean</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Plains</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="get-astar-islandbudget">GET /astar-island/budget</h2>
+<p>Check your team's remaining query budget for the active round.</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="json" data-theme="github-dark-default"><code data-language="json" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#E6EDF3">{</span></span>
+<span data-line=""><span style="color:#7EE787">  "round_id"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"uuid"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">  "queries_used"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">23</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">  "queries_max"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">50</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">  "active"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">true</span></span>
+<span data-line=""><span style="color:#E6EDF3">}</span></span></code></pre></figure>
+<h2 id="rate-limits">Rate Limits</h2>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Endpoint</th>
+<th>Limit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>POST /simulate</code></td>
+<td>5 requests/second per team</td>
+</tr>
+<tr>
+<td><code>POST /submit</code></td>
+<td>2 requests/second per team</td>
+</tr>
+</tbody>
+</table></div>
+<p>Exceeding these limits returns <code>429 Too Many Requests</code>.</p>
+<h2 id="post-astar-islandsimulate">POST /astar-island/simulate</h2>
+<p><strong>This is the core observation endpoint.</strong> Each call runs one stochastic simulation and reveals a viewport window of the result. Costs one query from your budget (50 per round).</p>
+<p><img src="../viewport-demo.png" alt="Viewport: full map with highlighted window vs. what gets returned"></p>
+<h3 id="request">Request</h3>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="json" data-theme="github-dark-default"><code data-language="json" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#E6EDF3">{</span></span>
+<span data-line=""><span style="color:#7EE787">  "round_id"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"uuid-of-active-round"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">  "seed_index"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">  "viewport_x"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">10</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">  "viewport_y"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">5</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">  "viewport_w"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">15</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">  "viewport_h"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">15</span></span>
+<span data-line=""><span style="color:#E6EDF3">}</span></span></code></pre></figure>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>round_id</code></td>
+<td>string</td>
+<td>UUID of the active round</td>
+</tr>
+<tr>
+<td><code>seed_index</code></td>
+<td>int (0–4)</td>
+<td>Which of the 5 seeds to simulate</td>
+</tr>
+<tr>
+<td><code>viewport_x</code></td>
+<td>int (>=0)</td>
+<td>Left edge of viewport (default 0)</td>
+</tr>
+<tr>
+<td><code>viewport_y</code></td>
+<td>int (>=0)</td>
+<td>Top edge of viewport (default 0)</td>
+</tr>
+<tr>
+<td><code>viewport_w</code></td>
+<td>int (5–15)</td>
+<td>Viewport width (default 15)</td>
+</tr>
+<tr>
+<td><code>viewport_h</code></td>
+<td>int (5–15)</td>
+<td>Viewport height (default 15)</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="response">Response</h3>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="json" data-theme="github-dark-default"><code data-language="json" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#E6EDF3">{</span></span>
+<span data-line=""><span style="color:#7EE787">  "grid"</span><span style="color:#E6EDF3">: [[</span><span style="color:#79C0FF">4</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">11</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">, </span><span style="color:#FFA198;font-style:italic">...</span><span style="color:#E6EDF3">], </span><span style="color:#FFA198;font-style:italic">...</span><span style="color:#E6EDF3">],</span></span>
+<span data-line=""><span style="color:#7EE787">  "settlements"</span><span style="color:#E6EDF3">: [</span></span>
+<span data-line=""><span style="color:#E6EDF3">    {</span></span>
+<span data-line=""><span style="color:#7EE787">      "x"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">12</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"y"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">7</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">      "population"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">2.8</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">      "food"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">0.4</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">      "wealth"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">0.7</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">      "defense"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">0.6</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">      "has_port"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">true</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">      "alive"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">true</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">      "owner_id"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">3</span></span>
+<span data-line=""><span style="color:#E6EDF3">    }</span></span>
+<span data-line=""><span style="color:#E6EDF3">  ],</span></span>
+<span data-line=""><span style="color:#7EE787">  "viewport"</span><span style="color:#E6EDF3">: {</span><span style="color:#7EE787">"x"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">10</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"y"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">5</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"w"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">15</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"h"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">15</span><span style="color:#E6EDF3">},</span></span>
+<span data-line=""><span style="color:#7EE787">  "width"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">40</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">  "height"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">40</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">  "queries_used"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">24</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">  "queries_max"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">50</span></span>
+<span data-line=""><span style="color:#E6EDF3">}</span></span></code></pre></figure>
+<p>The <code>grid</code> contains only the viewport region (viewport_h × viewport_w), not the full map. The <code>settlements</code> list includes only settlements within the viewport. The <code>viewport</code> object confirms the actual viewport bounds (clamped to map edges). <code>width</code> and <code>height</code> give the full map dimensions.</p>
+<p>Each call uses a different random sim_seed, so you get a different stochastic outcome.</p>
+<h3 id="error-codes">Error Codes</h3>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>400</td>
+<td>Round not active, or invalid seed_index</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Not on a team</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Round not found</td>
+</tr>
+<tr>
+<td>429</td>
+<td>Query budget exhausted (50/50) or rate limit exceeded (max 5 req/sec)</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="post-astar-islandsubmit">POST /astar-island/submit</h2>
+<p>Submit your prediction for one seed. You must submit all 5 seeds for a complete score.</p>
+<h3 id="request-1">Request</h3>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="json" data-theme="github-dark-default"><code data-language="json" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#E6EDF3">{</span></span>
+<span data-line=""><span style="color:#7EE787">  "round_id"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"uuid-of-active-round"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">  "seed_index"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">  "prediction"</span><span style="color:#E6EDF3">: [</span></span>
+<span data-line=""><span style="color:#E6EDF3">    [</span></span>
+<span data-line=""><span style="color:#E6EDF3">      [</span><span style="color:#79C0FF">0.85</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">0.05</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">0.02</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">0.03</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">0.03</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">0.02</span><span style="color:#E6EDF3">],</span></span>
+<span data-line=""><span style="color:#E6EDF3">      [</span><span style="color:#79C0FF">0.10</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">0.40</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">0.30</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">0.10</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">0.05</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">0.05</span><span style="color:#E6EDF3">],</span></span>
+<span data-line=""><span style="color:#FFA198;font-style:italic">      ...</span></span>
+<span data-line=""><span style="color:#E6EDF3">    ],</span></span>
+<span data-line=""><span style="color:#FFA198;font-style:italic">    ...</span></span>
+<span data-line=""><span style="color:#E6EDF3">  ]</span></span>
+<span data-line=""><span style="color:#E6EDF3">}</span></span></code></pre></figure>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>round_id</code></td>
+<td>string</td>
+<td>UUID of the active round</td>
+</tr>
+<tr>
+<td><code>seed_index</code></td>
+<td>int (0–4)</td>
+<td>Which seed this prediction is for</td>
+</tr>
+<tr>
+<td><code>prediction</code></td>
+<td>float[][][]</td>
+<td>H×W×6 tensor — probability per cell per class</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="prediction-format">Prediction Format</h3>
+<p>The <code>prediction</code> is a 3D array: <code>prediction[y][x][class]</code></p>
+<ul>
+<li>Outer dimension: <strong>H</strong> rows (height)</li>
+<li>Middle dimension: <strong>W</strong> columns (width)</li>
+<li>Inner dimension: <strong>6</strong> probabilities (one per class)</li>
+<li>Each cell's 6 probabilities must sum to 1.0 (±0.01 tolerance)</li>
+<li>All probabilities must be non-negative</li>
+</ul>
+<h3 id="class-indices">Class Indices</h3>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Index</th>
+<th>Class</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>Empty (Ocean, Plains, Empty)</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Settlement</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Port</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Ruin</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Forest</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Mountain</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="response-1">Response</h3>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="json" data-theme="github-dark-default"><code data-language="json" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#E6EDF3">{</span></span>
+<span data-line=""><span style="color:#7EE787">  "status"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"accepted"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">  "round_id"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"uuid"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">  "seed_index"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">3</span></span>
+<span data-line=""><span style="color:#E6EDF3">}</span></span></code></pre></figure>
+<p>Resubmitting for the same seed overwrites your previous prediction. Only the last submission counts.</p>
+<h3 id="validation-errors">Validation Errors</h3>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Error</th>
+<th>Cause</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Expected H rows, got N</code></td>
+<td>Wrong number of rows</td>
+</tr>
+<tr>
+<td><code>Row Y: expected W cols, got N</code></td>
+<td>Wrong number of columns</td>
+</tr>
+<tr>
+<td><code>Cell (Y,X): expected 6 probs, got N</code></td>
+<td>Wrong probability vector length</td>
+</tr>
+<tr>
+<td><code>Cell (Y,X): probs sum to S, expected 1.0</code></td>
+<td>Probabilities don't sum to 1.0</td>
+</tr>
+<tr>
+<td><code>Cell (Y,X): negative probability</code></td>
+<td>Negative value in probability vector</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="get-astar-islandmy-rounds">GET /astar-island/my-rounds</h2>
+<p>Returns all rounds enriched with your team's scores, submission counts, rank, and query budget. This is the team-specific version of <code>/rounds</code>.</p>
+<p><strong>Auth required.</strong></p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="json" data-theme="github-dark-default"><code data-language="json" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#E6EDF3">[</span></span>
+<span data-line=""><span style="color:#E6EDF3">  {</span></span>
+<span data-line=""><span style="color:#7EE787">    "id"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"uuid"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "round_number"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "event_date"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"2026-03-19"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "status"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"completed"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "map_width"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">40</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "map_height"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">40</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "seeds_count"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">5</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "round_weight"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "started_at"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"2026-03-19T10:00:00+00:00"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "closes_at"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"2026-03-19T10:45:00+00:00"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "prediction_window_minutes"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">165</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "round_score"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">72.5</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "seed_scores"</span><span style="color:#E6EDF3">: [</span><span style="color:#79C0FF">80.1</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">65.3</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">71.9</span><span style="color:#E6EDF3">, </span><span style="color:#FFA198;font-style:italic">...</span><span style="color:#E6EDF3">],</span></span>
+<span data-line=""><span style="color:#7EE787">    "seeds_submitted"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">5</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "rank"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "total_teams"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">12</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "queries_used"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">48</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "queries_max"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">50</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "initial_grid"</span><span style="color:#E6EDF3">: [[</span><span style="color:#79C0FF">10</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">10</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">10</span><span style="color:#E6EDF3">, </span><span style="color:#FFA198;font-style:italic">...</span><span style="color:#E6EDF3">], </span><span style="color:#FFA198;font-style:italic">...</span><span style="color:#E6EDF3">]</span></span>
+<span data-line=""><span style="color:#E6EDF3">  }</span></span>
+<span data-line=""><span style="color:#E6EDF3">]</span></span></code></pre></figure>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>round_score</code></td>
+<td>float | null</td>
+<td>Your team's average score across all seeds (null if not scored)</td>
+</tr>
+<tr>
+<td><code>seed_scores</code></td>
+<td>float[] | null</td>
+<td>Per-seed scores (null if not scored)</td>
+</tr>
+<tr>
+<td><code>seeds_submitted</code></td>
+<td>int</td>
+<td>Number of seeds your team has submitted predictions for</td>
+</tr>
+<tr>
+<td><code>rank</code></td>
+<td>int | null</td>
+<td>Your team's rank for this round (null if not scored)</td>
+</tr>
+<tr>
+<td><code>total_teams</code></td>
+<td>int | null</td>
+<td>Total teams scored in this round</td>
+</tr>
+<tr>
+<td><code>queries_used</code></td>
+<td>int</td>
+<td>Simulation queries used by your team</td>
+</tr>
+<tr>
+<td><code>queries_max</code></td>
+<td>int</td>
+<td>Maximum queries allowed (default 50)</td>
+</tr>
+<tr>
+<td><code>initial_grid</code></td>
+<td>int[][]</td>
+<td>Initial terrain grid for the first seed</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="error-codes-1">Error Codes</h3>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>403</td>
+<td>Not on a team</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="get-astar-islandmy-predictionsround_id">GET /astar-island/my-predictions/{round_id}</h2>
+<p>Returns your team's submitted predictions for a given round, with derived argmax and confidence grids for easy visualization.</p>
+<p><strong>Auth required.</strong></p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="json" data-theme="github-dark-default"><code data-language="json" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#E6EDF3">[</span></span>
+<span data-line=""><span style="color:#E6EDF3">  {</span></span>
+<span data-line=""><span style="color:#7EE787">    "seed_index"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">0</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "argmax_grid"</span><span style="color:#E6EDF3">: [[</span><span style="color:#79C0FF">0</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">4</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">5</span><span style="color:#E6EDF3">, </span><span style="color:#FFA198;font-style:italic">...</span><span style="color:#E6EDF3">], </span><span style="color:#FFA198;font-style:italic">...</span><span style="color:#E6EDF3">],</span></span>
+<span data-line=""><span style="color:#7EE787">    "confidence_grid"</span><span style="color:#E6EDF3">: [[</span><span style="color:#79C0FF">0.85</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">0.72</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">0.93</span><span style="color:#E6EDF3">, </span><span style="color:#FFA198;font-style:italic">...</span><span style="color:#E6EDF3">], </span><span style="color:#FFA198;font-style:italic">...</span><span style="color:#E6EDF3">],</span></span>
+<span data-line=""><span style="color:#7EE787">    "score"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">78.2</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "submitted_at"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"2026-03-19T10:30:00+00:00"</span></span>
+<span data-line=""><span style="color:#E6EDF3">  }</span></span>
+<span data-line=""><span style="color:#E6EDF3">]</span></span></code></pre></figure>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>seed_index</code></td>
+<td>int</td>
+<td>Which seed this prediction is for (0–4)</td>
+</tr>
+<tr>
+<td><code>argmax_grid</code></td>
+<td>int[][]</td>
+<td>H×W grid of predicted class indices (argmax of probability vector)</td>
+</tr>
+<tr>
+<td><code>confidence_grid</code></td>
+<td>float[][]</td>
+<td>H×W grid of confidence values (max probability per cell, rounded to 3 decimals)</td>
+</tr>
+<tr>
+<td><code>score</code></td>
+<td>float | null</td>
+<td>Score for this seed (null if not yet scored)</td>
+</tr>
+<tr>
+<td><code>submitted_at</code></td>
+<td>string | null</td>
+<td>ISO 8601 timestamp of submission</td>
+</tr>
+</tbody>
+</table></div>
+<p>The <code>argmax_grid</code> uses the same class indices as the prediction format (0=Empty, 1=Settlement, 2=Port, 3=Ruin, 4=Forest, 5=Mountain).</p>
+<h3 id="error-codes-2">Error Codes</h3>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>403</td>
+<td>Not on a team</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="get-astar-islandanalysisround_idseed_index">GET /astar-island/analysis/{round_id}/{seed_index}</h2>
+<p>Post-round analysis endpoint. Returns your prediction alongside the ground truth for a specific seed, enabling detailed comparison. Only available after a round is completed (or during scoring).</p>
+<p><strong>Auth required.</strong></p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="json" data-theme="github-dark-default"><code data-language="json" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#E6EDF3">{</span></span>
+<span data-line=""><span style="color:#7EE787">  "prediction"</span><span style="color:#E6EDF3">: [[[</span><span style="color:#79C0FF">0.85</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">0.05</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">0.02</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">0.03</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">0.03</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">0.02</span><span style="color:#E6EDF3">], </span><span style="color:#FFA198;font-style:italic">...</span><span style="color:#E6EDF3">], </span><span style="color:#FFA198;font-style:italic">...</span><span style="color:#E6EDF3">],</span></span>
+<span data-line=""><span style="color:#7EE787">  "ground_truth"</span><span style="color:#E6EDF3">: [[[</span><span style="color:#79C0FF">0.90</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">0.03</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">0.01</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">0.02</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">0.02</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">0.02</span><span style="color:#E6EDF3">], </span><span style="color:#FFA198;font-style:italic">...</span><span style="color:#E6EDF3">], </span><span style="color:#FFA198;font-style:italic">...</span><span style="color:#E6EDF3">],</span></span>
+<span data-line=""><span style="color:#7EE787">  "score"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">78.2</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">  "width"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">40</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">  "height"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">40</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">  "initial_grid"</span><span style="color:#E6EDF3">: [[</span><span style="color:#79C0FF">10</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">10</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">10</span><span style="color:#E6EDF3">, </span><span style="color:#FFA198;font-style:italic">...</span><span style="color:#E6EDF3">], </span><span style="color:#FFA198;font-style:italic">...</span><span style="color:#E6EDF3">]</span></span>
+<span data-line=""><span style="color:#E6EDF3">}</span></span></code></pre></figure>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>prediction</code></td>
+<td>float[][][]</td>
+<td>Your submitted H×W×6 probability tensor</td>
+</tr>
+<tr>
+<td><code>ground_truth</code></td>
+<td>float[][][]</td>
+<td>The actual H×W×6 probability distribution (computed from Monte Carlo simulations)</td>
+</tr>
+<tr>
+<td><code>score</code></td>
+<td>float | null</td>
+<td>Your score for this seed</td>
+</tr>
+<tr>
+<td><code>width</code></td>
+<td>int</td>
+<td>Map width</td>
+</tr>
+<tr>
+<td><code>height</code></td>
+<td>int</td>
+<td>Map height</td>
+</tr>
+<tr>
+<td><code>initial_grid</code></td>
+<td>int[][] | null</td>
+<td>Initial terrain grid for this seed</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="error-codes-3">Error Codes</h3>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>400</td>
+<td>Round not completed/scoring yet, or invalid seed_index</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Not on a team</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Round not found, or no prediction submitted for this seed</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="get-astar-islandleaderboard">GET /astar-island/leaderboard</h2>
+<p>Public leaderboard. Each team's score is their <strong>best round score of all time</strong> (weighted by round weight).</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="json" data-theme="github-dark-default"><code data-language="json" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#E6EDF3">[</span></span>
+<span data-line=""><span style="color:#E6EDF3">  {</span></span>
+<span data-line=""><span style="color:#7EE787">    "team_id"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"uuid"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "team_name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"Vikings ML"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "team_slug"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"vikings-ml"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "weighted_score"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">72.5</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "rounds_participated"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "hot_streak_score"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">78.1</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "rank"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "is_verified"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">true</span></span>
+<span data-line=""><span style="color:#E6EDF3">  }</span></span>
+<span data-line=""><span style="color:#E6EDF3">]</span></span></code></pre></figure>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>weighted_score</code></td>
+<td>float</td>
+<td>Best <code>round_score × round_weight</code> across all rounds</td>
+</tr>
+<tr>
+<td><code>rounds_participated</code></td>
+<td>int</td>
+<td>Total rounds this team has submitted predictions</td>
+</tr>
+<tr>
+<td><code>hot_streak_score</code></td>
+<td>float</td>
+<td>Average score of last 3 rounds</td>
+</tr>
+<tr>
+<td><code>is_verified</code></td>
+<td>bool</td>
+<td>Whether all team members are Vipps-verified</td>
+</tr>
+<tr>
+<td><code>rank</code></td>
+<td>int</td>
+<td>Current leaderboard rank</td>
+</tr>
+</tbody>
+</table></div>
+        </article>
+        <div class="pager"><a href="../mechanics/index.html"><strong>Previous</strong><br>Simulation Mechanics</a><a class="next" href="../scoring/index.html"><strong>Next</strong><br>Scoring</a></div>
+      </main>
+      <aside class="toc panel">
+        <div class="section-title">On This Page</div>
+        <ul class="toc-list"><li><a class="toc-link" style="padding-left: 10px" href="#base-url">Base URL</a></li><li><a class="toc-link" style="padding-left: 10px" href="#endpoints-overview">Endpoints Overview</a></li><li><a class="toc-link" style="padding-left: 10px" href="#get-astar-islandrounds">GET /astar-island/rounds</a></li><li><a class="toc-link" style="padding-left: 22px" href="#round-status">Round Status</a></li><li><a class="toc-link" style="padding-left: 10px" href="#get-astar-islandroundsround_id">GET /astar-island/rounds/{round_id}</a></li><li><a class="toc-link" style="padding-left: 22px" href="#grid-cell-values">Grid Cell Values</a></li><li><a class="toc-link" style="padding-left: 10px" href="#get-astar-islandbudget">GET /astar-island/budget</a></li><li><a class="toc-link" style="padding-left: 10px" href="#rate-limits">Rate Limits</a></li><li><a class="toc-link" style="padding-left: 10px" href="#post-astar-islandsimulate">POST /astar-island/simulate</a></li><li><a class="toc-link" style="padding-left: 22px" href="#request">Request</a></li><li><a class="toc-link" style="padding-left: 22px" href="#response">Response</a></li><li><a class="toc-link" style="padding-left: 22px" href="#error-codes">Error Codes</a></li><li><a class="toc-link" style="padding-left: 10px" href="#post-astar-islandsubmit">POST /astar-island/submit</a></li><li><a class="toc-link" style="padding-left: 22px" href="#request-1">Request</a></li><li><a class="toc-link" style="padding-left: 22px" href="#prediction-format">Prediction Format</a></li><li><a class="toc-link" style="padding-left: 22px" href="#class-indices">Class Indices</a></li><li><a class="toc-link" style="padding-left: 22px" href="#response-1">Response</a></li><li><a class="toc-link" style="padding-left: 22px" href="#validation-errors">Validation Errors</a></li><li><a class="toc-link" style="padding-left: 10px" href="#get-astar-islandmy-rounds">GET /astar-island/my-rounds</a></li><li><a class="toc-link" style="padding-left: 22px" href="#error-codes-1">Error Codes</a></li><li><a class="toc-link" style="padding-left: 10px" href="#get-astar-islandmy-predictionsround_id">GET /astar-island/my-predictions/{round_id}</a></li><li><a class="toc-link" style="padding-left: 22px" href="#error-codes-2">Error Codes</a></li><li><a class="toc-link" style="padding-left: 10px" href="#get-astar-islandanalysisround_idseed_index">GET /astar-island/analysis/{round_id}/{seed_index}</a></li><li><a class="toc-link" style="padding-left: 22px" href="#error-codes-3">Error Codes</a></li><li><a class="toc-link" style="padding-left: 10px" href="#get-astar-islandleaderboard">GET /astar-island/leaderboard</a></li></ul>
+      </aside>
+    </div>
+  </div>
+</body>
+</html>

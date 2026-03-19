@@ -1,0 +1,1081 @@
+{
+  "generated_at": "2026-03-19 21:15:01 UTC",
+  "source": "https://app.ainm.no/docs",
+  "pages": [
+    {
+      "section": "Overview",
+      "label": "Getting Started",
+      "route": "/docs",
+      "title": "Getting Started",
+      "source_url": "https://app.ainm.no/docs",
+      "output_path": "index.html",
+      "headings": [
+        {
+          "id": "getting-started",
+          "level": 1,
+          "title": "Getting Started"
+        },
+        {
+          "id": "the-three-tasks",
+          "level": 2,
+          "title": "The Three Tasks"
+        },
+        {
+          "id": "quick-start",
+          "level": 2,
+          "title": "Quick Start"
+        },
+        {
+          "id": "mcp-server",
+          "level": 2,
+          "title": "MCP Server"
+        },
+        {
+          "id": "need-help",
+          "level": 2,
+          "title": "Need Help?"
+        }
+      ]
+    },
+    {
+      "section": "Google Cloud",
+      "label": "Overview",
+      "route": "/docs/google-cloud/overview",
+      "title": "Google Cloud",
+      "source_url": "https://app.ainm.no/docs/google-cloud/overview",
+      "output_path": "google-cloud/overview/index.html",
+      "headings": [
+        {
+          "id": "google-cloud",
+          "level": 1,
+          "title": "Google Cloud"
+        },
+        {
+          "id": "what-you-get",
+          "level": 2,
+          "title": "What You Get"
+        },
+        {
+          "id": "who-gets-an-account",
+          "level": 2,
+          "title": "Who Gets an Account"
+        },
+        {
+          "id": "how-to-apply",
+          "level": 2,
+          "title": "How to Apply"
+        },
+        {
+          "id": "already-have-cloud-infrastructure",
+          "level": 2,
+          "title": "Already Have Cloud Infrastructure?"
+        }
+      ]
+    },
+    {
+      "section": "Google Cloud",
+      "label": "Account Setup",
+      "route": "/docs/google-cloud/setup",
+      "title": "Account Setup",
+      "source_url": "https://app.ainm.no/docs/google-cloud/setup",
+      "output_path": "google-cloud/setup/index.html",
+      "headings": [
+        {
+          "id": "account-setup",
+          "level": 1,
+          "title": "Account Setup"
+        },
+        {
+          "id": "log-in",
+          "level": 2,
+          "title": "Log In"
+        },
+        {
+          "id": "cloud-shell",
+          "level": 2,
+          "title": "Cloud Shell"
+        },
+        {
+          "id": "cloud-shell-editor",
+          "level": 2,
+          "title": "Cloud Shell Editor"
+        },
+        {
+          "id": "gemini-tools",
+          "level": 2,
+          "title": "Gemini Tools"
+        }
+      ]
+    },
+    {
+      "section": "Google Cloud",
+      "label": "Deploy on Cloud Run",
+      "route": "/docs/google-cloud/deploy",
+      "title": "Deploy on Cloud Run",
+      "source_url": "https://app.ainm.no/docs/google-cloud/deploy",
+      "output_path": "google-cloud/deploy/index.html",
+      "headings": [
+        {
+          "id": "deploy-on-cloud-run",
+          "level": 1,
+          "title": "Deploy on Cloud Run"
+        },
+        {
+          "id": "what-is-cloud-run",
+          "level": 2,
+          "title": "What is Cloud Run?"
+        },
+        {
+          "id": "step-1-write-your-endpoint",
+          "level": 2,
+          "title": "Step 1: Write Your Endpoint"
+        },
+        {
+          "id": "step-2-create-a-dockerfile",
+          "level": 2,
+          "title": "Step 2: Create a Dockerfile"
+        },
+        {
+          "id": "step-3-deploy",
+          "level": 2,
+          "title": "Step 3: Deploy"
+        },
+        {
+          "id": "step-4-submit-your-url",
+          "level": 2,
+          "title": "Step 4: Submit Your URL"
+        },
+        {
+          "id": "tips",
+          "level": 2,
+          "title": "Tips"
+        },
+        {
+          "id": "use-europe-north1-region",
+          "level": 3,
+          "title": "Use europe-north1 Region"
+        },
+        {
+          "id": "handle-cold-starts",
+          "level": 3,
+          "title": "Handle Cold Starts"
+        },
+        {
+          "id": "increase-memory-for-llms",
+          "level": 3,
+          "title": "Increase Memory for LLMs"
+        },
+        {
+          "id": "update-your-deployment",
+          "level": 3,
+          "title": "Update Your Deployment"
+        },
+        {
+          "id": "view-logs",
+          "level": 3,
+          "title": "View Logs"
+        },
+        {
+          "id": "which-tasks-need-cloud-run",
+          "level": 2,
+          "title": "Which Tasks Need Cloud Run?"
+        }
+      ]
+    },
+    {
+      "section": "Google Cloud",
+      "label": "Services & Tools",
+      "route": "/docs/google-cloud/services",
+      "title": "Services & Tools",
+      "source_url": "https://app.ainm.no/docs/google-cloud/services",
+      "output_path": "google-cloud/services/index.html",
+      "headings": [
+        {
+          "id": "services--tools",
+          "level": 1,
+          "title": "Services & Tools"
+        },
+        {
+          "id": "hosting-your-endpoint",
+          "level": 2,
+          "title": "Hosting Your Endpoint"
+        },
+        {
+          "id": "ai--machine-learning",
+          "level": 2,
+          "title": "AI & Machine Learning"
+        },
+        {
+          "id": "using-vertex-ai-from-your-endpoint",
+          "level": 3,
+          "title": "Using Vertex AI from Your Endpoint"
+        },
+        {
+          "id": "data--storage",
+          "level": 2,
+          "title": "Data & Storage"
+        },
+        {
+          "id": "development-tools",
+          "level": 2,
+          "title": "Development Tools"
+        },
+        {
+          "id": "collaboration",
+          "level": 2,
+          "title": "Collaboration"
+        }
+      ]
+    },
+    {
+      "section": "NorgesGruppen Data",
+      "label": "Overview",
+      "route": "/docs/norgesgruppen-data/overview",
+      "title": "NorgesGruppen Data: Object Detection",
+      "source_url": "https://app.ainm.no/docs/norgesgruppen-data/overview",
+      "output_path": "norgesgruppen-data/overview/index.html",
+      "headings": [
+        {
+          "id": "norgesgruppen-data-object-detection",
+          "level": 1,
+          "title": "NorgesGruppen Data: Object Detection"
+        },
+        {
+          "id": "how-it-works",
+          "level": 2,
+          "title": "How It Works"
+        },
+        {
+          "id": "downloads",
+          "level": 2,
+          "title": "Downloads"
+        },
+        {
+          "id": "training-data",
+          "level": 2,
+          "title": "Training Data"
+        },
+        {
+          "id": "annotation-format",
+          "level": 3,
+          "title": "Annotation Format"
+        },
+        {
+          "id": "what-annotations-look-like",
+          "level": 2,
+          "title": "What Annotations Look Like"
+        },
+        {
+          "id": "submit",
+          "level": 2,
+          "title": "Submit"
+        },
+        {
+          "id": "mcp-setup",
+          "level": 2,
+          "title": "MCP Setup"
+        }
+      ]
+    },
+    {
+      "section": "NorgesGruppen Data",
+      "label": "Submission",
+      "route": "/docs/norgesgruppen-data/submission",
+      "title": "NorgesGruppen Data: Submission Format",
+      "source_url": "https://app.ainm.no/docs/norgesgruppen-data/submission",
+      "output_path": "norgesgruppen-data/submission/index.html",
+      "headings": [
+        {
+          "id": "norgesgruppen-data-submission-format",
+          "level": 1,
+          "title": "NorgesGruppen Data: Submission Format"
+        },
+        {
+          "id": "zip-structure",
+          "level": 2,
+          "title": "Zip Structure"
+        },
+        {
+          "id": "runpy-contract",
+          "level": 2,
+          "title": "run.py Contract"
+        },
+        {
+          "id": "input",
+          "level": 3,
+          "title": "Input"
+        },
+        {
+          "id": "output",
+          "level": 3,
+          "title": "Output"
+        },
+        {
+          "id": "scoring",
+          "level": 2,
+          "title": "Scoring"
+        },
+        {
+          "id": "product-categories",
+          "level": 2,
+          "title": "Product Categories"
+        },
+        {
+          "id": "sandbox-environment",
+          "level": 2,
+          "title": "Sandbox Environment"
+        },
+        {
+          "id": "gpu",
+          "level": 3,
+          "title": "GPU"
+        },
+        {
+          "id": "pre-installed-packages",
+          "level": 3,
+          "title": "Pre-installed Packages"
+        },
+        {
+          "id": "training-environment",
+          "level": 2,
+          "title": "Training Environment"
+        },
+        {
+          "id": "models-available-in-the-sandbox",
+          "level": 3,
+          "title": "Models available in the sandbox"
+        },
+        {
+          "id": "models-not-in-the-sandbox",
+          "level": 3,
+          "title": "Models not in the sandbox"
+        },
+        {
+          "id": "setting-up-your-training-environment",
+          "level": 3,
+          "title": "Setting up your training environment"
+        },
+        {
+          "id": "version-compatibility",
+          "level": 3,
+          "title": "Version compatibility"
+        },
+        {
+          "id": "recommended-weight-formats",
+          "level": 3,
+          "title": "Recommended weight formats"
+        },
+        {
+          "id": "security-restrictions",
+          "level": 2,
+          "title": "Security Restrictions"
+        },
+        {
+          "id": "creating-your-zip",
+          "level": 2,
+          "title": "Creating Your Zip"
+        }
+      ]
+    },
+    {
+      "section": "NorgesGruppen Data",
+      "label": "Scoring",
+      "route": "/docs/norgesgruppen-data/scoring",
+      "title": "NorgesGruppen Data: Scoring",
+      "source_url": "https://app.ainm.no/docs/norgesgruppen-data/scoring",
+      "output_path": "norgesgruppen-data/scoring/index.html",
+      "headings": [
+        {
+          "id": "norgesgruppen-data-scoring",
+          "level": 1,
+          "title": "NorgesGruppen Data: Scoring"
+        },
+        {
+          "id": "hybrid-scoring",
+          "level": 2,
+          "title": "Hybrid Scoring"
+        },
+        {
+          "id": "detection-map-70-of-score",
+          "level": 3,
+          "title": "Detection mAP (70% of score)"
+        },
+        {
+          "id": "classification-map-30-of-score",
+          "level": 3,
+          "title": "Classification mAP (30% of score)"
+        },
+        {
+          "id": "detection-only-submissions",
+          "level": 3,
+          "title": "Detection-Only Submissions"
+        },
+        {
+          "id": "submission-limits",
+          "level": 2,
+          "title": "Submission Limits"
+        },
+        {
+          "id": "leaderboard",
+          "level": 2,
+          "title": "Leaderboard"
+        },
+        {
+          "id": "select-for-final-evaluation",
+          "level": 2,
+          "title": "Select for Final Evaluation"
+        }
+      ]
+    },
+    {
+      "section": "NorgesGruppen Data",
+      "label": "Examples",
+      "route": "/docs/norgesgruppen-data/examples",
+      "title": "NorgesGruppen Data: Examples & Tips",
+      "source_url": "https://app.ainm.no/docs/norgesgruppen-data/examples",
+      "output_path": "norgesgruppen-data/examples/index.html",
+      "headings": [
+        {
+          "id": "norgesgruppen-data-examples--tips",
+          "level": 1,
+          "title": "NorgesGruppen Data: Examples & Tips"
+        },
+        {
+          "id": "random-baseline",
+          "level": 2,
+          "title": "Random Baseline"
+        },
+        {
+          "id": "yolov8-example",
+          "level": 2,
+          "title": "YOLOv8 Example"
+        },
+        {
+          "id": "onnx-inference-example",
+          "level": 2,
+          "title": "ONNX Inference Example"
+        },
+        {
+          "id": "common-errors",
+          "level": 2,
+          "title": "Common Errors"
+        },
+        {
+          "id": "tips",
+          "level": 2,
+          "title": "Tips"
+        }
+      ]
+    },
+    {
+      "section": "Tripletex",
+      "label": "Overview",
+      "route": "/docs/tripletex/overview",
+      "title": "Tripletex \u2014 AI Accounting Agent",
+      "source_url": "https://app.ainm.no/docs/tripletex/overview",
+      "output_path": "tripletex/overview/index.html",
+      "headings": [
+        {
+          "id": "tripletex--ai-accounting-agent",
+          "level": 1,
+          "title": "Tripletex \u2014 AI Accounting Agent"
+        },
+        {
+          "id": "how-it-works",
+          "level": 2,
+          "title": "How It Works"
+        },
+        {
+          "id": "key-facts",
+          "level": 2,
+          "title": "Key Facts"
+        },
+        {
+          "id": "quick-start",
+          "level": 2,
+          "title": "Quick Start"
+        },
+        {
+          "id": "task-categories",
+          "level": 2,
+          "title": "Task Categories"
+        }
+      ]
+    },
+    {
+      "section": "Tripletex",
+      "label": "Sandbox Account",
+      "route": "/docs/tripletex/sandbox",
+      "title": "Tripletex \u2014 Sandbox Account",
+      "source_url": "https://app.ainm.no/docs/tripletex/sandbox",
+      "output_path": "tripletex/sandbox/index.html",
+      "headings": [
+        {
+          "id": "tripletex--sandbox-account",
+          "level": 1,
+          "title": "Tripletex \u2014 Sandbox Account"
+        },
+        {
+          "id": "getting-your-sandbox",
+          "level": 2,
+          "title": "Getting Your Sandbox"
+        },
+        {
+          "id": "logging-into-the-web-ui",
+          "level": 2,
+          "title": "Logging Into the Web UI"
+        },
+        {
+          "id": "using-the-api",
+          "level": 2,
+          "title": "Using the API"
+        },
+        {
+          "id": "what-you-can-do",
+          "level": 2,
+          "title": "What You Can Do"
+        },
+        {
+          "id": "key-differences-from-competition",
+          "level": 2,
+          "title": "Key Differences from Competition"
+        },
+        {
+          "id": "tips",
+          "level": 2,
+          "title": "Tips"
+        }
+      ]
+    },
+    {
+      "section": "Tripletex",
+      "label": "Endpoint Spec",
+      "route": "/docs/tripletex/endpoint",
+      "title": "Tripletex \u2014 Endpoint Specification",
+      "source_url": "https://app.ainm.no/docs/tripletex/endpoint",
+      "output_path": "tripletex/endpoint/index.html",
+      "headings": [
+        {
+          "id": "tripletex--endpoint-specification",
+          "level": 1,
+          "title": "Tripletex \u2014 Endpoint Specification"
+        },
+        {
+          "id": "solve-endpoint",
+          "level": 2,
+          "title": "/solve Endpoint"
+        },
+        {
+          "id": "request-format",
+          "level": 2,
+          "title": "Request Format"
+        },
+        {
+          "id": "response-format",
+          "level": 2,
+          "title": "Response Format"
+        },
+        {
+          "id": "authentication",
+          "level": 2,
+          "title": "Authentication"
+        },
+        {
+          "id": "api-key-optional",
+          "level": 2,
+          "title": "API Key (Optional)"
+        },
+        {
+          "id": "requirements",
+          "level": 2,
+          "title": "Requirements"
+        },
+        {
+          "id": "tripletex-api-reference",
+          "level": 2,
+          "title": "Tripletex API Reference"
+        },
+        {
+          "id": "api-tips",
+          "level": 2,
+          "title": "API Tips"
+        }
+      ]
+    },
+    {
+      "section": "Tripletex",
+      "label": "Scoring",
+      "route": "/docs/tripletex/scoring",
+      "title": "Tripletex \u2014 Scoring",
+      "source_url": "https://app.ainm.no/docs/tripletex/scoring",
+      "output_path": "tripletex/scoring/index.html",
+      "headings": [
+        {
+          "id": "tripletex--scoring",
+          "level": 1,
+          "title": "Tripletex \u2014 Scoring"
+        },
+        {
+          "id": "field-by-field-verification-correctness",
+          "level": 2,
+          "title": "Field-by-Field Verification (Correctness)"
+        },
+        {
+          "id": "tier-multiplier",
+          "level": 2,
+          "title": "Tier Multiplier"
+        },
+        {
+          "id": "efficiency-bonus",
+          "level": 2,
+          "title": "Efficiency Bonus"
+        },
+        {
+          "id": "best-score-per-task",
+          "level": 2,
+          "title": "Best Score Per Task"
+        },
+        {
+          "id": "leaderboard",
+          "level": 2,
+          "title": "Leaderboard"
+        },
+        {
+          "id": "task-assignment",
+          "level": 2,
+          "title": "Task Assignment"
+        },
+        {
+          "id": "tier-release-schedule",
+          "level": 3,
+          "title": "Tier Release Schedule"
+        },
+        {
+          "id": "rate-limits",
+          "level": 2,
+          "title": "Rate Limits"
+        }
+      ]
+    },
+    {
+      "section": "Tripletex",
+      "label": "Examples",
+      "route": "/docs/tripletex/examples",
+      "title": "Tripletex \u2014 Examples",
+      "source_url": "https://app.ainm.no/docs/tripletex/examples",
+      "output_path": "tripletex/examples/index.html",
+      "headings": [
+        {
+          "id": "tripletex--examples",
+          "level": 1,
+          "title": "Tripletex \u2014 Examples"
+        },
+        {
+          "id": "minimal-solve-endpoint",
+          "level": 2,
+          "title": "Minimal /solve Endpoint"
+        },
+        {
+          "id": "tripletex-api-examples",
+          "level": 2,
+          "title": "Tripletex API Examples"
+        },
+        {
+          "id": "list-employees",
+          "level": 3,
+          "title": "List employees"
+        },
+        {
+          "id": "create-a-customer",
+          "level": 3,
+          "title": "Create a customer"
+        },
+        {
+          "id": "create-an-invoice",
+          "level": 3,
+          "title": "Create an invoice"
+        },
+        {
+          "id": "search-for-a-specific-entity",
+          "level": 3,
+          "title": "Search for a specific entity"
+        },
+        {
+          "id": "building-an-effective-agent",
+          "level": 2,
+          "title": "Building an Effective Agent"
+        },
+        {
+          "id": "common-task-patterns",
+          "level": 2,
+          "title": "Common Task Patterns"
+        },
+        {
+          "id": "common-errors",
+          "level": 2,
+          "title": "Common Errors"
+        },
+        {
+          "id": "tips",
+          "level": 2,
+          "title": "Tips"
+        },
+        {
+          "id": "optimizing-for-efficiency",
+          "level": 2,
+          "title": "Optimizing for Efficiency"
+        }
+      ]
+    },
+    {
+      "section": "Astar Island",
+      "label": "Overview",
+      "route": "/docs/astar-island/overview",
+      "title": "Astar Island \u2014 Viking Civilisation Prediction",
+      "source_url": "https://app.ainm.no/docs/astar-island/overview",
+      "output_path": "astar-island/overview/index.html",
+      "headings": [
+        {
+          "id": "astar-island--viking-civilisation-prediction",
+          "level": 1,
+          "title": "Astar Island \u2014 Viking Civilisation Prediction"
+        },
+        {
+          "id": "what-is-this",
+          "level": 2,
+          "title": "What is this?"
+        },
+        {
+          "id": "how-it-works",
+          "level": 2,
+          "title": "How It Works"
+        },
+        {
+          "id": "the-core-challenge",
+          "level": 2,
+          "title": "The Core Challenge"
+        },
+        {
+          "id": "quick-start",
+          "level": 2,
+          "title": "Quick Start"
+        },
+        {
+          "id": "key-concepts",
+          "level": 2,
+          "title": "Key Concepts"
+        }
+      ]
+    },
+    {
+      "section": "Astar Island",
+      "label": "Simulation Mechanics",
+      "route": "/docs/astar-island/mechanics",
+      "title": "Astar Island Simulation Mechanics",
+      "source_url": "https://app.ainm.no/docs/astar-island/mechanics",
+      "output_path": "astar-island/mechanics/index.html",
+      "headings": [
+        {
+          "id": "astar-island-simulation-mechanics",
+          "level": 1,
+          "title": "Astar Island Simulation Mechanics"
+        },
+        {
+          "id": "the-world",
+          "level": 2,
+          "title": "The World"
+        },
+        {
+          "id": "map-generation",
+          "level": 2,
+          "title": "Map Generation"
+        },
+        {
+          "id": "simulation-lifecycle",
+          "level": 2,
+          "title": "Simulation Lifecycle"
+        },
+        {
+          "id": "growth",
+          "level": 3,
+          "title": "Growth"
+        },
+        {
+          "id": "conflict",
+          "level": 3,
+          "title": "Conflict"
+        },
+        {
+          "id": "trade",
+          "level": 3,
+          "title": "Trade"
+        },
+        {
+          "id": "winter",
+          "level": 3,
+          "title": "Winter"
+        },
+        {
+          "id": "environment",
+          "level": 3,
+          "title": "Environment"
+        },
+        {
+          "id": "settlement-properties",
+          "level": 2,
+          "title": "Settlement Properties"
+        },
+        {
+          "id": "the-world-in-motion",
+          "level": 2,
+          "title": "The World in Motion"
+        }
+      ]
+    },
+    {
+      "section": "Astar Island",
+      "label": "API Endpoints",
+      "route": "/docs/astar-island/endpoint",
+      "title": "API Endpoint Specification",
+      "source_url": "https://app.ainm.no/docs/astar-island/endpoint",
+      "output_path": "astar-island/endpoint/index.html",
+      "headings": [
+        {
+          "id": "api-endpoint-specification",
+          "level": 1,
+          "title": "API Endpoint Specification"
+        },
+        {
+          "id": "base-url",
+          "level": 2,
+          "title": "Base URL"
+        },
+        {
+          "id": "endpoints-overview",
+          "level": 2,
+          "title": "Endpoints Overview"
+        },
+        {
+          "id": "get-astar-islandrounds",
+          "level": 2,
+          "title": "GET /astar-island/rounds"
+        },
+        {
+          "id": "round-status",
+          "level": 3,
+          "title": "Round Status"
+        },
+        {
+          "id": "get-astar-islandroundsround_id",
+          "level": 2,
+          "title": "GET /astar-island/rounds/{round_id}"
+        },
+        {
+          "id": "grid-cell-values",
+          "level": 3,
+          "title": "Grid Cell Values"
+        },
+        {
+          "id": "get-astar-islandbudget",
+          "level": 2,
+          "title": "GET /astar-island/budget"
+        },
+        {
+          "id": "rate-limits",
+          "level": 2,
+          "title": "Rate Limits"
+        },
+        {
+          "id": "post-astar-islandsimulate",
+          "level": 2,
+          "title": "POST /astar-island/simulate"
+        },
+        {
+          "id": "request",
+          "level": 3,
+          "title": "Request"
+        },
+        {
+          "id": "response",
+          "level": 3,
+          "title": "Response"
+        },
+        {
+          "id": "error-codes",
+          "level": 3,
+          "title": "Error Codes"
+        },
+        {
+          "id": "post-astar-islandsubmit",
+          "level": 2,
+          "title": "POST /astar-island/submit"
+        },
+        {
+          "id": "request-1",
+          "level": 3,
+          "title": "Request"
+        },
+        {
+          "id": "prediction-format",
+          "level": 3,
+          "title": "Prediction Format"
+        },
+        {
+          "id": "class-indices",
+          "level": 3,
+          "title": "Class Indices"
+        },
+        {
+          "id": "response-1",
+          "level": 3,
+          "title": "Response"
+        },
+        {
+          "id": "validation-errors",
+          "level": 3,
+          "title": "Validation Errors"
+        },
+        {
+          "id": "get-astar-islandmy-rounds",
+          "level": 2,
+          "title": "GET /astar-island/my-rounds"
+        },
+        {
+          "id": "error-codes-1",
+          "level": 3,
+          "title": "Error Codes"
+        },
+        {
+          "id": "get-astar-islandmy-predictionsround_id",
+          "level": 2,
+          "title": "GET /astar-island/my-predictions/{round_id}"
+        },
+        {
+          "id": "error-codes-2",
+          "level": 3,
+          "title": "Error Codes"
+        },
+        {
+          "id": "get-astar-islandanalysisround_idseed_index",
+          "level": 2,
+          "title": "GET /astar-island/analysis/{round_id}/{seed_index}"
+        },
+        {
+          "id": "error-codes-3",
+          "level": 3,
+          "title": "Error Codes"
+        },
+        {
+          "id": "get-astar-islandleaderboard",
+          "level": 2,
+          "title": "GET /astar-island/leaderboard"
+        }
+      ]
+    },
+    {
+      "section": "Astar Island",
+      "label": "Scoring",
+      "route": "/docs/astar-island/scoring",
+      "title": "Astar Island Scoring",
+      "source_url": "https://app.ainm.no/docs/astar-island/scoring",
+      "output_path": "astar-island/scoring/index.html",
+      "headings": [
+        {
+          "id": "astar-island-scoring",
+          "level": 1,
+          "title": "Astar Island Scoring"
+        },
+        {
+          "id": "score-formula",
+          "level": 2,
+          "title": "Score Formula"
+        },
+        {
+          "id": "ground-truth",
+          "level": 3,
+          "title": "Ground Truth"
+        },
+        {
+          "id": "kl-divergence",
+          "level": 3,
+          "title": "KL Divergence"
+        },
+        {
+          "id": "entropy-weighting",
+          "level": 3,
+          "title": "Entropy Weighting"
+        },
+        {
+          "id": "final-score",
+          "level": 3,
+          "title": "Final Score"
+        },
+        {
+          "id": "common-pitfalls",
+          "level": 2,
+          "title": "Common Pitfalls"
+        },
+        {
+          "id": "per-round-score",
+          "level": 2,
+          "title": "Per-Round Score"
+        },
+        {
+          "id": "leaderboard",
+          "level": 2,
+          "title": "Leaderboard"
+        },
+        {
+          "id": "game-end",
+          "level": 2,
+          "title": "Game End"
+        }
+      ]
+    },
+    {
+      "section": "Astar Island",
+      "label": "Quickstart",
+      "route": "/docs/astar-island/quickstart",
+      "title": "Astar Island Quickstart",
+      "source_url": "https://app.ainm.no/docs/astar-island/quickstart",
+      "output_path": "astar-island/quickstart/index.html",
+      "headings": [
+        {
+          "id": "astar-island-quickstart",
+          "level": 1,
+          "title": "Astar Island Quickstart"
+        },
+        {
+          "id": "authentication",
+          "level": 2,
+          "title": "Authentication"
+        },
+        {
+          "id": "step-1-get-the-active-round",
+          "level": 2,
+          "title": "Step 1: Get the Active Round"
+        },
+        {
+          "id": "step-2-get-round-details",
+          "level": 2,
+          "title": "Step 2: Get Round Details"
+        },
+        {
+          "id": "step-3-query-the-simulator",
+          "level": 2,
+          "title": "Step 3: Query the Simulator"
+        },
+        {
+          "id": "step-4-build-and-submit-predictions",
+          "level": 2,
+          "title": "Step 4: Build and Submit Predictions"
+        },
+        {
+          "id": "using-the-mcp-server",
+          "level": 2,
+          "title": "Using the MCP Server"
+        }
+      ]
+    }
+  ]
+}

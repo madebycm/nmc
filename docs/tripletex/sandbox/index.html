@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tripletex — Sandbox Account | NM i AI Docs Mirror</title>
+  <link rel="stylesheet" href="../../_assets/docs.css">
+</head>
+<body>
+  <div class="layout">
+    <div class="topbar panel">
+      <h1>NM i AI Docs Mirror</h1>
+      <p>Local snapshot of <a href="https://app.ainm.no/docs/tripletex/sandbox">https://app.ainm.no/docs/tripletex/sandbox</a> generated 2026-03-19 21:15:01 UTC.</p>
+    </div>
+    <div class="shell">
+      <aside class="sidebar panel">
+        <div class="section-title">Overview</div><ul class="nav-list"><li><a class="nav-link" href="../../index.html">Getting Started</a></li></ul><div class="section-title">Google Cloud</div><ul class="nav-list"><li><a class="nav-link" href="../../google-cloud/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../google-cloud/setup/index.html">Account Setup</a></li><li><a class="nav-link" href="../../google-cloud/deploy/index.html">Deploy on Cloud Run</a></li><li><a class="nav-link" href="../../google-cloud/services/index.html">Services &amp; Tools</a></li></ul><div class="section-title">NorgesGruppen Data</div><ul class="nav-list"><li><a class="nav-link" href="../../norgesgruppen-data/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../norgesgruppen-data/submission/index.html">Submission</a></li><li><a class="nav-link" href="../../norgesgruppen-data/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../norgesgruppen-data/examples/index.html">Examples</a></li></ul><div class="section-title">Tripletex</div><ul class="nav-list"><li><a class="nav-link" href="../overview/index.html">Overview</a></li><li><a class="nav-link active" href="index.html">Sandbox Account</a></li><li><a class="nav-link" href="../endpoint/index.html">Endpoint Spec</a></li><li><a class="nav-link" href="../scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../examples/index.html">Examples</a></li></ul><div class="section-title">Astar Island</div><ul class="nav-list"><li><a class="nav-link" href="../../astar-island/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../astar-island/mechanics/index.html">Simulation Mechanics</a></li><li><a class="nav-link" href="../../astar-island/endpoint/index.html">API Endpoints</a></li><li><a class="nav-link" href="../../astar-island/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../astar-island/quickstart/index.html">Quickstart</a></li></ul>
+      </aside>
+      <main class="content panel">
+        <div class="eyebrow"><span>Tripletex</span><span>/</span><span>Sandbox Account</span></div>
+        <div class="meta">Source route: <a href="https://app.ainm.no/docs/tripletex/sandbox">/docs/tripletex/sandbox</a></div>
+        <article class="prose">
+          <h1 id="tripletex--sandbox-account">Tripletex — Sandbox Account</h1>
+<p>Every team gets a free Tripletex sandbox account to explore the API and web interface before submitting to the competition.</p>
+<h2 id="getting-your-sandbox">Getting Your Sandbox</h2>
+<ol>
+<li>Go to the <strong>Tripletex submission page</strong> on the platform</li>
+<li>Click <strong>"Get Sandbox Account"</strong></li>
+<li>Your sandbox is provisioned instantly</li>
+</ol>
+<p>You'll receive:</p>
+<ul>
+<li><strong>Tripletex UI URL</strong> — log in and explore the accounting interface</li>
+<li><strong>API base URL</strong> — call the Tripletex v2 REST API directly</li>
+<li><strong>Session token</strong> — authenticate your API calls</li>
+</ul>
+<h2 id="logging-into-the-web-ui">Logging Into the Web UI</h2>
+<ol>
+<li>Go to <code>https://kkpqfuj-amager.tripletex.dev</code></li>
+<li>Enter the email shown on your sandbox card</li>
+<li>Click <strong>"Forgot password"</strong> to set up your Visma Connect account (first time only)</li>
+<li>Set a password and log in</li>
+</ol>
+<p>Once you've set up Visma Connect, the same credentials work for all Tripletex test accounts — including the ones created during competition submissions.</p>
+<h2 id="using-the-api">Using the API</h2>
+<p>Authenticate with <strong>Basic Auth</strong> using <code>0</code> as username and the session token as password:</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="python" data-theme="github-dark-default"><code data-language="python" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> requests</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#79C0FF">BASE_URL</span><span style="color:#FF7B72"> =</span><span style="color:#A5D6FF"> "https://kkpqfuj-amager.tripletex.dev/v2"</span></span>
+<span data-line=""><span style="color:#79C0FF">SESSION_TOKEN</span><span style="color:#FF7B72"> =</span><span style="color:#A5D6FF"> "your-session-token-here"</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#8B949E"># List employees</span></span>
+<span data-line=""><span style="color:#E6EDF3">response </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> requests.get(</span></span>
+<span data-line=""><span style="color:#FF7B72">    f</span><span style="color:#A5D6FF">"</span><span style="color:#FF7B72">{</span><span style="color:#79C0FF">BASE_URL</span><span style="color:#FF7B72">}</span><span style="color:#A5D6FF">/employee"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#FFA657">    auth</span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"0"</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">SESSION_TOKEN</span><span style="color:#E6EDF3">),</span></span>
+<span data-line=""><span style="color:#FFA657">    params</span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3">{</span><span style="color:#A5D6FF">"fields"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"id,firstName,lastName,email"</span><span style="color:#E6EDF3">}</span></span>
+<span data-line=""><span style="color:#E6EDF3">)</span></span>
+<span data-line=""><span style="color:#79C0FF">print</span><span style="color:#E6EDF3">(response.json())</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#8B949E"># Create a customer</span></span>
+<span data-line=""><span style="color:#E6EDF3">response </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> requests.post(</span></span>
+<span data-line=""><span style="color:#FF7B72">    f</span><span style="color:#A5D6FF">"</span><span style="color:#FF7B72">{</span><span style="color:#79C0FF">BASE_URL</span><span style="color:#FF7B72">}</span><span style="color:#A5D6FF">/customer"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#FFA657">    auth</span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3">(</span><span style="color:#A5D6FF">"0"</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">SESSION_TOKEN</span><span style="color:#E6EDF3">),</span></span>
+<span data-line=""><span style="color:#FFA657">    json</span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3">{</span></span>
+<span data-line=""><span style="color:#A5D6FF">        "name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"Test Customer AS"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#A5D6FF">        "email"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"test@example.com"</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#A5D6FF">        "isCustomer"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">True</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#E6EDF3">    }</span></span>
+<span data-line=""><span style="color:#E6EDF3">)</span></span>
+<span data-line=""><span style="color:#79C0FF">print</span><span style="color:#E6EDF3">(response.json())</span></span></code></pre></figure>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="bash" data-theme="github-dark-default"><code data-language="bash" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#8B949E"># curl example</span></span>
+<span data-line=""><span style="color:#FFA657">curl</span><span style="color:#79C0FF"> -u</span><span style="color:#A5D6FF"> "0:your-session-token-here"</span><span style="color:#FF7B72"> \</span></span>
+<span data-line=""><span style="color:#A5D6FF">  "https://kkpqfuj-amager.tripletex.dev/v2/employee?fields=id,firstName,lastName"</span></span></code></pre></figure>
+<h2 id="what-you-can-do">What You Can Do</h2>
+<p>The sandbox is a full Tripletex test environment. Use it to:</p>
+<ul>
+<li><strong>Explore the API</strong> — try creating employees, customers, invoices, and more</li>
+<li><strong>See the UI</strong> — understand what the accounting data looks like in the interface</li>
+<li><strong>Test your agent</strong> — point your <code>/solve</code> endpoint at the sandbox to debug</li>
+<li><strong>Learn the data model</strong> — see how resources relate to each other</li>
+</ul>
+<h2 id="key-differences-from-competition">Key Differences from Competition</h2>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th></th>
+<th>Sandbox</th>
+<th>Competition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Account</td>
+<td>Persistent, yours to keep</td>
+<td>Fresh account per submission</td>
+</tr>
+<tr>
+<td>API access</td>
+<td>Direct to Tripletex</td>
+<td>Via authenticated proxy</td>
+</tr>
+<tr>
+<td>Data</td>
+<td>Accumulates over time</td>
+<td>Starts empty each time</td>
+</tr>
+<tr>
+<td>Scoring</td>
+<td>None</td>
+<td>Automated field-by-field</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="tips">Tips</h2>
+<ul>
+<li>Create some test data manually in the UI, then query it via the API to understand the response format</li>
+<li>Try the same operations your agent will need: creating employees, invoices, products, etc.</li>
+<li>The sandbox token expires March 31, 2026</li>
+<li>Each team gets one sandbox — all team members share it</li>
+</ul>
+        </article>
+        <div class="pager"><a href="../overview/index.html"><strong>Previous</strong><br>Overview</a><a class="next" href="../endpoint/index.html"><strong>Next</strong><br>Endpoint Spec</a></div>
+      </main>
+      <aside class="toc panel">
+        <div class="section-title">On This Page</div>
+        <ul class="toc-list"><li><a class="toc-link" style="padding-left: 10px" href="#getting-your-sandbox">Getting Your Sandbox</a></li><li><a class="toc-link" style="padding-left: 10px" href="#logging-into-the-web-ui">Logging Into the Web UI</a></li><li><a class="toc-link" style="padding-left: 10px" href="#using-the-api">Using the API</a></li><li><a class="toc-link" style="padding-left: 10px" href="#what-you-can-do">What You Can Do</a></li><li><a class="toc-link" style="padding-left: 10px" href="#key-differences-from-competition">Key Differences from Competition</a></li><li><a class="toc-link" style="padding-left: 10px" href="#tips">Tips</a></li></ul>
+      </aside>
+    </div>
+  </div>
+</body>
+</html>

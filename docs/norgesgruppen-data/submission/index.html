@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NorgesGruppen Data: Submission Format | NM i AI Docs Mirror</title>
+  <link rel="stylesheet" href="../../_assets/docs.css">
+</head>
+<body>
+  <div class="layout">
+    <div class="topbar panel">
+      <h1>NM i AI Docs Mirror</h1>
+      <p>Local snapshot of <a href="https://app.ainm.no/docs/norgesgruppen-data/submission">https://app.ainm.no/docs/norgesgruppen-data/submission</a> generated 2026-03-19 21:15:01 UTC.</p>
+    </div>
+    <div class="shell">
+      <aside class="sidebar panel">
+        <div class="section-title">Overview</div><ul class="nav-list"><li><a class="nav-link" href="../../index.html">Getting Started</a></li></ul><div class="section-title">Google Cloud</div><ul class="nav-list"><li><a class="nav-link" href="../../google-cloud/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../google-cloud/setup/index.html">Account Setup</a></li><li><a class="nav-link" href="../../google-cloud/deploy/index.html">Deploy on Cloud Run</a></li><li><a class="nav-link" href="../../google-cloud/services/index.html">Services &amp; Tools</a></li></ul><div class="section-title">NorgesGruppen Data</div><ul class="nav-list"><li><a class="nav-link" href="../overview/index.html">Overview</a></li><li><a class="nav-link active" href="index.html">Submission</a></li><li><a class="nav-link" href="../scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../examples/index.html">Examples</a></li></ul><div class="section-title">Tripletex</div><ul class="nav-list"><li><a class="nav-link" href="../../tripletex/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../tripletex/sandbox/index.html">Sandbox Account</a></li><li><a class="nav-link" href="../../tripletex/endpoint/index.html">Endpoint Spec</a></li><li><a class="nav-link" href="../../tripletex/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../tripletex/examples/index.html">Examples</a></li></ul><div class="section-title">Astar Island</div><ul class="nav-list"><li><a class="nav-link" href="../../astar-island/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../astar-island/mechanics/index.html">Simulation Mechanics</a></li><li><a class="nav-link" href="../../astar-island/endpoint/index.html">API Endpoints</a></li><li><a class="nav-link" href="../../astar-island/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../astar-island/quickstart/index.html">Quickstart</a></li></ul>
+      </aside>
+      <main class="content panel">
+        <div class="eyebrow"><span>NorgesGruppen Data</span><span>/</span><span>Submission</span></div>
+        <div class="meta">Source route: <a href="https://app.ainm.no/docs/norgesgruppen-data/submission">/docs/norgesgruppen-data/submission</a></div>
+        <article class="prose">
+          <h1 id="norgesgruppen-data-submission-format">NorgesGruppen Data: Submission Format</h1>
+<h2 id="zip-structure">Zip Structure</h2>
+<p>Your <code>.zip</code> must contain <code>run.py</code> at the root. You may include model weights and Python helper files.</p>
+<pre><code>submission.zip
+├── run.py          # Required: entry point
+├── model.onnx      # Optional: model weights (.pt, .onnx, .safetensors, .npy)
+└── utils.py        # Optional: helper code
+</code></pre>
+<p><strong>Limits:</strong></p>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Limit</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Max zip size (uncompressed)</td>
+<td>420 MB</td>
+</tr>
+<tr>
+<td>Max files</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>Max Python files</td>
+<td>10</td>
+</tr>
+<tr>
+<td>Max weight files (.pt, .pth, .onnx, .safetensors, .npy)</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Max weight size total</td>
+<td>420 MB</td>
+</tr>
+<tr>
+<td>Allowed file types</td>
+<td>.py, .json, .yaml, .yml, .cfg, .pt, .pth, .onnx, .safetensors, .npy</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="runpy-contract">run.py Contract</h2>
+<p>Your script is executed as:</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="bash" data-theme="github-dark-default"><code data-language="bash" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#FFA657">python</span><span style="color:#A5D6FF"> run.py</span><span style="color:#79C0FF"> --input</span><span style="color:#A5D6FF"> /data/images</span><span style="color:#79C0FF"> --output</span><span style="color:#A5D6FF"> /output/predictions.json</span></span></code></pre></figure>
+<h3 id="input">Input</h3>
+<p><code>/data/images/</code> contains JPEG shelf images. File names use the format <code>img_XXXXX.jpg</code> (e.g., <code>img_00042.jpg</code>).</p>
+<h3 id="output">Output</h3>
+<p>Write a JSON array to the <code>--output</code> path:</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="json" data-theme="github-dark-default"><code data-language="json" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#E6EDF3">[</span></span>
+<span data-line=""><span style="color:#E6EDF3">  {</span></span>
+<span data-line=""><span style="color:#7EE787">    "image_id"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">42</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "category_id"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">0</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#7EE787">    "bbox"</span><span style="color:#E6EDF3">: [</span><span style="color:#79C0FF">120.5</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">45.0</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">80.0</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">110.0</span><span style="color:#E6EDF3">],</span></span>
+<span data-line=""><span style="color:#7EE787">    "score"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">0.923</span></span>
+<span data-line=""><span style="color:#E6EDF3">  }</span></span>
+<span data-line=""><span style="color:#E6EDF3">]</span></span></code></pre></figure>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>image_id</code></td>
+<td>int</td>
+<td>Numeric ID from filename (<code>img_00042.jpg</code> → <code>42</code>)</td>
+</tr>
+<tr>
+<td><code>category_id</code></td>
+<td>int</td>
+<td>Product category ID (0-355). See <code>categories</code> list in annotations.json</td>
+</tr>
+<tr>
+<td><code>bbox</code></td>
+<td>[x, y, w, h]</td>
+<td>Bounding box in COCO format</td>
+</tr>
+<tr>
+<td><code>score</code></td>
+<td>float</td>
+<td>Confidence score (0-1)</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="scoring">Scoring</h2>
+<p>Your score combines detection and classification:</p>
+<ul>
+<li><strong>70% detection mAP</strong> — did you find the products? (bounding box IoU ≥ 0.5, category ignored)</li>
+<li><strong>30% classification mAP</strong> — did you identify the right product? (IoU ≥ 0.5 AND correct category_id)</li>
+</ul>
+<p>Detection-only submissions (<code>category_id: 0</code> for all predictions) score up to 70%. Product identification adds the remaining 30%.</p>
+<h2 id="product-categories">Product Categories</h2>
+<p>The training data <code>annotations.json</code> contains a <code>categories</code> list mapping integer IDs to product names:</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="json" data-theme="github-dark-default"><code data-language="json" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#A5D6FF">"categories"</span><span style="color:#E6EDF3">: [</span></span>
+<span data-line=""><span style="color:#E6EDF3">  {</span><span style="color:#7EE787">"id"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">0</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"VESTLANDSLEFSA TØRRE 10STK 360G"</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"supercategory"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"product"</span><span style="color:#E6EDF3">},</span></span>
+<span data-line=""><span style="color:#E6EDF3">  {</span><span style="color:#7EE787">"id"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"COFFEE MATE 180G NESTLE"</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"supercategory"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"product"</span><span style="color:#E6EDF3">},</span></span>
+<span data-line=""><span style="color:#FFA198;font-style:italic">  ...</span></span>
+<span data-line=""><span style="color:#E6EDF3">  {</span><span style="color:#7EE787">"id"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">356</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"name"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"unknown_product"</span><span style="color:#E6EDF3">, </span><span style="color:#7EE787">"supercategory"</span><span style="color:#E6EDF3">: </span><span style="color:#A5D6FF">"product"</span><span style="color:#E6EDF3">}</span></span>
+<span data-line=""><span style="color:#E6EDF3">]</span></span></code></pre></figure>
+<p>Your predictions must use the same <code>category_id</code> values. When training YOLOv8 on this COCO data (with <code>nc=357</code>), the model learns the mapping and outputs the correct category_id during inference.</p>
+<h2 id="sandbox-environment">Sandbox Environment</h2>
+<p>Your code runs in a Docker container with these constraints:</p>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>Limit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Python</td>
+<td>3.11</td>
+</tr>
+<tr>
+<td>CPU</td>
+<td>4 vCPU</td>
+</tr>
+<tr>
+<td>Memory</td>
+<td>8 GB</td>
+</tr>
+<tr>
+<td>GPU</td>
+<td>NVIDIA L4 (24 GB VRAM)</td>
+</tr>
+<tr>
+<td>CUDA</td>
+<td>12.4</td>
+</tr>
+<tr>
+<td>Network</td>
+<td>None (fully offline)</td>
+</tr>
+<tr>
+<td>Timeout</td>
+<td>300 seconds</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="gpu">GPU</h3>
+<p>An NVIDIA L4 GPU is always available in the sandbox. Your code auto-detects it:</p>
+<ul>
+<li><code>torch.cuda.is_available()</code> returns <code>True</code></li>
+<li>No opt-in flag needed — GPU is always on</li>
+<li>For ONNX models, use <code>["CUDAExecutionProvider", "CPUExecutionProvider"]</code> as the provider list</li>
+</ul>
+<h3 id="pre-installed-packages">Pre-installed Packages</h3>
+<p>PyTorch 2.6.0+cu124, torchvision 0.21.0+cu124, ultralytics 8.1.0, onnxruntime-gpu 1.20.0, opencv-python-headless 4.9.0.80, albumentations 1.3.1, Pillow 10.2.0, numpy 1.26.4, scipy 1.12.0, scikit-learn 1.4.0, pycocotools 2.0.7, ensemble-boxes 1.0.9, timm 0.9.12, supervision 0.18.0, safetensors 0.4.2.</p>
+<p>You <strong>cannot</strong> <code>pip install</code> at runtime.</p>
+<h2 id="training-environment">Training Environment</h2>
+<p>You can use <strong>any computer vision architecture</strong> — the sandbox supports all models via ONNX, custom PyTorch code, or the pre-installed frameworks. You don't need all sandbox packages for training — only match the versions of packages you actually use.</p>
+<h3 id="models-available-in-the-sandbox">Models available in the sandbox</h3>
+<p>These frameworks are pre-installed. If you train with the <strong>exact same version</strong>, you can submit <code>.pt</code> weights directly:</p>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Framework</th>
+<th>Models</th>
+<th>Pin this version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ultralytics 8.1.0</td>
+<td>YOLOv8n/s/m/l/x, YOLOv5u, RT-DETR-l/x</td>
+<td><code>ultralytics==8.1.0</code></td>
+</tr>
+<tr>
+<td>torchvision 0.21.0</td>
+<td>Faster R-CNN, RetinaNet, SSD, FCOS, Mask R-CNN</td>
+<td><code>torchvision==0.21.0</code></td>
+</tr>
+<tr>
+<td>timm 0.9.12</td>
+<td>ResNet, EfficientNet, ViT, Swin, ConvNeXt, etc. (as backbones)</td>
+<td><code>timm==0.9.12</code></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="models-not-in-the-sandbox">Models not in the sandbox</h3>
+<p>YOLOv9, YOLOv10, YOLO11, RF-DETR, Detectron2, MMDetection, HuggingFace Transformers — these packages are not installed. Two options:</p>
+<ol>
+<li><strong>Export to ONNX</strong>: Export from any framework, load with <code>onnxruntime</code> in your <code>run.py</code>. Use opset version ≤ 20. Use <code>CUDAExecutionProvider</code> for GPU acceleration.</li>
+<li><strong>Include model code</strong>: Put your model class in your <code>.py</code> files + <code>.pt</code> state_dict weights. Works if the model only uses standard PyTorch ops.</li>
+</ol>
+<p><strong>HuggingFace <code>.bin</code> files</strong>: The <code>.bin</code> extension is not allowed, but the format is identical to <code>.pt</code> (PyTorch pickle). Rename <code>.bin</code> → <code>.pt</code>, or convert with <code>safetensors.torch.save_file(state_dict, "model.safetensors")</code>.</p>
+<p><strong>Models larger than 420 MB</strong>: Quantize to FP16 or INT8 to fit within the 420 MB weight limit. FP16 is the recommended precision for L4 GPU inference — it's both smaller and faster.</p>
+<h3 id="setting-up-your-training-environment">Setting up your training environment</h3>
+<p>Only install the packages you need, with matching versions:</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="bash" data-theme="github-dark-default"><code data-language="bash" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#8B949E"># YOLOv8 training</span></span>
+<span data-line=""><span style="color:#FFA657">pip</span><span style="color:#A5D6FF"> install</span><span style="color:#A5D6FF"> ultralytics==</span><span style="color:#79C0FF">8.1.0</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#8B949E"># torchvision detector</span></span>
+<span data-line=""><span style="color:#FFA657">pip</span><span style="color:#A5D6FF"> install</span><span style="color:#A5D6FF"> torch==</span><span style="color:#79C0FF">2.6.0</span><span style="color:#A5D6FF"> torchvision==</span><span style="color:#79C0FF">0.21.0</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#8B949E"># Custom model with timm backbone</span></span>
+<span data-line=""><span style="color:#FFA657">pip</span><span style="color:#A5D6FF"> install</span><span style="color:#A5D6FF"> torch==</span><span style="color:#79C0FF">2.6.0</span><span style="color:#A5D6FF"> timm==</span><span style="color:#79C0FF">0.9.12</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#8B949E"># For GPU training, add the CUDA index:</span></span>
+<span data-line=""><span style="color:#FFA657">pip</span><span style="color:#A5D6FF"> install</span><span style="color:#A5D6FF"> torch==</span><span style="color:#79C0FF">2.6.0</span><span style="color:#A5D6FF"> torchvision==</span><span style="color:#79C0FF">0.21.0</span><span style="color:#79C0FF"> --index-url</span><span style="color:#A5D6FF"> https://download.pytorch.org/whl/cu124</span></span></code></pre></figure>
+<p>The sandbox has a GPU (NVIDIA L4 with CUDA 12.4), so GPU-trained weights run natively — no <code>map_location="cpu"</code> needed. Your code should auto-detect with <code>torch.cuda.is_available()</code>.</p>
+<p><strong>Train anywhere:</strong> You can train on any hardware — your laptop CPU, a cloud GPU, Google Colab, GCP VMs, etc. Models trained on any platform will run on the sandbox GPU. Use <code>state_dict</code> saves (not full model saves) or ONNX export for maximum compatibility.</p>
+<h3 id="version-compatibility">Version compatibility</h3>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>What happens</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ultralytics 8.2+ weights on 8.1.0</td>
+<td>Model class changed, load fails</td>
+<td>Pin <code>ultralytics==8.1.0</code> or export to ONNX</td>
+</tr>
+<tr>
+<td>torch 2.7+ full model save on 2.6.0</td>
+<td>May reference newer operators</td>
+<td>Use <code>torch.save(model.state_dict())</code>, not <code>torch.save(model)</code></td>
+</tr>
+<tr>
+<td>timm 1.0+ weights on 0.9.12</td>
+<td>Layer names changed, load fails</td>
+<td>Pin <code>timm==0.9.12</code> or export to ONNX</td>
+</tr>
+<tr>
+<td>ONNX opset > 20</td>
+<td>onnxruntime 1.20.0 can't load it</td>
+<td>Export with <code>opset_version=17</code></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="recommended-weight-formats">Recommended weight formats</h3>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Format</th>
+<th>When to use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ONNX export</td>
+<td><code>.onnx</code></td>
+<td>Universal — any framework, 2-3x faster on CPU</td>
+</tr>
+<tr>
+<td>ultralytics .pt (pinned 8.1.0)</td>
+<td><code>.pt</code></td>
+<td>Simple YOLOv8/RT-DETR workflow</td>
+</tr>
+<tr>
+<td>state_dict + model class</td>
+<td><code>.pt</code></td>
+<td>Custom architectures with standard PyTorch ops</td>
+</tr>
+<tr>
+<td>safetensors</td>
+<td><code>.safetensors</code></td>
+<td>Safe loading, no pickle, fast</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="security-restrictions">Security Restrictions</h2>
+<p>The following imports are blocked by the security scanner:</p>
+<ul>
+<li><code>os</code>, <code>sys</code>, <code>subprocess</code>, <code>socket</code>, <code>ctypes</code>, <code>builtins</code>, <code>importlib</code></li>
+<li><code>pickle</code>, <code>marshal</code>, <code>shelve</code>, <code>shutil</code></li>
+<li><code>yaml</code> (use <code>json</code> for config files instead)</li>
+<li><code>requests</code>, <code>urllib</code>, <code>http.client</code></li>
+<li><code>multiprocessing</code>, <code>threading</code>, <code>signal</code>, <code>gc</code></li>
+<li><code>code</code>, <code>codeop</code>, <code>pty</code></li>
+</ul>
+<p>The following calls are blocked:</p>
+<ul>
+<li><code>eval()</code>, <code>exec()</code>, <code>compile()</code>, <code>__import__()</code>, <code>getattr()</code> with dangerous names</li>
+</ul>
+<p>Also blocked: ELF/Mach-O/PE binaries, symlinks, path traversal.</p>
+<p>Use <code>pathlib</code> instead of <code>os</code> for file operations. Use <code>json</code> instead of <code>yaml</code> for config files.</p>
+<h2 id="creating-your-zip">Creating Your Zip</h2>
+<p><code>run.py</code> must be at the <strong>root</strong> of the zip — not inside a subfolder. This is the most common submission error.</p>
+<p><strong>Linux / macOS (Terminal):</strong></p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="bash" data-theme="github-dark-default"><code data-language="bash" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#79C0FF">cd</span><span style="color:#A5D6FF"> my_submission/</span></span>
+<span data-line=""><span style="color:#FFA657">zip</span><span style="color:#79C0FF"> -r</span><span style="color:#A5D6FF"> ../submission.zip</span><span style="color:#A5D6FF"> .</span><span style="color:#79C0FF"> -x</span><span style="color:#A5D6FF"> ".*"</span><span style="color:#A5D6FF"> "__MACOSX/*"</span></span></code></pre></figure>
+<p><strong>Windows (PowerShell):</strong></p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="powershell" data-theme="github-dark-default"><code data-language="powershell" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#E6EDF3">cd my_submission</span></span>
+<span data-line=""><span style="color:#79C0FF">Compress-Archive</span><span style="color:#FF7B72"> -</span><span style="color:#E6EDF3">Path .\</span><span style="color:#FF7B72">*</span><span style="color:#FF7B72"> -</span><span style="color:#E6EDF3">DestinationPath ..\submission.zip</span></span></code></pre></figure>
+<p>Do <strong>not</strong> right-click a folder and use "Compress" (macOS) or "Send to → Compressed folder" (Windows) — both nest files inside a subfolder.</p>
+<p><strong>Verify your zip:</strong></p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="bash" data-theme="github-dark-default"><code data-language="bash" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#FFA657">unzip</span><span style="color:#79C0FF"> -l</span><span style="color:#A5D6FF"> submission.zip</span><span style="color:#FF7B72"> |</span><span style="color:#FFA657"> head</span><span style="color:#79C0FF"> -10</span></span></code></pre></figure>
+<p>You should see <code>run.py</code> directly — not <code>my_submission/run.py</code>.</p>
+        </article>
+        <div class="pager"><a href="../overview/index.html"><strong>Previous</strong><br>Overview</a><a class="next" href="../scoring/index.html"><strong>Next</strong><br>Scoring</a></div>
+      </main>
+      <aside class="toc panel">
+        <div class="section-title">On This Page</div>
+        <ul class="toc-list"><li><a class="toc-link" style="padding-left: 10px" href="#zip-structure">Zip Structure</a></li><li><a class="toc-link" style="padding-left: 10px" href="#runpy-contract">run.py Contract</a></li><li><a class="toc-link" style="padding-left: 22px" href="#input">Input</a></li><li><a class="toc-link" style="padding-left: 22px" href="#output">Output</a></li><li><a class="toc-link" style="padding-left: 10px" href="#scoring">Scoring</a></li><li><a class="toc-link" style="padding-left: 10px" href="#product-categories">Product Categories</a></li><li><a class="toc-link" style="padding-left: 10px" href="#sandbox-environment">Sandbox Environment</a></li><li><a class="toc-link" style="padding-left: 22px" href="#gpu">GPU</a></li><li><a class="toc-link" style="padding-left: 22px" href="#pre-installed-packages">Pre-installed Packages</a></li><li><a class="toc-link" style="padding-left: 10px" href="#training-environment">Training Environment</a></li><li><a class="toc-link" style="padding-left: 22px" href="#models-available-in-the-sandbox">Models available in the sandbox</a></li><li><a class="toc-link" style="padding-left: 22px" href="#models-not-in-the-sandbox">Models not in the sandbox</a></li><li><a class="toc-link" style="padding-left: 22px" href="#setting-up-your-training-environment">Setting up your training environment</a></li><li><a class="toc-link" style="padding-left: 22px" href="#version-compatibility">Version compatibility</a></li><li><a class="toc-link" style="padding-left: 22px" href="#recommended-weight-formats">Recommended weight formats</a></li><li><a class="toc-link" style="padding-left: 10px" href="#security-restrictions">Security Restrictions</a></li><li><a class="toc-link" style="padding-left: 10px" href="#creating-your-zip">Creating Your Zip</a></li></ul>
+      </aside>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NorgesGruppen Data: Examples &amp; Tips | NM i AI Docs Mirror</title>
+  <link rel="stylesheet" href="../../_assets/docs.css">
+</head>
+<body>
+  <div class="layout">
+    <div class="topbar panel">
+      <h1>NM i AI Docs Mirror</h1>
+      <p>Local snapshot of <a href="https://app.ainm.no/docs/norgesgruppen-data/examples">https://app.ainm.no/docs/norgesgruppen-data/examples</a> generated 2026-03-19 21:15:01 UTC.</p>
+    </div>
+    <div class="shell">
+      <aside class="sidebar panel">
+        <div class="section-title">Overview</div><ul class="nav-list"><li><a class="nav-link" href="../../index.html">Getting Started</a></li></ul><div class="section-title">Google Cloud</div><ul class="nav-list"><li><a class="nav-link" href="../../google-cloud/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../google-cloud/setup/index.html">Account Setup</a></li><li><a class="nav-link" href="../../google-cloud/deploy/index.html">Deploy on Cloud Run</a></li><li><a class="nav-link" href="../../google-cloud/services/index.html">Services &amp; Tools</a></li></ul><div class="section-title">NorgesGruppen Data</div><ul class="nav-list"><li><a class="nav-link" href="../overview/index.html">Overview</a></li><li><a class="nav-link" href="../submission/index.html">Submission</a></li><li><a class="nav-link" href="../scoring/index.html">Scoring</a></li><li><a class="nav-link active" href="index.html">Examples</a></li></ul><div class="section-title">Tripletex</div><ul class="nav-list"><li><a class="nav-link" href="../../tripletex/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../tripletex/sandbox/index.html">Sandbox Account</a></li><li><a class="nav-link" href="../../tripletex/endpoint/index.html">Endpoint Spec</a></li><li><a class="nav-link" href="../../tripletex/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../tripletex/examples/index.html">Examples</a></li></ul><div class="section-title">Astar Island</div><ul class="nav-list"><li><a class="nav-link" href="../../astar-island/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../astar-island/mechanics/index.html">Simulation Mechanics</a></li><li><a class="nav-link" href="../../astar-island/endpoint/index.html">API Endpoints</a></li><li><a class="nav-link" href="../../astar-island/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../astar-island/quickstart/index.html">Quickstart</a></li></ul>
+      </aside>
+      <main class="content panel">
+        <div class="eyebrow"><span>NorgesGruppen Data</span><span>/</span><span>Examples</span></div>
+        <div class="meta">Source route: <a href="https://app.ainm.no/docs/norgesgruppen-data/examples">/docs/norgesgruppen-data/examples</a></div>
+        <article class="prose">
+          <h1 id="norgesgruppen-data-examples--tips">NorgesGruppen Data: Examples &#x26; Tips</h1>
+<h2 id="random-baseline">Random Baseline</h2>
+<p>Minimal <code>run.py</code> that generates random predictions (use to verify your setup):</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="python" data-theme="github-dark-default"><code data-language="python" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> argparse</span></span>
+<span data-line=""><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> json</span></span>
+<span data-line=""><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> random</span></span>
+<span data-line=""><span style="color:#FF7B72">from</span><span style="color:#E6EDF3"> pathlib </span><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> Path</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> main</span><span style="color:#E6EDF3">():</span></span>
+<span data-line=""><span style="color:#E6EDF3">    parser </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> argparse.ArgumentParser()</span></span>
+<span data-line=""><span style="color:#E6EDF3">    parser.add_argument(</span><span style="color:#A5D6FF">"--input"</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">required</span><span style="color:#FF7B72">=</span><span style="color:#79C0FF">True</span><span style="color:#E6EDF3">)</span></span>
+<span data-line=""><span style="color:#E6EDF3">    parser.add_argument(</span><span style="color:#A5D6FF">"--output"</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">required</span><span style="color:#FF7B72">=</span><span style="color:#79C0FF">True</span><span style="color:#E6EDF3">)</span></span>
+<span data-line=""><span style="color:#E6EDF3">    args </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> parser.parse_args()</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#E6EDF3">    predictions </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> []</span></span>
+<span data-line=""><span style="color:#FF7B72">    for</span><span style="color:#E6EDF3"> img </span><span style="color:#FF7B72">in</span><span style="color:#79C0FF"> sorted</span><span style="color:#E6EDF3">(Path(args.input).iterdir()):</span></span>
+<span data-line=""><span style="color:#FF7B72">        if</span><span style="color:#E6EDF3"> img.suffix.lower() </span><span style="color:#FF7B72">not</span><span style="color:#FF7B72"> in</span><span style="color:#E6EDF3"> (</span><span style="color:#A5D6FF">".jpg"</span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">".jpeg"</span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">".png"</span><span style="color:#E6EDF3">):</span></span>
+<span data-line=""><span style="color:#FF7B72">            continue</span></span>
+<span data-line=""><span style="color:#E6EDF3">        image_id </span><span style="color:#FF7B72">=</span><span style="color:#79C0FF"> int</span><span style="color:#E6EDF3">(img.stem.split(</span><span style="color:#A5D6FF">"_"</span><span style="color:#E6EDF3">)[</span><span style="color:#FF7B72">-</span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">])</span></span>
+<span data-line=""><span style="color:#FF7B72">        for</span><span style="color:#E6EDF3"> _ </span><span style="color:#FF7B72">in</span><span style="color:#79C0FF"> range</span><span style="color:#E6EDF3">(random.randint(</span><span style="color:#79C0FF">5</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">20</span><span style="color:#E6EDF3">)):</span></span>
+<span data-line=""><span style="color:#E6EDF3">            predictions.append({</span></span>
+<span data-line=""><span style="color:#A5D6FF">                "image_id"</span><span style="color:#E6EDF3">: image_id,</span></span>
+<span data-line=""><span style="color:#A5D6FF">                "category_id"</span><span style="color:#E6EDF3">: random.randint(</span><span style="color:#79C0FF">0</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">356</span><span style="color:#E6EDF3">),</span></span>
+<span data-line=""><span style="color:#A5D6FF">                "bbox"</span><span style="color:#E6EDF3">: [</span></span>
+<span data-line=""><span style="color:#79C0FF">                    round</span><span style="color:#E6EDF3">(random.uniform(</span><span style="color:#79C0FF">0</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">1500</span><span style="color:#E6EDF3">), </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">),</span></span>
+<span data-line=""><span style="color:#79C0FF">                    round</span><span style="color:#E6EDF3">(random.uniform(</span><span style="color:#79C0FF">0</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">800</span><span style="color:#E6EDF3">), </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">),</span></span>
+<span data-line=""><span style="color:#79C0FF">                    round</span><span style="color:#E6EDF3">(random.uniform(</span><span style="color:#79C0FF">20</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">200</span><span style="color:#E6EDF3">), </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">),</span></span>
+<span data-line=""><span style="color:#79C0FF">                    round</span><span style="color:#E6EDF3">(random.uniform(</span><span style="color:#79C0FF">20</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">200</span><span style="color:#E6EDF3">), </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">),</span></span>
+<span data-line=""><span style="color:#E6EDF3">                ],</span></span>
+<span data-line=""><span style="color:#A5D6FF">                "score"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">round</span><span style="color:#E6EDF3">(random.uniform(</span><span style="color:#79C0FF">0.01</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">1.0</span><span style="color:#E6EDF3">), </span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">),</span></span>
+<span data-line=""><span style="color:#E6EDF3">            })</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#E6EDF3">    Path(args.output).parent.mkdir(</span><span style="color:#FFA657">parents</span><span style="color:#FF7B72">=</span><span style="color:#79C0FF">True</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">exist_ok</span><span style="color:#FF7B72">=</span><span style="color:#79C0FF">True</span><span style="color:#E6EDF3">)</span></span>
+<span data-line=""><span style="color:#FF7B72">    with</span><span style="color:#79C0FF"> open</span><span style="color:#E6EDF3">(args.output, </span><span style="color:#A5D6FF">"w"</span><span style="color:#E6EDF3">) </span><span style="color:#FF7B72">as</span><span style="color:#E6EDF3"> f:</span></span>
+<span data-line=""><span style="color:#E6EDF3">        json.dump(predictions, f)</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#FF7B72">if</span><span style="color:#79C0FF"> __name__</span><span style="color:#FF7B72"> ==</span><span style="color:#A5D6FF"> "__main__"</span><span style="color:#E6EDF3">:</span></span>
+<span data-line=""><span style="color:#E6EDF3">    main()</span></span></code></pre></figure>
+<h2 id="yolov8-example">YOLOv8 Example</h2>
+<p>Using YOLOv8n with GPU auto-detection. <strong>Important:</strong> The pretrained COCO model outputs COCO class IDs (0-79), not product IDs (0-355). For correct product classification, fine-tune on the competition training data with <code>nc=357</code>. Detection-only submissions (wrong category_ids) still score up to 70%.</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="python" data-theme="github-dark-default"><code data-language="python" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> argparse</span></span>
+<span data-line=""><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> json</span></span>
+<span data-line=""><span style="color:#FF7B72">from</span><span style="color:#E6EDF3"> pathlib </span><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> Path</span></span>
+<span data-line=""><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> torch</span></span>
+<span data-line=""><span style="color:#FF7B72">from</span><span style="color:#E6EDF3"> ultralytics </span><span style="color:#FF7B72">import</span><span style="color:#79C0FF"> YOLO</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> main</span><span style="color:#E6EDF3">():</span></span>
+<span data-line=""><span style="color:#E6EDF3">    parser </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> argparse.ArgumentParser()</span></span>
+<span data-line=""><span style="color:#E6EDF3">    parser.add_argument(</span><span style="color:#A5D6FF">"--input"</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">required</span><span style="color:#FF7B72">=</span><span style="color:#79C0FF">True</span><span style="color:#E6EDF3">)</span></span>
+<span data-line=""><span style="color:#E6EDF3">    parser.add_argument(</span><span style="color:#A5D6FF">"--output"</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">required</span><span style="color:#FF7B72">=</span><span style="color:#79C0FF">True</span><span style="color:#E6EDF3">)</span></span>
+<span data-line=""><span style="color:#E6EDF3">    args </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> parser.parse_args()</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#E6EDF3">    device </span><span style="color:#FF7B72">=</span><span style="color:#A5D6FF"> "cuda"</span><span style="color:#FF7B72"> if</span><span style="color:#E6EDF3"> torch.cuda.is_available() </span><span style="color:#FF7B72">else</span><span style="color:#A5D6FF"> "cpu"</span></span>
+<span data-line=""><span style="color:#E6EDF3">    model </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> YOLO(</span><span style="color:#A5D6FF">"yolov8n.pt"</span><span style="color:#E6EDF3">)</span></span>
+<span data-line=""><span style="color:#E6EDF3">    predictions </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> []</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#FF7B72">    for</span><span style="color:#E6EDF3"> img </span><span style="color:#FF7B72">in</span><span style="color:#79C0FF"> sorted</span><span style="color:#E6EDF3">(Path(args.input).iterdir()):</span></span>
+<span data-line=""><span style="color:#FF7B72">        if</span><span style="color:#E6EDF3"> img.suffix.lower() </span><span style="color:#FF7B72">not</span><span style="color:#FF7B72"> in</span><span style="color:#E6EDF3"> (</span><span style="color:#A5D6FF">".jpg"</span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">".jpeg"</span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">".png"</span><span style="color:#E6EDF3">):</span></span>
+<span data-line=""><span style="color:#FF7B72">            continue</span></span>
+<span data-line=""><span style="color:#E6EDF3">        image_id </span><span style="color:#FF7B72">=</span><span style="color:#79C0FF"> int</span><span style="color:#E6EDF3">(img.stem.split(</span><span style="color:#A5D6FF">"_"</span><span style="color:#E6EDF3">)[</span><span style="color:#FF7B72">-</span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">])</span></span>
+<span data-line=""><span style="color:#E6EDF3">        results </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> model(</span><span style="color:#79C0FF">str</span><span style="color:#E6EDF3">(img), </span><span style="color:#FFA657">device</span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3">device, </span><span style="color:#FFA657">verbose</span><span style="color:#FF7B72">=</span><span style="color:#79C0FF">False</span><span style="color:#E6EDF3">)</span></span>
+<span data-line=""><span style="color:#FF7B72">        for</span><span style="color:#E6EDF3"> r </span><span style="color:#FF7B72">in</span><span style="color:#E6EDF3"> results:</span></span>
+<span data-line=""><span style="color:#FF7B72">            if</span><span style="color:#E6EDF3"> r.boxes </span><span style="color:#FF7B72">is</span><span style="color:#79C0FF"> None</span><span style="color:#E6EDF3">:</span></span>
+<span data-line=""><span style="color:#FF7B72">                continue</span></span>
+<span data-line=""><span style="color:#FF7B72">            for</span><span style="color:#E6EDF3"> i </span><span style="color:#FF7B72">in</span><span style="color:#79C0FF"> range</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">len</span><span style="color:#E6EDF3">(r.boxes)):</span></span>
+<span data-line=""><span style="color:#E6EDF3">                x1, y1, x2, y2 </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> r.boxes.xyxy[i].tolist()</span></span>
+<span data-line=""><span style="color:#E6EDF3">                predictions.append({</span></span>
+<span data-line=""><span style="color:#A5D6FF">                    "image_id"</span><span style="color:#E6EDF3">: image_id,</span></span>
+<span data-line=""><span style="color:#A5D6FF">                    "category_id"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">int</span><span style="color:#E6EDF3">(r.boxes.cls[i].item()),</span></span>
+<span data-line=""><span style="color:#A5D6FF">                    "bbox"</span><span style="color:#E6EDF3">: [</span><span style="color:#79C0FF">round</span><span style="color:#E6EDF3">(x1, </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">), </span><span style="color:#79C0FF">round</span><span style="color:#E6EDF3">(y1, </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">), </span><span style="color:#79C0FF">round</span><span style="color:#E6EDF3">(x2 </span><span style="color:#FF7B72">-</span><span style="color:#E6EDF3"> x1, </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">), </span><span style="color:#79C0FF">round</span><span style="color:#E6EDF3">(y2 </span><span style="color:#FF7B72">-</span><span style="color:#E6EDF3"> y1, </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">)],</span></span>
+<span data-line=""><span style="color:#A5D6FF">                    "score"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">round</span><span style="color:#E6EDF3">(</span><span style="color:#79C0FF">float</span><span style="color:#E6EDF3">(r.boxes.conf[i].item()), </span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">),</span></span>
+<span data-line=""><span style="color:#E6EDF3">                })</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#E6EDF3">    Path(args.output).parent.mkdir(</span><span style="color:#FFA657">parents</span><span style="color:#FF7B72">=</span><span style="color:#79C0FF">True</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">exist_ok</span><span style="color:#FF7B72">=</span><span style="color:#79C0FF">True</span><span style="color:#E6EDF3">)</span></span>
+<span data-line=""><span style="color:#FF7B72">    with</span><span style="color:#79C0FF"> open</span><span style="color:#E6EDF3">(args.output, </span><span style="color:#A5D6FF">"w"</span><span style="color:#E6EDF3">) </span><span style="color:#FF7B72">as</span><span style="color:#E6EDF3"> f:</span></span>
+<span data-line=""><span style="color:#E6EDF3">        json.dump(predictions, f)</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#FF7B72">if</span><span style="color:#79C0FF"> __name__</span><span style="color:#FF7B72"> ==</span><span style="color:#A5D6FF"> "__main__"</span><span style="color:#E6EDF3">:</span></span>
+<span data-line=""><span style="color:#E6EDF3">    main()</span></span></code></pre></figure>
+<p>Include <code>yolov8n.pt</code> in your zip. This pretrained COCO model serves as a baseline — fine-tune on the competition training data for better results. With GPU available, larger models like YOLOv8m/l/x are also feasible within the timeout.</p>
+<h2 id="onnx-inference-example">ONNX Inference Example</h2>
+<p>ONNX works with any model framework. Use <code>CUDAExecutionProvider</code> for GPU acceleration:</p>
+<p><strong>Export (on your training machine):</strong></p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="python" data-theme="github-dark-default"><code data-language="python" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#8B949E"># From ultralytics:</span></span>
+<span data-line=""><span style="color:#FF7B72">from</span><span style="color:#E6EDF3"> ultralytics </span><span style="color:#FF7B72">import</span><span style="color:#79C0FF"> YOLO</span></span>
+<span data-line=""><span style="color:#E6EDF3">model </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> YOLO(</span><span style="color:#A5D6FF">"best.pt"</span><span style="color:#E6EDF3">)</span></span>
+<span data-line=""><span style="color:#E6EDF3">model.export(</span><span style="color:#FFA657">format</span><span style="color:#FF7B72">=</span><span style="color:#A5D6FF">"onnx"</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">imgsz</span><span style="color:#FF7B72">=</span><span style="color:#79C0FF">640</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">opset</span><span style="color:#FF7B72">=</span><span style="color:#79C0FF">17</span><span style="color:#E6EDF3">)</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#8B949E"># From any PyTorch model:</span></span>
+<span data-line=""><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> torch</span></span>
+<span data-line=""><span style="color:#E6EDF3">model </span><span style="color:#FF7B72">=</span><span style="color:#79C0FF"> ...</span><span style="color:#8B949E">  # your trained model</span></span>
+<span data-line=""><span style="color:#E6EDF3">dummy </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> torch.randn(</span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">3</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">640</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">640</span><span style="color:#E6EDF3">)</span></span>
+<span data-line=""><span style="color:#E6EDF3">torch.onnx.export(model, dummy, </span><span style="color:#A5D6FF">"model.onnx"</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">opset_version</span><span style="color:#FF7B72">=</span><span style="color:#79C0FF">17</span><span style="color:#E6EDF3">)</span></span></code></pre></figure>
+<p><strong>Inference (in your <code>run.py</code>):</strong></p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="python" data-theme="github-dark-default"><code data-language="python" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> argparse</span></span>
+<span data-line=""><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> json</span></span>
+<span data-line=""><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> numpy </span><span style="color:#FF7B72">as</span><span style="color:#E6EDF3"> np</span></span>
+<span data-line=""><span style="color:#FF7B72">from</span><span style="color:#E6EDF3"> pathlib </span><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> Path</span></span>
+<span data-line=""><span style="color:#FF7B72">from</span><span style="color:#79C0FF"> PIL</span><span style="color:#FF7B72"> import</span><span style="color:#E6EDF3"> Image</span></span>
+<span data-line=""><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> onnxruntime </span><span style="color:#FF7B72">as</span><span style="color:#E6EDF3"> ort</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#FF7B72">def</span><span style="color:#D2A8FF"> main</span><span style="color:#E6EDF3">():</span></span>
+<span data-line=""><span style="color:#E6EDF3">    parser </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> argparse.ArgumentParser()</span></span>
+<span data-line=""><span style="color:#E6EDF3">    parser.add_argument(</span><span style="color:#A5D6FF">"--input"</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">required</span><span style="color:#FF7B72">=</span><span style="color:#79C0FF">True</span><span style="color:#E6EDF3">)</span></span>
+<span data-line=""><span style="color:#E6EDF3">    parser.add_argument(</span><span style="color:#A5D6FF">"--output"</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">required</span><span style="color:#FF7B72">=</span><span style="color:#79C0FF">True</span><span style="color:#E6EDF3">)</span></span>
+<span data-line=""><span style="color:#E6EDF3">    args </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> parser.parse_args()</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#E6EDF3">    session </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> ort.InferenceSession(</span><span style="color:#A5D6FF">"model.onnx"</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">providers</span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3">[</span><span style="color:#A5D6FF">"CUDAExecutionProvider"</span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">"CPUExecutionProvider"</span><span style="color:#E6EDF3">])</span></span>
+<span data-line=""><span style="color:#E6EDF3">    input_name </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> session.get_inputs()[</span><span style="color:#79C0FF">0</span><span style="color:#E6EDF3">].name</span></span>
+<span data-line=""><span style="color:#E6EDF3">    predictions </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> []</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#FF7B72">    for</span><span style="color:#E6EDF3"> img_path </span><span style="color:#FF7B72">in</span><span style="color:#79C0FF"> sorted</span><span style="color:#E6EDF3">(Path(args.input).iterdir()):</span></span>
+<span data-line=""><span style="color:#FF7B72">        if</span><span style="color:#E6EDF3"> img_path.suffix.lower() </span><span style="color:#FF7B72">not</span><span style="color:#FF7B72"> in</span><span style="color:#E6EDF3"> (</span><span style="color:#A5D6FF">".jpg"</span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">".jpeg"</span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">".png"</span><span style="color:#E6EDF3">):</span></span>
+<span data-line=""><span style="color:#FF7B72">            continue</span></span>
+<span data-line=""><span style="color:#E6EDF3">        image_id </span><span style="color:#FF7B72">=</span><span style="color:#79C0FF"> int</span><span style="color:#E6EDF3">(img_path.stem.split(</span><span style="color:#A5D6FF">"_"</span><span style="color:#E6EDF3">)[</span><span style="color:#FF7B72">-</span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">])</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#E6EDF3">        img </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> Image.open(img_path).convert(</span><span style="color:#A5D6FF">"RGB"</span><span style="color:#E6EDF3">).resize((</span><span style="color:#79C0FF">640</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">640</span><span style="color:#E6EDF3">))</span></span>
+<span data-line=""><span style="color:#E6EDF3">        arr </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> np.array(img).astype(np.float32) </span><span style="color:#FF7B72">/</span><span style="color:#79C0FF"> 255.0</span></span>
+<span data-line=""><span style="color:#E6EDF3">        arr </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> np.transpose(arr, (</span><span style="color:#79C0FF">2</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">0</span><span style="color:#E6EDF3">, </span><span style="color:#79C0FF">1</span><span style="color:#E6EDF3">))[np.newaxis, </span><span style="color:#79C0FF">...</span><span style="color:#E6EDF3">]</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#E6EDF3">        outputs </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> session.run(</span><span style="color:#79C0FF">None</span><span style="color:#E6EDF3">, {input_name: arr})</span></span>
+<span data-line=""><span style="color:#8B949E">        # Process outputs based on your model's output format</span></span>
+<span data-line=""><span style="color:#8B949E">        # ...</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#E6EDF3">    Path(args.output).parent.mkdir(</span><span style="color:#FFA657">parents</span><span style="color:#FF7B72">=</span><span style="color:#79C0FF">True</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">exist_ok</span><span style="color:#FF7B72">=</span><span style="color:#79C0FF">True</span><span style="color:#E6EDF3">)</span></span>
+<span data-line=""><span style="color:#FF7B72">    with</span><span style="color:#79C0FF"> open</span><span style="color:#E6EDF3">(args.output, </span><span style="color:#A5D6FF">"w"</span><span style="color:#E6EDF3">) </span><span style="color:#FF7B72">as</span><span style="color:#E6EDF3"> f:</span></span>
+<span data-line=""><span style="color:#E6EDF3">        json.dump(predictions, f)</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#FF7B72">if</span><span style="color:#79C0FF"> __name__</span><span style="color:#FF7B72"> ==</span><span style="color:#A5D6FF"> "__main__"</span><span style="color:#E6EDF3">:</span></span>
+<span data-line=""><span style="color:#E6EDF3">    main()</span></span></code></pre></figure>
+<h2 id="common-errors">Common Errors</h2>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Error</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>run.py not found at zip root</code></td>
+<td>Zip the <strong>contents</strong>, not the folder. See "Creating Your Zip" in submission docs.</td>
+</tr>
+<tr>
+<td><code>Disallowed file type: __MACOSX/...</code></td>
+<td>macOS Finder resource forks. Use terminal: <code>zip -r ../sub.zip . -x ".*" "__MACOSX/*"</code></td>
+</tr>
+<tr>
+<td><code>Disallowed file type: .bin</code></td>
+<td>Rename <code>.bin</code> → <code>.pt</code> (same format) or convert to <code>.safetensors</code></td>
+</tr>
+<tr>
+<td><code>Security scan found violations</code></td>
+<td>Remove imports of subprocess, socket, os, etc. Use pathlib instead.</td>
+</tr>
+<tr>
+<td><code>No predictions.json in output</code></td>
+<td>Make sure run.py writes to the <code>--output</code> path</td>
+</tr>
+<tr>
+<td><code>Timed out after 300s</code></td>
+<td>Ensure GPU is used (<code>model.to("cuda")</code>), or use a smaller model</td>
+</tr>
+<tr>
+<td><code>Exit code 137</code></td>
+<td>Out of memory (8 GB limit). Reduce batch size or use FP16</td>
+</tr>
+<tr>
+<td><code>Exit code 139</code></td>
+<td>Segfault — likely model weight version mismatch. Re-export with matching package version or use ONNX.</td>
+</tr>
+<tr>
+<td><code>ModuleNotFoundError</code></td>
+<td>Package not in sandbox. Export model to ONNX or include model code in your .py files.</td>
+</tr>
+<tr>
+<td><code>KeyError</code> / <code>RuntimeError</code> on model load</td>
+<td>Version mismatch. Pin exact sandbox versions or export to ONNX.</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="tips">Tips</h2>
+<ul>
+<li>Start with the random baseline to verify your setup works</li>
+<li><strong>GPU is available</strong> — larger models (YOLOv8m/l/x, custom transformers) are feasible within the 300s timeout</li>
+<li>Use <code>torch.cuda.is_available()</code> to write code that works both locally (CPU) and on the server (GPU)</li>
+<li>FP16 quantization is recommended — smaller weights, faster GPU inference</li>
+<li>ONNX with <code>CUDAExecutionProvider</code> gives good GPU performance for any framework</li>
+<li>Process images one at a time to stay within memory limits</li>
+<li>Use <code>torch.no_grad()</code> during inference</li>
+<li>Test your code locally before uploading</li>
+<li>You don't need all sandbox packages for training — only match what you use</li>
+</ul>
+        </article>
+        <div class="pager"><a href="../scoring/index.html"><strong>Previous</strong><br>Scoring</a><a class="next" href="../../tripletex/overview/index.html"><strong>Next</strong><br>Overview</a></div>
+      </main>
+      <aside class="toc panel">
+        <div class="section-title">On This Page</div>
+        <ul class="toc-list"><li><a class="toc-link" style="padding-left: 10px" href="#random-baseline">Random Baseline</a></li><li><a class="toc-link" style="padding-left: 10px" href="#yolov8-example">YOLOv8 Example</a></li><li><a class="toc-link" style="padding-left: 10px" href="#onnx-inference-example">ONNX Inference Example</a></li><li><a class="toc-link" style="padding-left: 10px" href="#common-errors">Common Errors</a></li><li><a class="toc-link" style="padding-left: 10px" href="#tips">Tips</a></li></ul>
+      </aside>
+    </div>
+  </div>
+</body>
+</html>

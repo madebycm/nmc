@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Astar Island Quickstart | NM i AI Docs Mirror</title>
+  <link rel="stylesheet" href="../../_assets/docs.css">
+</head>
+<body>
+  <div class="layout">
+    <div class="topbar panel">
+      <h1>NM i AI Docs Mirror</h1>
+      <p>Local snapshot of <a href="https://app.ainm.no/docs/astar-island/quickstart">https://app.ainm.no/docs/astar-island/quickstart</a> generated 2026-03-19 21:15:01 UTC.</p>
+    </div>
+    <div class="shell">
+      <aside class="sidebar panel">
+        <div class="section-title">Overview</div><ul class="nav-list"><li><a class="nav-link" href="../../index.html">Getting Started</a></li></ul><div class="section-title">Google Cloud</div><ul class="nav-list"><li><a class="nav-link" href="../../google-cloud/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../google-cloud/setup/index.html">Account Setup</a></li><li><a class="nav-link" href="../../google-cloud/deploy/index.html">Deploy on Cloud Run</a></li><li><a class="nav-link" href="../../google-cloud/services/index.html">Services &amp; Tools</a></li></ul><div class="section-title">NorgesGruppen Data</div><ul class="nav-list"><li><a class="nav-link" href="../../norgesgruppen-data/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../norgesgruppen-data/submission/index.html">Submission</a></li><li><a class="nav-link" href="../../norgesgruppen-data/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../norgesgruppen-data/examples/index.html">Examples</a></li></ul><div class="section-title">Tripletex</div><ul class="nav-list"><li><a class="nav-link" href="../../tripletex/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../tripletex/sandbox/index.html">Sandbox Account</a></li><li><a class="nav-link" href="../../tripletex/endpoint/index.html">Endpoint Spec</a></li><li><a class="nav-link" href="../../tripletex/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../tripletex/examples/index.html">Examples</a></li></ul><div class="section-title">Astar Island</div><ul class="nav-list"><li><a class="nav-link" href="../overview/index.html">Overview</a></li><li><a class="nav-link" href="../mechanics/index.html">Simulation Mechanics</a></li><li><a class="nav-link" href="../endpoint/index.html">API Endpoints</a></li><li><a class="nav-link" href="../scoring/index.html">Scoring</a></li><li><a class="nav-link active" href="index.html">Quickstart</a></li></ul>
+      </aside>
+      <main class="content panel">
+        <div class="eyebrow"><span>Astar Island</span><span>/</span><span>Quickstart</span></div>
+        <div class="meta">Source route: <a href="https://app.ainm.no/docs/astar-island/quickstart">/docs/astar-island/quickstart</a></div>
+        <article class="prose">
+          <h1 id="astar-island-quickstart">Astar Island Quickstart</h1>
+<h2 id="authentication">Authentication</h2>
+<p>All endpoints require authentication. Log in at app.ainm.no, then inspect cookies in your browser to grab your <code>access_token</code> JWT.</p>
+<p>You can authenticate using either a cookie or a Bearer token header:</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="python" data-theme="github-dark-default"><code data-language="python" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> requests</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#79C0FF">BASE</span><span style="color:#FF7B72"> =</span><span style="color:#A5D6FF"> "https://api.ainm.no"</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#8B949E"># Option 1: Cookie-based auth</span></span>
+<span data-line=""><span style="color:#E6EDF3">session </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> requests.Session()</span></span>
+<span data-line=""><span style="color:#E6EDF3">session.cookies.set(</span><span style="color:#A5D6FF">"access_token"</span><span style="color:#E6EDF3">, </span><span style="color:#A5D6FF">"YOUR_JWT_TOKEN"</span><span style="color:#E6EDF3">)</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#8B949E"># Option 2: Bearer token auth</span></span>
+<span data-line=""><span style="color:#E6EDF3">session </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> requests.Session()</span></span>
+<span data-line=""><span style="color:#E6EDF3">session.headers[</span><span style="color:#A5D6FF">"Authorization"</span><span style="color:#E6EDF3">] </span><span style="color:#FF7B72">=</span><span style="color:#A5D6FF"> "Bearer YOUR_JWT_TOKEN"</span></span></code></pre></figure>
+<h2 id="step-1-get-the-active-round">Step 1: Get the Active Round</h2>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="python" data-theme="github-dark-default"><code data-language="python" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#E6EDF3">rounds </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> session.get(</span><span style="color:#FF7B72">f</span><span style="color:#A5D6FF">"</span><span style="color:#FF7B72">{</span><span style="color:#79C0FF">BASE</span><span style="color:#FF7B72">}</span><span style="color:#A5D6FF">/astar-island/rounds"</span><span style="color:#E6EDF3">).json()</span></span>
+<span data-line=""><span style="color:#E6EDF3">active </span><span style="color:#FF7B72">=</span><span style="color:#79C0FF"> next</span><span style="color:#E6EDF3">((r </span><span style="color:#FF7B72">for</span><span style="color:#E6EDF3"> r </span><span style="color:#FF7B72">in</span><span style="color:#E6EDF3"> rounds </span><span style="color:#FF7B72">if</span><span style="color:#E6EDF3"> r[</span><span style="color:#A5D6FF">"status"</span><span style="color:#E6EDF3">] </span><span style="color:#FF7B72">==</span><span style="color:#A5D6FF"> "active"</span><span style="color:#E6EDF3">), </span><span style="color:#79C0FF">None</span><span style="color:#E6EDF3">)</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#FF7B72">if</span><span style="color:#E6EDF3"> active:</span></span>
+<span data-line=""><span style="color:#E6EDF3">    round_id </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> active[</span><span style="color:#A5D6FF">"id"</span><span style="color:#E6EDF3">]</span></span>
+<span data-line=""><span style="color:#79C0FF">    print</span><span style="color:#E6EDF3">(</span><span style="color:#FF7B72">f</span><span style="color:#A5D6FF">"Active round: </span><span style="color:#FF7B72">{</span><span style="color:#E6EDF3">active[</span><span style="color:#A5D6FF">'round_number'</span><span style="color:#E6EDF3">]</span><span style="color:#FF7B72">}</span><span style="color:#A5D6FF">"</span><span style="color:#E6EDF3">)</span></span></code></pre></figure>
+<h2 id="step-2-get-round-details">Step 2: Get Round Details</h2>
+<p>Fetch the detail endpoint to get full round info including <code>seeds_count</code> and initial states:</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="python" data-theme="github-dark-default"><code data-language="python" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#E6EDF3">detail </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> session.get(</span><span style="color:#FF7B72">f</span><span style="color:#A5D6FF">"</span><span style="color:#FF7B72">{</span><span style="color:#79C0FF">BASE</span><span style="color:#FF7B72">}</span><span style="color:#A5D6FF">/astar-island/rounds/</span><span style="color:#FF7B72">{</span><span style="color:#E6EDF3">round_id</span><span style="color:#FF7B72">}</span><span style="color:#A5D6FF">"</span><span style="color:#E6EDF3">).json()</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#E6EDF3">width </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> detail[</span><span style="color:#A5D6FF">"map_width"</span><span style="color:#E6EDF3">]      </span><span style="color:#8B949E"># 40</span></span>
+<span data-line=""><span style="color:#E6EDF3">height </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> detail[</span><span style="color:#A5D6FF">"map_height"</span><span style="color:#E6EDF3">]    </span><span style="color:#8B949E"># 40</span></span>
+<span data-line=""><span style="color:#E6EDF3">seeds </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> detail[</span><span style="color:#A5D6FF">"seeds_count"</span><span style="color:#E6EDF3">]    </span><span style="color:#8B949E"># 5</span></span>
+<span data-line=""><span style="color:#79C0FF">print</span><span style="color:#E6EDF3">(</span><span style="color:#FF7B72">f</span><span style="color:#A5D6FF">"Round: </span><span style="color:#FF7B72">{</span><span style="color:#E6EDF3">width</span><span style="color:#FF7B72">}</span><span style="color:#A5D6FF">x</span><span style="color:#FF7B72">{</span><span style="color:#E6EDF3">height</span><span style="color:#FF7B72">}</span><span style="color:#A5D6FF">, </span><span style="color:#FF7B72">{</span><span style="color:#E6EDF3">seeds</span><span style="color:#FF7B72">}</span><span style="color:#A5D6FF"> seeds"</span><span style="color:#E6EDF3">)</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#FF7B72">for</span><span style="color:#E6EDF3"> i, state </span><span style="color:#FF7B72">in</span><span style="color:#79C0FF"> enumerate</span><span style="color:#E6EDF3">(detail[</span><span style="color:#A5D6FF">"initial_states"</span><span style="color:#E6EDF3">]):</span></span>
+<span data-line=""><span style="color:#E6EDF3">    grid </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> state[</span><span style="color:#A5D6FF">"grid"</span><span style="color:#E6EDF3">]           </span><span style="color:#8B949E"># height x width terrain codes</span></span>
+<span data-line=""><span style="color:#E6EDF3">    settlements </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> state[</span><span style="color:#A5D6FF">"settlements"</span><span style="color:#E6EDF3">]  </span><span style="color:#8B949E"># [{x, y, has_port, alive}, ...]</span></span>
+<span data-line=""><span style="color:#79C0FF">    print</span><span style="color:#E6EDF3">(</span><span style="color:#FF7B72">f</span><span style="color:#A5D6FF">"Seed </span><span style="color:#FF7B72">{</span><span style="color:#E6EDF3">i</span><span style="color:#FF7B72">}</span><span style="color:#A5D6FF">: </span><span style="color:#FF7B72">{</span><span style="color:#79C0FF">len</span><span style="color:#E6EDF3">(settlements)</span><span style="color:#FF7B72">}</span><span style="color:#A5D6FF"> settlements"</span><span style="color:#E6EDF3">)</span></span></code></pre></figure>
+<h2 id="step-3-query-the-simulator">Step 3: Query the Simulator</h2>
+<p>You have 50 queries per round, shared across all seeds. Each query reveals a 5-15 cell wide viewport:</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="python" data-theme="github-dark-default"><code data-language="python" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#E6EDF3">result </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> session.post(</span><span style="color:#FF7B72">f</span><span style="color:#A5D6FF">"</span><span style="color:#FF7B72">{</span><span style="color:#79C0FF">BASE</span><span style="color:#FF7B72">}</span><span style="color:#A5D6FF">/astar-island/simulate"</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">json</span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3">{</span></span>
+<span data-line=""><span style="color:#A5D6FF">    "round_id"</span><span style="color:#E6EDF3">: round_id,</span></span>
+<span data-line=""><span style="color:#A5D6FF">    "seed_index"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">0</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#A5D6FF">    "viewport_x"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">10</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#A5D6FF">    "viewport_y"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">5</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#A5D6FF">    "viewport_w"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">15</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#A5D6FF">    "viewport_h"</span><span style="color:#E6EDF3">: </span><span style="color:#79C0FF">15</span><span style="color:#E6EDF3">,</span></span>
+<span data-line=""><span style="color:#E6EDF3">}).json()</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#E6EDF3">grid </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> result[</span><span style="color:#A5D6FF">"grid"</span><span style="color:#E6EDF3">]                </span><span style="color:#8B949E"># 15x15 terrain after simulation</span></span>
+<span data-line=""><span style="color:#E6EDF3">settlements </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> result[</span><span style="color:#A5D6FF">"settlements"</span><span style="color:#E6EDF3">]  </span><span style="color:#8B949E"># settlements in viewport with full stats</span></span>
+<span data-line=""><span style="color:#E6EDF3">viewport </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> result[</span><span style="color:#A5D6FF">"viewport"</span><span style="color:#E6EDF3">]        </span><span style="color:#8B949E"># {x, y, w, h}</span></span></code></pre></figure>
+<h2 id="step-4-build-and-submit-predictions">Step 4: Build and Submit Predictions</h2>
+<p>For each seed, submit a <code>height x width x 6</code> probability tensor. Each cell has 6 values representing the probability of each terrain class (Empty, Settlement, Port, Ruin, Forest, Mountain). They must sum to 1.0:</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="python" data-theme="github-dark-default"><code data-language="python" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#FF7B72">import</span><span style="color:#E6EDF3"> numpy </span><span style="color:#FF7B72">as</span><span style="color:#E6EDF3"> np</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#FF7B72">for</span><span style="color:#E6EDF3"> seed_idx </span><span style="color:#FF7B72">in</span><span style="color:#79C0FF"> range</span><span style="color:#E6EDF3">(seeds):</span></span>
+<span data-line=""><span style="color:#E6EDF3">    prediction </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> np.full((height, width, </span><span style="color:#79C0FF">6</span><span style="color:#E6EDF3">), </span><span style="color:#79C0FF">1</span><span style="color:#FF7B72">/</span><span style="color:#79C0FF">6</span><span style="color:#E6EDF3">)  </span><span style="color:#8B949E"># uniform baseline</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#8B949E">    # </span><span style="color:#FF7B72">TODO</span><span style="color:#8B949E">: replace with your model's predictions</span></span>
+<span data-line=""><span style="color:#8B949E">    # prediction[y][x] = [p_empty, p_settlement, p_port, p_ruin, p_forest, p_mountain]</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#E6EDF3">    resp </span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3"> session.post(</span><span style="color:#FF7B72">f</span><span style="color:#A5D6FF">"</span><span style="color:#FF7B72">{</span><span style="color:#79C0FF">BASE</span><span style="color:#FF7B72">}</span><span style="color:#A5D6FF">/astar-island/submit"</span><span style="color:#E6EDF3">, </span><span style="color:#FFA657">json</span><span style="color:#FF7B72">=</span><span style="color:#E6EDF3">{</span></span>
+<span data-line=""><span style="color:#A5D6FF">        "round_id"</span><span style="color:#E6EDF3">: round_id,</span></span>
+<span data-line=""><span style="color:#A5D6FF">        "seed_index"</span><span style="color:#E6EDF3">: seed_idx,</span></span>
+<span data-line=""><span style="color:#A5D6FF">        "prediction"</span><span style="color:#E6EDF3">: prediction.tolist(),</span></span>
+<span data-line=""><span style="color:#E6EDF3">    })</span></span>
+<span data-line=""><span style="color:#79C0FF">    print</span><span style="color:#E6EDF3">(</span><span style="color:#FF7B72">f</span><span style="color:#A5D6FF">"Seed </span><span style="color:#FF7B72">{</span><span style="color:#E6EDF3">seed_idx</span><span style="color:#FF7B72">}</span><span style="color:#A5D6FF">: </span><span style="color:#FF7B72">{</span><span style="color:#E6EDF3">resp.status_code</span><span style="color:#FF7B72">}</span><span style="color:#A5D6FF">"</span><span style="color:#E6EDF3">)</span></span></code></pre></figure>
+<p>A uniform prediction scores ~1-5. Use your queries to build better predictions.</p>
+<blockquote>
+<p><strong>Warning:</strong> Never assign probability 0.0 to any class. If the ground truth has any non-zero probability for a class you marked as zero, KL divergence becomes infinite and your score for that cell is destroyed. Always enforce a minimum floor (e.g., 0.01) and renormalize. See the <a href="https://app.ainm.no/docs/astar-island/scoring.md#common-pitfalls">scoring docs</a> for details.</p>
+</blockquote>
+<h2 id="using-the-mcp-server">Using the MCP Server</h2>
+<p>Add the documentation server to Claude Code for AI-assisted development:</p>
+<figure data-rehype-pretty-code-figure=""><pre style="background-color:#0d1117;color:#e6edf3" tabindex="0" data-language="bash" data-theme="github-dark-default"><code data-language="bash" data-theme="github-dark-default" style="display: grid;"><span data-line=""><span style="color:#FFA657">claude</span><span style="color:#A5D6FF"> mcp</span><span style="color:#A5D6FF"> add</span><span style="color:#79C0FF"> --transport</span><span style="color:#A5D6FF"> http</span><span style="color:#A5D6FF"> nmiai</span><span style="color:#A5D6FF"> https://mcp-docs.ainm.no/mcp</span></span></code></pre></figure>
+        </article>
+        <div class="pager"><a href="../scoring/index.html"><strong>Previous</strong><br>Scoring</a><span></span></div>
+      </main>
+      <aside class="toc panel">
+        <div class="section-title">On This Page</div>
+        <ul class="toc-list"><li><a class="toc-link" style="padding-left: 10px" href="#authentication">Authentication</a></li><li><a class="toc-link" style="padding-left: 10px" href="#step-1-get-the-active-round">Step 1: Get the Active Round</a></li><li><a class="toc-link" style="padding-left: 10px" href="#step-2-get-round-details">Step 2: Get Round Details</a></li><li><a class="toc-link" style="padding-left: 10px" href="#step-3-query-the-simulator">Step 3: Query the Simulator</a></li><li><a class="toc-link" style="padding-left: 10px" href="#step-4-build-and-submit-predictions">Step 4: Build and Submit Predictions</a></li><li><a class="toc-link" style="padding-left: 10px" href="#using-the-mcp-server">Using the MCP Server</a></li></ul>
+      </aside>
+    </div>
+  </div>
+</body>
+</html>

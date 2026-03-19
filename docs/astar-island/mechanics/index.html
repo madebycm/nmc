@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Astar Island Simulation Mechanics | NM i AI Docs Mirror</title>
+  <link rel="stylesheet" href="../../_assets/docs.css">
+</head>
+<body>
+  <div class="layout">
+    <div class="topbar panel">
+      <h1>NM i AI Docs Mirror</h1>
+      <p>Local snapshot of <a href="https://app.ainm.no/docs/astar-island/mechanics">https://app.ainm.no/docs/astar-island/mechanics</a> generated 2026-03-19 21:15:01 UTC.</p>
+    </div>
+    <div class="shell">
+      <aside class="sidebar panel">
+        <div class="section-title">Overview</div><ul class="nav-list"><li><a class="nav-link" href="../../index.html">Getting Started</a></li></ul><div class="section-title">Google Cloud</div><ul class="nav-list"><li><a class="nav-link" href="../../google-cloud/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../google-cloud/setup/index.html">Account Setup</a></li><li><a class="nav-link" href="../../google-cloud/deploy/index.html">Deploy on Cloud Run</a></li><li><a class="nav-link" href="../../google-cloud/services/index.html">Services &amp; Tools</a></li></ul><div class="section-title">NorgesGruppen Data</div><ul class="nav-list"><li><a class="nav-link" href="../../norgesgruppen-data/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../norgesgruppen-data/submission/index.html">Submission</a></li><li><a class="nav-link" href="../../norgesgruppen-data/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../norgesgruppen-data/examples/index.html">Examples</a></li></ul><div class="section-title">Tripletex</div><ul class="nav-list"><li><a class="nav-link" href="../../tripletex/overview/index.html">Overview</a></li><li><a class="nav-link" href="../../tripletex/sandbox/index.html">Sandbox Account</a></li><li><a class="nav-link" href="../../tripletex/endpoint/index.html">Endpoint Spec</a></li><li><a class="nav-link" href="../../tripletex/scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../../tripletex/examples/index.html">Examples</a></li></ul><div class="section-title">Astar Island</div><ul class="nav-list"><li><a class="nav-link" href="../overview/index.html">Overview</a></li><li><a class="nav-link active" href="index.html">Simulation Mechanics</a></li><li><a class="nav-link" href="../endpoint/index.html">API Endpoints</a></li><li><a class="nav-link" href="../scoring/index.html">Scoring</a></li><li><a class="nav-link" href="../quickstart/index.html">Quickstart</a></li></ul>
+      </aside>
+      <main class="content panel">
+        <div class="eyebrow"><span>Astar Island</span><span>/</span><span>Simulation Mechanics</span></div>
+        <div class="meta">Source route: <a href="https://app.ainm.no/docs/astar-island/mechanics">/docs/astar-island/mechanics</a></div>
+        <article class="prose">
+          <h1 id="astar-island-simulation-mechanics">Astar Island Simulation Mechanics</h1>
+<h2 id="the-world">The World</h2>
+<p>The world is a rectangular grid (default 40×40) with 8 terrain types that map to <strong>6 prediction classes</strong>:</p>
+<p><img src="../terrain-types.png" alt="Terrain Types"></p>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Internal Code</th>
+<th>Terrain</th>
+<th>Class Index</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10</td>
+<td>Ocean</td>
+<td>0 (Empty)</td>
+<td>Impassable water, borders the map</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Plains</td>
+<td>0 (Empty)</td>
+<td>Flat land, buildable</td>
+</tr>
+<tr>
+<td>0</td>
+<td>Empty</td>
+<td>0</td>
+<td>Generic empty cell</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Settlement</td>
+<td>1</td>
+<td>Active Norse settlement</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Port</td>
+<td>2</td>
+<td>Coastal settlement with harbour</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Ruin</td>
+<td>3</td>
+<td>Collapsed settlement</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Forest</td>
+<td>4</td>
+<td>Provides food to adjacent settlements</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Mountain</td>
+<td>5</td>
+<td>Impassable terrain</td>
+</tr>
+</tbody>
+</table></div>
+<p>Ocean, Plains, and Empty all map to <strong>class 0</strong> in predictions. Mountains are static (never change). Forests are mostly static but can reclaim ruined land. The interesting cells are those that can become Settlements, Ports, or Ruins.</p>
+<h2 id="map-generation">Map Generation</h2>
+<p>Each map is procedurally generated from a <strong>map seed</strong>:</p>
+<ul>
+<li><strong>Ocean borders</strong> surround the map</li>
+<li><strong>Fjords</strong> cut inland from random edges</li>
+<li><strong>Mountain chains</strong> form via random walks</li>
+<li><strong>Forest patches</strong> cover land with clustered groves</li>
+<li><strong>Initial settlements</strong> placed on land cells, spaced apart</li>
+</ul>
+<p>The map seed is visible to you — you can reconstruct the initial terrain layout locally.</p>
+<h2 id="simulation-lifecycle">Simulation Lifecycle</h2>
+<p>Each of the 50 years cycles through multiple phases. The world goes through <strong>growth, conflict, trade, harsh winters, and environmental change</strong> — in that order.</p>
+<p><img src="../simulation-phases.png" alt="Simulation Phases"></p>
+<h3 id="growth">Growth</h3>
+<p>Settlements produce food based on adjacent terrain. When conditions are right, settlements grow in population, develop ports along coastlines, and build longships for naval operations. Prosperous settlements expand by founding new settlements on nearby land.</p>
+<h3 id="conflict">Conflict</h3>
+<p>Settlements raid each other. Longships extend raiding range significantly. Desperate settlements (low food) raid more aggressively. Successful raids loot resources and damage the defender. Sometimes, conquered settlements change allegiance to the raiding faction.</p>
+<p><img src="../faction-dynamics.gif" alt="Faction dynamics — settlements change color as allegiances shift"></p>
+<h3 id="trade">Trade</h3>
+<p>Ports within range of each other can trade if not at war. Trade generates wealth and food for both parties, and technology diffuses between trading partners.</p>
+<h3 id="winter">Winter</h3>
+<p>Each year ends with a winter of varying severity. All settlements lose food. Settlements can collapse from starvation, sustained raids, or harsh winters — becoming Ruins and dispersing population to nearby friendly settlements.</p>
+<h3 id="environment">Environment</h3>
+<p>The natural world slowly reclaims abandoned land. Nearby thriving settlements may reclaim and rebuild ruined sites, establishing new outposts that inherit a portion of their patron's resources and knowledge. Coastal ruins can even be restored as ports. If no settlement steps in, ruins are eventually overtaken by forest growth or fade back into open plains.</p>
+<h2 id="settlement-properties">Settlement Properties</h2>
+<p>Each settlement tracks: position, population, food, wealth, defense, tech level, port status, longship ownership, and faction allegiance (owner_id).</p>
+<p>Initial states expose settlement positions and port status. Internal stats (population, food, wealth, defense) are only visible through simulation queries.</p>
+<h2 id="the-world-in-motion">The World in Motion</h2>
+<p>Watch a full 50-year simulation unfold — settlements grow, expand, get raided, and some collapse:</p>
+<p><img src="../simulation.gif" alt="50-year simulation"></p>
+<p>Initial state vs. after 50 years of simulation:</p>
+<p><img src="../simulation-before-after.png" alt="Before and after"></p>
+<p>With high expansion, settlements rapidly colonise available land:</p>
+<p><img src="../expansion.gif" alt="High expansion simulation"></p>
+        </article>
+        <div class="pager"><a href="../overview/index.html"><strong>Previous</strong><br>Overview</a><a class="next" href="../endpoint/index.html"><strong>Next</strong><br>API Endpoints</a></div>
+      </main>
+      <aside class="toc panel">
+        <div class="section-title">On This Page</div>
+        <ul class="toc-list"><li><a class="toc-link" style="padding-left: 10px" href="#the-world">The World</a></li><li><a class="toc-link" style="padding-left: 10px" href="#map-generation">Map Generation</a></li><li><a class="toc-link" style="padding-left: 10px" href="#simulation-lifecycle">Simulation Lifecycle</a></li><li><a class="toc-link" style="padding-left: 22px" href="#growth">Growth</a></li><li><a class="toc-link" style="padding-left: 22px" href="#conflict">Conflict</a></li><li><a class="toc-link" style="padding-left: 22px" href="#trade">Trade</a></li><li><a class="toc-link" style="padding-left: 22px" href="#winter">Winter</a></li><li><a class="toc-link" style="padding-left: 22px" href="#environment">Environment</a></li><li><a class="toc-link" style="padding-left: 10px" href="#settlement-properties">Settlement Properties</a></li><li><a class="toc-link" style="padding-left: 10px" href="#the-world-in-motion">The World in Motion</a></li></ul>
+      </aside>
+    </div>
+  </div>
+</body>
+</html>
