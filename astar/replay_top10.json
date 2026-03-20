@@ -1,0 +1,972 @@
+[
+  {
+    "recipe": {
+      "nn_weight": 0.5,
+      "v2_weight": 0.35,
+      "v3_weight": 0.5,
+      "v4_enabled": false,
+      "anchor_weight": 0.0,
+      "prob_floor": 0.005,
+      "z_thresholds": [
+        0.08,
+        0.15,
+        0.3
+      ]
+    },
+    "best_weighted": 124.937,
+    "worst_round_score": 78.338,
+    "mean_score": 89.966,
+    "rounds": {
+      "1": {
+        "avg_score": 93.02,
+        "weighted_score": 97.67,
+        "seed_scores": [
+          92.9,
+          93.18,
+          92.89,
+          93.44,
+          92.69
+        ]
+      },
+      "2": {
+        "avg_score": 93.65,
+        "weighted_score": 103.25,
+        "seed_scores": [
+          93.18,
+          94.01,
+          93.63,
+          93.84,
+          93.6
+        ]
+      },
+      "3": {
+        "avg_score": 78.34,
+        "weighted_score": 90.69,
+        "seed_scores": [
+          75.35,
+          80.82,
+          79.1,
+          79.74,
+          76.68
+        ]
+      },
+      "4": {
+        "avg_score": 93.55,
+        "weighted_score": 113.71,
+        "seed_scores": [
+          93.77,
+          93.55,
+          93.27,
+          93.48,
+          93.68
+        ]
+      },
+      "5": {
+        "avg_score": 92.06,
+        "weighted_score": 117.49,
+        "seed_scores": [
+          91.7,
+          91.34,
+          92.4,
+          92.32,
+          92.53
+        ]
+      },
+      "6": {
+        "avg_score": 90.35,
+        "weighted_score": 121.08,
+        "seed_scores": [
+          90.04,
+          90.25,
+          90.65,
+          90.42,
+          90.41
+        ]
+      },
+      "7": {
+        "avg_score": 88.79,
+        "weighted_score": 124.94,
+        "seed_scores": [
+          88.24,
+          89.01,
+          88.56,
+          88.56,
+          89.59
+        ]
+      }
+    }
+  },
+  {
+    "recipe": {
+      "nn_weight": 0.5,
+      "v2_weight": 0.35,
+      "v3_weight": 0.5,
+      "v4_enabled": false,
+      "anchor_weight": 0.0,
+      "prob_floor": 0.005,
+      "z_thresholds": [
+        0.05,
+        0.12,
+        0.25
+      ]
+    },
+    "best_weighted": 124.937,
+    "worst_round_score": 78.338,
+    "mean_score": 90.015,
+    "rounds": {
+      "1": {
+        "avg_score": 93.02,
+        "weighted_score": 97.67,
+        "seed_scores": [
+          92.9,
+          93.18,
+          92.89,
+          93.44,
+          92.69
+        ]
+      },
+      "2": {
+        "avg_score": 93.65,
+        "weighted_score": 103.25,
+        "seed_scores": [
+          93.18,
+          94.01,
+          93.63,
+          93.84,
+          93.6
+        ]
+      },
+      "3": {
+        "avg_score": 78.34,
+        "weighted_score": 90.69,
+        "seed_scores": [
+          75.35,
+          80.82,
+          79.1,
+          79.74,
+          76.68
+        ]
+      },
+      "4": {
+        "avg_score": 93.9,
+        "weighted_score": 114.13,
+        "seed_scores": [
+          94.08,
+          93.88,
+          93.66,
+          93.84,
+          94.01
+        ]
+      },
+      "5": {
+        "avg_score": 92.06,
+        "weighted_score": 117.49,
+        "seed_scores": [
+          91.7,
+          91.34,
+          92.4,
+          92.32,
+          92.53
+        ]
+      },
+      "6": {
+        "avg_score": 90.35,
+        "weighted_score": 121.08,
+        "seed_scores": [
+          90.04,
+          90.25,
+          90.65,
+          90.42,
+          90.41
+        ]
+      },
+      "7": {
+        "avg_score": 88.79,
+        "weighted_score": 124.94,
+        "seed_scores": [
+          88.24,
+          89.01,
+          88.56,
+          88.56,
+          89.59
+        ]
+      }
+    }
+  },
+  {
+    "recipe": {
+      "nn_weight": 0.5,
+      "v2_weight": 0.35,
+      "v3_weight": 0.5,
+      "v4_enabled": false,
+      "anchor_weight": 0.0,
+      "prob_floor": 0.005,
+      "z_thresholds": [
+        0.1,
+        0.2,
+        0.35
+      ]
+    },
+    "best_weighted": 124.937,
+    "worst_round_score": 78.338,
+    "mean_score": 89.617,
+    "rounds": {
+      "1": {
+        "avg_score": 93.02,
+        "weighted_score": 97.67,
+        "seed_scores": [
+          92.9,
+          93.18,
+          92.89,
+          93.44,
+          92.69
+        ]
+      },
+      "2": {
+        "avg_score": 93.65,
+        "weighted_score": 103.25,
+        "seed_scores": [
+          93.18,
+          94.01,
+          93.63,
+          93.84,
+          93.6
+        ]
+      },
+      "3": {
+        "avg_score": 78.34,
+        "weighted_score": 90.69,
+        "seed_scores": [
+          75.35,
+          80.82,
+          79.1,
+          79.74,
+          76.68
+        ]
+      },
+      "4": {
+        "avg_score": 93.16,
+        "weighted_score": 113.23,
+        "seed_scores": [
+          93.41,
+          93.17,
+          92.82,
+          93.07,
+          93.31
+        ]
+      },
+      "5": {
+        "avg_score": 90.01,
+        "weighted_score": 114.88,
+        "seed_scores": [
+          89.52,
+          88.86,
+          90.49,
+          90.43,
+          90.74
+        ]
+      },
+      "6": {
+        "avg_score": 90.35,
+        "weighted_score": 121.08,
+        "seed_scores": [
+          90.04,
+          90.25,
+          90.65,
+          90.42,
+          90.41
+        ]
+      },
+      "7": {
+        "avg_score": 88.79,
+        "weighted_score": 124.94,
+        "seed_scores": [
+          88.24,
+          89.01,
+          88.56,
+          88.56,
+          89.59
+        ]
+      }
+    }
+  },
+  {
+    "recipe": {
+      "nn_weight": 0.5,
+      "v2_weight": 0.35,
+      "v3_weight": 0.5,
+      "v4_enabled": false,
+      "anchor_weight": 0.05,
+      "prob_floor": 0.005,
+      "z_thresholds": [
+        0.08,
+        0.15,
+        0.3
+      ]
+    },
+    "best_weighted": 124.911,
+    "worst_round_score": 78.338,
+    "mean_score": 89.963,
+    "rounds": {
+      "1": {
+        "avg_score": 93.02,
+        "weighted_score": 97.67,
+        "seed_scores": [
+          92.9,
+          93.18,
+          92.89,
+          93.44,
+          92.69
+        ]
+      },
+      "2": {
+        "avg_score": 93.65,
+        "weighted_score": 103.25,
+        "seed_scores": [
+          93.18,
+          94.01,
+          93.63,
+          93.84,
+          93.6
+        ]
+      },
+      "3": {
+        "avg_score": 78.34,
+        "weighted_score": 90.69,
+        "seed_scores": [
+          75.35,
+          80.82,
+          79.1,
+          79.74,
+          76.68
+        ]
+      },
+      "4": {
+        "avg_score": 93.55,
+        "weighted_score": 113.71,
+        "seed_scores": [
+          93.77,
+          93.55,
+          93.27,
+          93.48,
+          93.68
+        ]
+      },
+      "5": {
+        "avg_score": 92.06,
+        "weighted_score": 117.49,
+        "seed_scores": [
+          91.7,
+          91.34,
+          92.4,
+          92.32,
+          92.53
+        ]
+      },
+      "6": {
+        "avg_score": 90.35,
+        "weighted_score": 121.08,
+        "seed_scores": [
+          90.04,
+          90.25,
+          90.65,
+          90.42,
+          90.41
+        ]
+      },
+      "7": {
+        "avg_score": 88.77,
+        "weighted_score": 124.91,
+        "seed_scores": [
+          88.31,
+          88.92,
+          88.5,
+          88.49,
+          89.64
+        ]
+      }
+    }
+  },
+  {
+    "recipe": {
+      "nn_weight": 0.5,
+      "v2_weight": 0.35,
+      "v3_weight": 0.5,
+      "v4_enabled": false,
+      "anchor_weight": 0.05,
+      "prob_floor": 0.005,
+      "z_thresholds": [
+        0.05,
+        0.12,
+        0.25
+      ]
+    },
+    "best_weighted": 124.911,
+    "worst_round_score": 78.338,
+    "mean_score": 90.012,
+    "rounds": {
+      "1": {
+        "avg_score": 93.02,
+        "weighted_score": 97.67,
+        "seed_scores": [
+          92.9,
+          93.18,
+          92.89,
+          93.44,
+          92.69
+        ]
+      },
+      "2": {
+        "avg_score": 93.65,
+        "weighted_score": 103.25,
+        "seed_scores": [
+          93.18,
+          94.01,
+          93.63,
+          93.84,
+          93.6
+        ]
+      },
+      "3": {
+        "avg_score": 78.34,
+        "weighted_score": 90.69,
+        "seed_scores": [
+          75.35,
+          80.82,
+          79.1,
+          79.74,
+          76.68
+        ]
+      },
+      "4": {
+        "avg_score": 93.9,
+        "weighted_score": 114.13,
+        "seed_scores": [
+          94.08,
+          93.88,
+          93.66,
+          93.84,
+          94.01
+        ]
+      },
+      "5": {
+        "avg_score": 92.06,
+        "weighted_score": 117.49,
+        "seed_scores": [
+          91.7,
+          91.34,
+          92.4,
+          92.32,
+          92.53
+        ]
+      },
+      "6": {
+        "avg_score": 90.35,
+        "weighted_score": 121.08,
+        "seed_scores": [
+          90.04,
+          90.25,
+          90.65,
+          90.42,
+          90.41
+        ]
+      },
+      "7": {
+        "avg_score": 88.77,
+        "weighted_score": 124.91,
+        "seed_scores": [
+          88.31,
+          88.92,
+          88.5,
+          88.49,
+          89.64
+        ]
+      }
+    }
+  },
+  {
+    "recipe": {
+      "nn_weight": 0.5,
+      "v2_weight": 0.35,
+      "v3_weight": 0.5,
+      "v4_enabled": false,
+      "anchor_weight": 0.05,
+      "prob_floor": 0.005,
+      "z_thresholds": [
+        0.1,
+        0.2,
+        0.35
+      ]
+    },
+    "best_weighted": 124.911,
+    "worst_round_score": 78.338,
+    "mean_score": 89.614,
+    "rounds": {
+      "1": {
+        "avg_score": 93.02,
+        "weighted_score": 97.67,
+        "seed_scores": [
+          92.9,
+          93.18,
+          92.89,
+          93.44,
+          92.69
+        ]
+      },
+      "2": {
+        "avg_score": 93.65,
+        "weighted_score": 103.25,
+        "seed_scores": [
+          93.18,
+          94.01,
+          93.63,
+          93.84,
+          93.6
+        ]
+      },
+      "3": {
+        "avg_score": 78.34,
+        "weighted_score": 90.69,
+        "seed_scores": [
+          75.35,
+          80.82,
+          79.1,
+          79.74,
+          76.68
+        ]
+      },
+      "4": {
+        "avg_score": 93.16,
+        "weighted_score": 113.23,
+        "seed_scores": [
+          93.41,
+          93.17,
+          92.82,
+          93.07,
+          93.31
+        ]
+      },
+      "5": {
+        "avg_score": 90.01,
+        "weighted_score": 114.88,
+        "seed_scores": [
+          89.52,
+          88.86,
+          90.49,
+          90.43,
+          90.74
+        ]
+      },
+      "6": {
+        "avg_score": 90.35,
+        "weighted_score": 121.08,
+        "seed_scores": [
+          90.04,
+          90.25,
+          90.65,
+          90.42,
+          90.41
+        ]
+      },
+      "7": {
+        "avg_score": 88.77,
+        "weighted_score": 124.91,
+        "seed_scores": [
+          88.31,
+          88.92,
+          88.5,
+          88.49,
+          89.64
+        ]
+      }
+    }
+  },
+  {
+    "recipe": {
+      "nn_weight": 0.5,
+      "v2_weight": 0.35,
+      "v3_weight": 0.35,
+      "v4_enabled": false,
+      "anchor_weight": 0.0,
+      "prob_floor": 0.005,
+      "z_thresholds": [
+        0.08,
+        0.15,
+        0.3
+      ]
+    },
+    "best_weighted": 124.783,
+    "worst_round_score": 78.338,
+    "mean_score": 89.903,
+    "rounds": {
+      "1": {
+        "avg_score": 92.94,
+        "weighted_score": 97.59,
+        "seed_scores": [
+          92.82,
+          93.11,
+          92.8,
+          93.37,
+          92.61
+        ]
+      },
+      "2": {
+        "avg_score": 93.59,
+        "weighted_score": 103.18,
+        "seed_scores": [
+          93.11,
+          93.96,
+          93.58,
+          93.77,
+          93.52
+        ]
+      },
+      "3": {
+        "avg_score": 78.34,
+        "weighted_score": 90.69,
+        "seed_scores": [
+          75.35,
+          80.82,
+          79.1,
+          79.74,
+          76.68
+        ]
+      },
+      "4": {
+        "avg_score": 93.52,
+        "weighted_score": 113.68,
+        "seed_scores": [
+          93.74,
+          93.53,
+          93.25,
+          93.46,
+          93.65
+        ]
+      },
+      "5": {
+        "avg_score": 91.97,
+        "weighted_score": 117.38,
+        "seed_scores": [
+          91.62,
+          91.25,
+          92.3,
+          92.24,
+          92.43
+        ]
+      },
+      "6": {
+        "avg_score": 90.28,
+        "weighted_score": 120.98,
+        "seed_scores": [
+          89.96,
+          90.18,
+          90.58,
+          90.34,
+          90.34
+        ]
+      },
+      "7": {
+        "avg_score": 88.68,
+        "weighted_score": 124.78,
+        "seed_scores": [
+          88.09,
+          88.89,
+          88.42,
+          88.51,
+          89.5
+        ]
+      }
+    }
+  },
+  {
+    "recipe": {
+      "nn_weight": 0.5,
+      "v2_weight": 0.35,
+      "v3_weight": 0.35,
+      "v4_enabled": false,
+      "anchor_weight": 0.0,
+      "prob_floor": 0.005,
+      "z_thresholds": [
+        0.05,
+        0.12,
+        0.25
+      ]
+    },
+    "best_weighted": 124.783,
+    "worst_round_score": 78.338,
+    "mean_score": 89.952,
+    "rounds": {
+      "1": {
+        "avg_score": 92.94,
+        "weighted_score": 97.59,
+        "seed_scores": [
+          92.82,
+          93.11,
+          92.8,
+          93.37,
+          92.61
+        ]
+      },
+      "2": {
+        "avg_score": 93.59,
+        "weighted_score": 103.18,
+        "seed_scores": [
+          93.11,
+          93.96,
+          93.58,
+          93.77,
+          93.52
+        ]
+      },
+      "3": {
+        "avg_score": 78.34,
+        "weighted_score": 90.69,
+        "seed_scores": [
+          75.35,
+          80.82,
+          79.1,
+          79.74,
+          76.68
+        ]
+      },
+      "4": {
+        "avg_score": 93.87,
+        "weighted_score": 114.09,
+        "seed_scores": [
+          94.05,
+          93.86,
+          93.64,
+          93.81,
+          93.97
+        ]
+      },
+      "5": {
+        "avg_score": 91.97,
+        "weighted_score": 117.38,
+        "seed_scores": [
+          91.62,
+          91.25,
+          92.3,
+          92.24,
+          92.43
+        ]
+      },
+      "6": {
+        "avg_score": 90.28,
+        "weighted_score": 120.98,
+        "seed_scores": [
+          89.96,
+          90.18,
+          90.58,
+          90.34,
+          90.34
+        ]
+      },
+      "7": {
+        "avg_score": 88.68,
+        "weighted_score": 124.78,
+        "seed_scores": [
+          88.09,
+          88.89,
+          88.42,
+          88.51,
+          89.5
+        ]
+      }
+    }
+  },
+  {
+    "recipe": {
+      "nn_weight": 0.5,
+      "v2_weight": 0.35,
+      "v3_weight": 0.35,
+      "v4_enabled": false,
+      "anchor_weight": 0.0,
+      "prob_floor": 0.005,
+      "z_thresholds": [
+        0.1,
+        0.2,
+        0.35
+      ]
+    },
+    "best_weighted": 124.783,
+    "worst_round_score": 78.338,
+    "mean_score": 89.557,
+    "rounds": {
+      "1": {
+        "avg_score": 92.94,
+        "weighted_score": 97.59,
+        "seed_scores": [
+          92.82,
+          93.11,
+          92.8,
+          93.37,
+          92.61
+        ]
+      },
+      "2": {
+        "avg_score": 93.59,
+        "weighted_score": 103.18,
+        "seed_scores": [
+          93.11,
+          93.96,
+          93.58,
+          93.77,
+          93.52
+        ]
+      },
+      "3": {
+        "avg_score": 78.34,
+        "weighted_score": 90.69,
+        "seed_scores": [
+          75.35,
+          80.82,
+          79.1,
+          79.74,
+          76.68
+        ]
+      },
+      "4": {
+        "avg_score": 93.14,
+        "weighted_score": 113.21,
+        "seed_scores": [
+          93.39,
+          93.15,
+          92.81,
+          93.05,
+          93.28
+        ]
+      },
+      "5": {
+        "avg_score": 89.93,
+        "weighted_score": 114.78,
+        "seed_scores": [
+          89.45,
+          88.78,
+          90.41,
+          90.36,
+          90.66
+        ]
+      },
+      "6": {
+        "avg_score": 90.28,
+        "weighted_score": 120.98,
+        "seed_scores": [
+          89.96,
+          90.18,
+          90.58,
+          90.34,
+          90.34
+        ]
+      },
+      "7": {
+        "avg_score": 88.68,
+        "weighted_score": 124.78,
+        "seed_scores": [
+          88.09,
+          88.89,
+          88.42,
+          88.51,
+          89.5
+        ]
+      }
+    }
+  },
+  {
+    "recipe": {
+      "nn_weight": 0.5,
+      "v2_weight": 0.5,
+      "v3_weight": 0.5,
+      "v4_enabled": true,
+      "anchor_weight": 0.0,
+      "prob_floor": 0.005,
+      "z_thresholds": [
+        0.08,
+        0.15,
+        0.3
+      ]
+    },
+    "best_weighted": 124.783,
+    "worst_round_score": 78.338,
+    "mean_score": 89.903,
+    "rounds": {
+      "1": {
+        "avg_score": 92.94,
+        "weighted_score": 97.59,
+        "seed_scores": [
+          92.82,
+          93.11,
+          92.8,
+          93.37,
+          92.61
+        ]
+      },
+      "2": {
+        "avg_score": 93.59,
+        "weighted_score": 103.18,
+        "seed_scores": [
+          93.11,
+          93.96,
+          93.58,
+          93.77,
+          93.52
+        ]
+      },
+      "3": {
+        "avg_score": 78.34,
+        "weighted_score": 90.69,
+        "seed_scores": [
+          75.35,
+          80.82,
+          79.1,
+          79.74,
+          76.68
+        ]
+      },
+      "4": {
+        "avg_score": 93.52,
+        "weighted_score": 113.68,
+        "seed_scores": [
+          93.74,
+          93.53,
+          93.25,
+          93.46,
+          93.65
+        ]
+      },
+      "5": {
+        "avg_score": 91.97,
+        "weighted_score": 117.38,
+        "seed_scores": [
+          91.62,
+          91.25,
+          92.3,
+          92.24,
+          92.43
+        ]
+      },
+      "6": {
+        "avg_score": 90.28,
+        "weighted_score": 120.98,
+        "seed_scores": [
+          89.96,
+          90.18,
+          90.58,
+          90.34,
+          90.34
+        ]
+      },
+      "7": {
+        "avg_score": 88.68,
+        "weighted_score": 124.78,
+        "seed_scores": [
+          88.09,
+          88.89,
+          88.42,
+          88.51,
+          89.5
+        ]
+      }
+    }
+  }
+]

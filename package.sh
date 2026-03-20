@@ -1,13 +1,13 @@
 #!/bin/bash
-# Package submission ZIP
+# Package submission ZIP — v4 (all-data classifier + flip TTA detection)
 set -e
 
 DIR="$(cd "$(dirname "$0")" && pwd)"
 SUB="$DIR/submission"
-OUT="$DIR/submission.zip"
+OUT="$DIR/submission_4.zip"
 
 echo "=== Checking submission files ==="
-for f in run.py detector.onnx classifier.safetensors ref_embeddings.npy ref_labels.json transform_config.json; do
+for f in run.py detector.onnx classifier.safetensors; do
     if [ -f "$SUB/$f" ]; then
         SIZE=$(ls -lh "$SUB/$f" | awk '{print $5}')
         echo "  ✓ $f ($SIZE)"
@@ -27,10 +27,19 @@ else
 fi
 
 echo ""
+echo "=== Checking blocked calls ==="
+if grep -rn "eval()\|exec()\|compile()\|__import__" "$SUB"/*.py; then
+    echo "  ✗ BLOCKED CALLS FOUND!"
+    exit 1
+else
+    echo "  ✓ No blocked calls"
+fi
+
+echo ""
 echo "=== Creating ZIP ==="
 rm -f "$OUT"
 cd "$SUB"
-zip -r "$OUT" . -x ".*" "__MACOSX/*" "*.fp16.*"
+zip -r "$OUT" . -x ".*" "__MACOSX/*" "*.fp16.*" "ref_embeddings.npy" "ref_labels.json" "transform_config.json"
 cd "$DIR"
 
 echo ""
@@ -43,6 +52,9 @@ echo "Total uncompressed: $(echo "$TOTAL / 1024 / 1024" | bc -l | head -c6) MB (
 
 WEIGHT_COUNT=$(unzip -l "$OUT" | grep -cE "\.(pt|pth|onnx|safetensors|npy)$")
 echo "Weight files: $WEIGHT_COUNT (limit: 3)"
+
+PY_COUNT=$(unzip -l "$OUT" | grep -cE "\.py$")
+echo "Python files: $PY_COUNT (limit: 10)"
 
 echo ""
 echo "=== Ready to submit: $OUT ==="

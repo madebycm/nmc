@@ -5,5 +5,5 @@ TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwNjVlNzg1Zi0zNmMxLTRkZW
 # Polling interval in seconds
 POLL_INTERVAL = 120  # 2 minutes
 
-# Query allocation: 10 per seed (50 total / 5 seeds)
-QUERIES_PER_SEED = 10
+# Query allocation: 6 per seed base (30 total), remaining 20 for adaptive precision
+QUERIES_PER_SEED = 6
