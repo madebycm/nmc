@@ -1,0 +1,14 @@
+{
+  "solved_rounds": {
+    "f1dac9a9-5cf1-49a9-8f17-d6cb5d5ba5cb": {
+      "round_number": 3,
+      "queries_used": 50,
+      "seeds_submitted": 5,
+      "strategy": "proximity_v1_overwritten_by_poller",
+      "timestamp": "2026-03-20T00:41:00Z",
+      "note": "Good 9-obs predictions overwritten by server poller with 1-obs. Lesson learned."
+    }
+  },
+  "observations": {},
+  "calibration": {}
+}

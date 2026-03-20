@@ -1,2 +1,9 @@
 .DS_Store
 __pycache__/
+data/
+*.zip
+.venv/
+*.pt
+runs/*/weights/
+submission/detector.onnx
+submission/classifier.safetensors
