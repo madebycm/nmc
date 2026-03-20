@@ -7,6 +7,56 @@
       "strategy": "proximity_v1_overwritten_by_poller",
       "timestamp": "2026-03-20T00:41:00Z",
       "note": "Good 9-obs predictions overwritten by server poller with 1-obs. Lesson learned."
+    },
+    "8e839974-b13b-407b-a5e7-fc749d877195": {
+      "round_number": 4,
+      "queries_used": 45,
+      "seeds_submitted": 5,
+      "strategy": "dirichlet_v3_regime",
+      "timestamp": "2026-03-20T04:32:00Z",
+      "note": "Resubmitted with regime-aware healthy priors. Backtested +6-9pts improvement."
+    },
+    "fd3c92ff-3178-4dc9-8d9b-acf389b3982b": {
+      "round_number": 5,
+      "queries_used": 45,
+      "seeds_submitted": 5,
+      "strategy": "dirichlet_v4_mixed",
+      "timestamp": "2026-03-20T06:04:27Z"
+    },
+    "ae78003a-4efe-425a-881a-d16a39bca0ad": {
+      "round_number": 6,
+      "queries_used": 45,
+      "seeds_submitted": 5,
+      "strategy": "dirichlet_v4_mixed",
+      "timestamp": "2026-03-20T09:10:34Z"
+    },
+    "36e581f1-73f8-453f-ab98-cbe3052b701b": {
+      "round_number": 7,
+      "queries_used": 45,
+      "seeds_submitted": 5,
+      "strategy": "ensemble_nn_v1",
+      "timestamp": "2026-03-20T12:28:07Z"
+    },
+    "c5cdf100-a876-4fb7-b5d8-757162c97989": {
+      "round_number": 8,
+      "queries_used": 50,
+      "seeds_submitted": 5,
+      "strategy": "ensemble_ctx_v2",
+      "timestamp": "2026-03-20T15:04:52Z"
+    },
+    "2a341ace-0f57-4309-9b89-e59fe0f09179": {
+      "round_number": 9,
+      "queries_used": 50,
+      "seeds_submitted": 5,
+      "strategy": "champion_challenger_v1",
+      "timestamp": "2026-03-20T18:12:35Z"
+    },
+    "75e625c3-60cb-4392-af3e-c86a98bde8c2": {
+      "round_number": 10,
+      "queries_used": 50,
+      "seeds_submitted": 5,
+      "strategy": "champion_challenger_v1",
+      "timestamp": "2026-03-20T21:04:47Z"
     }
   },
   "observations": {},

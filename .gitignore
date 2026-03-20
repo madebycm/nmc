@@ -4,6 +4,12 @@ data/
 *.zip
 .venv/
 *.pt
+*.onnx
+*.safetensors
+*.npy
 runs/*/weights/
-submission/detector.onnx
-submission/classifier.safetensors
+checkpoints/
+submission_*/
+astar/replays/
+astar/observations/
+astar/harvest.log
