@@ -1,6 +1,7 @@
 """Gemini-powered Tripletex agent with typed tools from OpenAPI spec."""
 
 import base64
+import io
 import json
 import logging
 import os
@@ -381,7 +382,14 @@ def _exec_api(base_url: str, auth: tuple, method: str, endpoint: str,
         if status >= 400:
             raw = json.dumps(data, ensure_ascii=False) if isinstance(data, (dict, list)) else str(data)
             log.warning("API error %d: %s", status, raw[:500])
-            return f"HTTP {status} ERROR: {raw[:2000]}"
+            hint = ""
+            if status == 422:
+                hint = "\n>> FIX: Read the validation error above. Correct the invalid field(s) and retry the same call."
+            elif status == 403:
+                hint = "\n>> FIX: This endpoint/module is not enabled. Use a fallback approach (e.g. post_ledger_voucher instead of post_incomingInvoice)."
+            elif status == 404:
+                hint = "\n>> FIX: Entity not found. Search again to find the correct ID before retrying."
+            return f"HTTP {status} ERROR: {raw[:2000]}{hint}"
 
         # Compact structured response
         result = _compact_response(endpoint, method, data)
@@ -390,6 +398,84 @@ def _exec_api(base_url: str, auth: tuple, method: str, endpoint: str,
     except Exception as e:
         log.error("Request failed: %s", e)
         return f"REQUEST FAILED: {e}"
+
+
+# ─── Attachment parsing ───
+
+def _parse_attachment(f: dict) -> list:
+    """Convert any attachment to Gemini-compatible content parts.
+
+    Routes by MIME type + extension:
+      PDF/images → native inlineData (Gemini vision)
+      XLSX/XLS   → parsed to markdown table via openpyxl
+      DOCX       → extracted text via python-docx
+      CSV/text   → raw text
+    """
+    mime = f.get("mime_type", "application/octet-stream")
+    filename = f.get("filename", "unknown")
+    file_data = base64.b64decode(f["content_base64"])
+    ext = filename.rsplit(".", 1)[-1].lower() if "." in filename else ""
+
+    # 1. VISUAL: PDF, images → native Gemini vision
+    if mime.startswith("image/") or mime == "application/pdf" or ext == "pdf":
+        return [
+            {"inlineData": {"mimeType": mime, "data": f["content_base64"]}},
+            {"text": f"[Attached: {filename}] — Extract ALL amounts, dates, names, and numbers exactly as written."},
+        ]
+
+    # 2. EXCEL: .xlsx, .xls
+    if ext in ("xlsx", "xls") or "spreadsheet" in mime or "excel" in mime:
+        try:
+            import openpyxl
+            wb = openpyxl.load_workbook(io.BytesIO(file_data), read_only=True, data_only=True)
+            tables = []
+            for sheet in wb.sheetnames:
+                ws = wb[sheet]
+                rows = list(ws.iter_rows(values_only=True))
+                if not rows:
+                    continue
+                headers = [str(c) if c is not None else "" for c in rows[0]]
+                md = "| " + " | ".join(headers) + " |\n"
+                md += "| " + " | ".join(["---"] * len(headers)) + " |\n"
+                for row in rows[1:]:
+                    cells = [str(c) if c is not None else "" for c in row]
+                    md += "| " + " | ".join(cells) + " |\n"
+                tables.append(f"### Sheet: {sheet}\n{md}")
+            wb.close()
+            text = "\n".join(tables)
+            log.info("Parsed spreadsheet %s: %d sheets", filename, len(tables))
+            return [{"text": f"[Spreadsheet: {filename}]\n{text[:8000]}"}]
+        except Exception as e:
+            log.error("Failed to parse spreadsheet %s: %s", filename, e)
+            return [{"text": f"[Spreadsheet: {filename}] — Could not parse. Error: {e}"}]
+
+    # 3. DOCX
+    if ext == "docx" or "wordprocessingml" in mime:
+        try:
+            import docx
+            doc = docx.Document(io.BytesIO(file_data))
+            text = "\n".join(p.text for p in doc.paragraphs if p.text.strip())
+            log.info("Parsed Word doc %s: %d chars", filename, len(text))
+            return [{"text": f"[Document: {filename}]\n{text[:8000]}"}]
+        except Exception as e:
+            log.error("Failed to parse docx %s: %s", filename, e)
+            return [{"text": f"[Document: {filename}] — Could not parse. Error: {e}"}]
+
+    # 4. CSV
+    if ext == "csv" or mime == "text/csv":
+        try:
+            text = file_data.decode("utf-8", errors="replace")
+            log.info("Read CSV %s: %d chars", filename, len(text))
+            return [{"text": f"[CSV Data: {filename}]\n{text[:8000]}"}]
+        except Exception:
+            return [{"text": f"[CSV: {filename}] — Could not decode."}]
+
+    # 5. Plain text / fallback
+    try:
+        text = file_data.decode("utf-8", errors="replace")
+        return [{"text": f"[File: {filename}]\n{text[:8000]}"}]
+    except Exception:
+        return [{"text": f"[Attached: {filename} ({mime})] — Binary file, cannot read contents."}]
 
 
 # ─── Bank account setup ───
@@ -463,19 +549,10 @@ def solve_task_sync(body: dict):
     }
     t0 = time.time()
 
-    # Build user message
+    # Build user message — parse all attachments through the universal pipeline
     parts = []
     for f in files:
-        mime = f.get("mime_type", "application/octet-stream")
-        if mime.startswith("image/") or mime == "application/pdf":
-            parts.append({"inlineData": {"mimeType": mime, "data": f["content_base64"]}})
-            parts.append({"text": f"[Attached file: {f['filename']}]"})
-        else:
-            try:
-                text = base64.b64decode(f["content_base64"]).decode("utf-8", errors="replace")
-                parts.append({"text": f"[File: {f['filename']}]\n{text[:5000]}"})
-            except Exception:
-                parts.append({"text": f"[Attached binary file: {f['filename']} ({mime})]"})
+        parts.extend(_parse_attachment(f))
 
     today = date.today().isoformat()
     parts.append({"text": f"Today's date: {today}\n\nComplete this accounting task:\n\n{prompt}"})
@@ -642,9 +719,14 @@ def solve_task_sync(body: dict):
         # Bail on repeated identical errors (likely stuck in a loop)
         if consecutive_errors >= 3:
             log.warning("Same error repeated %d times — injecting guidance", consecutive_errors)
-            contents.append({"role": "user", "parts": [
-                {"text": f"SYSTEM: The same API error has occurred {consecutive_errors} times in a row. This approach is not working. Either try a completely different approach or call task_complete to report partial progress. Do NOT retry the same call."}
-            ]})
+            if consecutive_errors >= 5:
+                contents.append({"role": "user", "parts": [
+                    {"text": f"SYSTEM: The same error has occurred {consecutive_errors} times. You MUST try a completely different approach now — use tripletex_api with different parameters, or use a fallback pattern. If nothing works, call task_complete with partial progress."}
+                ]})
+            else:
+                contents.append({"role": "user", "parts": [
+                    {"text": f"SYSTEM: The same error has occurred {consecutive_errors} times. Read the error carefully — what field or value is wrong? Try a different value, or use search_tripletex_spec to check the correct parameter format. Do NOT retry with identical parameters."}
+                ]})
             consecutive_errors = 0  # Reset so we don't inject every turn
 
         if done:
