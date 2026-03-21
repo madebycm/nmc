@@ -1,6 +1,6 @@
 # Astar Island — Morning Report
 
-> Last updated: 2026-03-20 21:04 UTC
+> Last updated: 2026-03-21 15:07 UTC
 
 ## Round Status
 
@@ -15,27 +15,33 @@
 | 7 | completed | 38.4 (rank #147) | 45/50 | 5/5 seeds | ensemble_nn_v1 |
 | 8 | completed | 84.4 (rank #49) | 50/50 | 5/5 seeds | ensemble_ctx_v2 |
 | 9 | completed | 89.1 (rank #39) | 50/50 | 5/5 seeds | champion_challenger_v1 |
-| 10 | active | pending | 50/50 | 5/5 seeds | champion_challenger_v1 |
+| 10 | completed | 86.2 (rank #32) | 50/50 | 5/5 seeds | champion_challenger_v1 |
+| 11 | completed | 79.9 (rank #58) | 50/50 | 5/5 seeds | champion_challenger_v1 |
+| 12 | completed | 29.1 (rank #121) | 50/50 | 5/5 seeds | champion_challenger_v1 |
+| 13 | completed | 92.3 (rank #13) | 50/50 | 5/5 seeds | champion_challenger_v1 |
+| 14 | completed | 80.0 (rank #46) | 50/50 | 5/5 seeds | champion_challenger_v1 |
+| 15 | completed | 90.0 (rank #54) | 50/50 | 5/5 seeds | champion_challenger_v1 |
+| 16 | active | pending | 50/50 | 5/5 seeds | champion_challenger_v1 |
 
 ## Leaderboard Top 10
 | Rank | Team | Score |
 |------|------|-------|
-| 1 | People Made Machines | 146.3 |
-| 2 | Six Seven | 145.7 |
-| 3 | Kult Byrå | 145.3 |
-| 4 | Synthetic Synapses | 145.3 |
-| 5 | Meme Dream Team | 145.1 |
-| 6 | Maskinkraft | 144.6 |
-| 7 | Slop Overflow | 144.3 |
-| 8 | Creative Destruction | 144.1 |
-| 9 | Er det kå i? | 144.1 |
-| 10 | Propulsion Optimizers | 143.9 |
+| 1 | Meme Dream Team | 196.6 |
+| 2 | People Made Machines | 196.1 |
+| 3 | Attention Heads | 195.9 |
+| 4 | It Worked on my GPU | 195.7 |
+| 5 | Maskinkraft | 195.7 |
+| 6 | Dahl Optimal | 195.7 |
+| 7 | Quorra | 195.2 |
+| 8 | Yggdrasil Systems | 195.2 |
+| 9 | /BATCH ULTRATHINK | 195.2 |
+| 10 | You are a tier 1 VC | 195.1 |
 
 ## Our Position
 Not yet ranked
 
 ## Ground Truth & Calibration
-- GT files: 45
+- GT files: 75
 - Calibration keys: 27
 
 ## Actions Taken Overnight
@@ -77,6 +83,25 @@ Not yet ranked
 
 
 - [2026-03-20 21:04 UTC] Solved round #10 with calibrated Dirichlet strategy
+
+
+
+
+- [2026-03-21 00:32 UTC] Solved round #11 with calibrated Dirichlet strategy
+
+
+- [2026-03-21 03:32 UTC] Solved round #12 with calibrated Dirichlet strategy
+
+
+- [2026-03-21 06:22 UTC] Solved round #13 with calibrated Dirichlet strategy
+
+
+- [2026-03-21 09:22 UTC] Solved round #14 with calibrated Dirichlet strategy
+
+
+- [2026-03-21 12:46 UTC] Solved round #15 with calibrated Dirichlet strategy
+
+- [2026-03-21 15:07 UTC] Solved round #16 with calibrated Dirichlet strategy
 
 ## Issues / Alerts
 - Round 3 predictions degraded by server overwrite (fixed — server poller killed)

@@ -1,8 +1,9 @@
-"""Astar Island solver — safe, stateful, Dirichlet-Bayesian predictions."""
+"""Astar Island solver — safe, stateful, deterministic live path."""
 
 import time
 import json
 import logging
+import fcntl
 import numpy as np
 from pathlib import Path
 
@@ -13,7 +14,8 @@ from strategy import (
     load_calibration, compute_context_vector, estimate_z_from_context,
 )
 import state as st
-import codex_advisor
+
+LOCK_FILE = Path(__file__).parent / ".solver.lock"
 
 logging.basicConfig(
     level=logging.INFO,
@@ -32,85 +34,91 @@ OBS_DIR.mkdir(exist_ok=True)
 def compute_smart_viewports(
     initial_grid: list[list[int]], map_w: int, map_h: int,
 ) -> list[tuple[int, int, int, int]]:
-    """Compute viewports prioritizing dynamic areas (near settlements).
+    """Return full 3x3 tiling in fixed order for unbiased coverage.
 
-    Returns list of (x, y, w, h) viewport specs.
+    All 9 tiles observed = 100% map coverage, no selection bias in context vector.
     """
-    grid = np.array(initial_grid)
-    # Find settlement positions
-    sy, sx = np.where(np.isin(grid, [1, 2, 3]))
-
-    if len(sy) == 0:
-        # No settlements — fall back to full tiling
-        return _full_tiling(map_w, map_h)
-
-    # Cluster settlement positions into viewport-sized groups
-    # For now: full tiling but sorted by settlement density
-    tiles = _full_tiling(map_w, map_h)
-
-    # Score each tile by number of dynamic cells it covers
-    scored = []
-    for x, y, w, h in tiles:
-        dynamic_count = 0
-        for sy2, sx2 in zip(sy, sx):
-            if x <= sx2 < x + w and y <= sy2 < y + h:
-                dynamic_count += 1
-        scored.append((dynamic_count, x, y, w, h))
-
-    # Sort: most dynamic cells first (observe important areas first)
-    scored.sort(reverse=True)
-    return [(x, y, w, h) for _, x, y, w, h in scored]
+    return _full_tiling(map_w, map_h)
 
 
 def _pick_precision_targets(
     initial_states: list, seeds_count: int, n_queries: int,
     z: float = None, base_observations: dict = None,
+    context: np.ndarray = None, initial_grids: list = None,
 ) -> list[tuple[int, int, int, int, int]]:
-    """Pick (seed, x, y, w, h) for adaptive precision queries.
+    """Pick precision queries by MODEL DISAGREEMENT (NN vs Dirichlet KL).
 
-    Scoring: settlement density + coastal settlements + port cells.
-    With z available, boost viewports containing high-uncertainty cells.
-    Spreads queries across seeds for MC diversity.
+    Targets tiles where our two models disagree most — these are the cells
+    where additional observation data most changes the final prediction.
+    Spreads across seeds for MC diversity.
     """
     scored = []
+
+    # Try to get NN and Dirichlet predictions for disagreement scoring
+    nn_preds = {}
+    dir_preds = {}
+    try:
+        import nn_predict
+        from strategy import dirichlet_predict, load_calibration
+        calibration = load_calibration()
+        for seed_idx in range(seeds_count):
+            grid = initial_states[seed_idx]["grid"]
+            obs = base_observations.get(seed_idx, []) if base_observations else []
+            nn_p = nn_predict.predict(grid, z=z, context=context)
+            dir_p = dirichlet_predict(grid, obs, calibration, z=z)
+            if nn_p is not None:
+                nn_preds[seed_idx] = nn_p
+                dir_preds[seed_idx] = dir_p
+    except Exception as e:
+        log.warning(f"Disagreement scoring failed, falling back to entropy: {e}")
+
+    # Compute per-seed z for alive gating
+    seed_z = {}
+    if base_observations and initial_grids:
+        from strategy import compute_context_vector, estimate_z_from_context
+        for s in range(seeds_count):
+            try:
+                ctx_s = compute_context_vector({0: base_observations.get(s, [])}, [initial_grids[s]])
+                seed_z[s] = estimate_z_from_context(ctx_s)
+            except Exception:
+                seed_z[s] = z if z else 0.3
+
     for seed_idx in range(seeds_count):
         grid = np.array(initial_states[seed_idx]["grid"])
         h_map, w_map = grid.shape
         tiles = _full_tiling(w_map, h_map)
 
-        # Build coastal mask for this grid
-        ocean = (grid == 10)
-        coastal = np.zeros_like(ocean)
-        if h_map > 1:
-            coastal[1:] |= ocean[:-1]
-            coastal[:-1] |= ocean[1:]
-        if w_map > 1:
-            coastal[:, 1:] |= ocean[:, :-1]
-            coastal[:, :-1] |= ocean[:, 1:]
+        # Alive gate: suppress precision on catastrophic seeds
+        zs = seed_z.get(seed_idx, z if z else 0.3)
+        if zs < 0.08:
+            gate = 0.0
+        elif zs < 0.15:
+            gate = 0.5
+        else:
+            gate = 1.0
 
         for x, y, w, h in tiles:
-            region = grid[y:y+h, x:x+w]
-            coast_region = coastal[y:y+h, x:x+w]
+            if seed_idx in nn_preds and gate > 0:
+                # JS divergence (symmetric, stable) between NN and Dirichlet
+                nn_tile = nn_preds[seed_idx][y:y+h, x:x+w]
+                dir_tile = dir_preds[seed_idx][y:y+h, x:x+w]
+                eps = 1e-8
+                m_tile = 0.5 * (nn_tile + dir_tile)
+                js = 0.5 * (nn_tile * np.log((nn_tile + eps) / (m_tile + eps))).sum(axis=-1) \
+                   + 0.5 * (dir_tile * np.log((dir_tile + eps) / (m_tile + eps))).sum(axis=-1)
+                # Add entropy bonus for mixed regions
+                entropy = -(m_tile * np.log(m_tile + eps)).sum(axis=-1)
+                score = float(gate * (js.mean() + 0.15 * entropy.mean()))
+            else:
+                # Fallback: settlement density (gated)
+                region = grid[y:y+h, x:x+w]
+                score = float(gate * np.isin(region, [1, 2, 3]).sum())
 
-            # Settlement cells (highest entropy)
-            settle_mask = np.isin(region, [1, 2])
-            n_settle = settle_mask.sum()
-            # Coastal settlements (port transitions = very high entropy)
-            n_coastal_settle = (settle_mask & coast_region).sum()
-            # Empty land near settlements (expansion zones)
-            n_dynamic_empty = np.isin(region, [0, 11, 3]).sum()
-            # Ports
-            n_ports = (region == 2).sum()
-
-            score = (n_settle * 3.0
-                     + n_coastal_settle * 2.0
-                     + n_ports * 1.5
-                     + n_dynamic_empty * 0.5)
             scored.append((score, seed_idx, x, y, w, h))
 
     scored.sort(reverse=True)
 
-    # Spread across seeds: don't give >40% of queries to one seed
+    # Spread across seeds: max 2 per seed for 5 queries
     max_per_seed = max(n_queries * 2 // 5, 1)
     seed_counts = {i: 0 for i in range(seeds_count)}
     result = []
@@ -136,19 +144,19 @@ def _full_tiling(map_w: int, map_h: int, vp: int = 15) -> list[tuple[int, int, i
     return tiles
 
 
-def _save_round_data(round_num: int, detail: dict, all_observations: dict):
-    """Persist full round data: initial states, observations, settlements."""
+def _save_round_data(round_num: int, detail: dict, all_observations: dict,
+                     base_observations: dict = None):
+    """Persist full round data with base/precision split for faithful replay."""
     round_dir = OBS_DIR / f"round_{round_num}"
     round_dir.mkdir(exist_ok=True)
 
-    # Save round metadata (initial grids for all seeds, map dims, etc.)
     meta = {
         "round_number": round_num,
         "map_width": detail["map_width"],
         "map_height": detail["map_height"],
         "seeds_count": detail["seeds_count"],
     }
-    # Save initial grids separately (large)
+    # Save initial grids
     for seed_idx, state in enumerate(detail["initial_states"]):
         init_file = round_dir / f"initial_seed_{seed_idx}.json"
         if not init_file.exists():
@@ -158,6 +166,11 @@ def _save_round_data(round_num: int, detail: dict, all_observations: dict):
     for seed_idx, observations in all_observations.items():
         obs_file = round_dir / f"observations_seed_{seed_idx}.json"
         obs_file.write_text(json.dumps(observations))
+
+    # Save base observation counts for faithful replay
+    if base_observations:
+        base_counts = {str(k): len(v) for k, v in base_observations.items()}
+        (round_dir / "base_counts.json").write_text(json.dumps(base_counts))
 
     meta_file = round_dir / "meta.json"
     meta_file.write_text(json.dumps(meta))
@@ -230,6 +243,7 @@ def solve_round(api: AstarAPI, round_info: dict, dry_run: bool = False):
         precision_targets = _pick_precision_targets(
             initial_states, seeds_count, precision_left,
             z=z_est, base_observations=base_observations,
+            context=context, initial_grids=initial_grids,
         )
         for seed_idx, vx, vy, vw, vh in precision_targets:
             try:
@@ -241,8 +255,8 @@ def solve_round(api: AstarAPI, round_info: dict, dry_run: bool = False):
                 log.warning(f"  Precision query failed: {e}")
                 break
 
-    # Save all data at full fidelity for future training
-    _save_round_data(round_num, detail, all_observations)
+    # Save all data with base/precision split for faithful replay
+    _save_round_data(round_num, detail, all_observations, base_observations)
 
     # Analyze dynamics from all observations (base + precision)
     all_obs_flat = [o for obs_list in all_observations.values() for o in obs_list]
@@ -261,11 +275,9 @@ def solve_round(api: AstarAPI, round_info: dict, dry_run: bool = False):
     z_est = estimate_z_from_context(context)
     log.info(f"Final z estimate: {z_est:.3f} (from {sum(len(v) for v in base_observations.values())} base queries)")
 
-    # Consult Codex before submitting
-    codex_advisor.on_pre_solve(round_num, dynamics, z_est)
-
-    # Phase 2: SAFE BASELINE — submit conservative for ALL 5 seeds immediately
-    log.info("Phase 2: Safe baseline — conservative recipe for all seeds...")
+    # Phase 2: SAFE BASELINE — submit for ALL 5 seeds immediately
+    # No codex/advisor in critical path — determinism over intelligence
+    log.info("Phase 2: Safe baseline — submitting all seeds...")
     seeds_submitted = 0
     for seed_idx in range(seeds_count):
         pred = predict_for_seed(
@@ -274,60 +286,27 @@ def solve_round(api: AstarAPI, round_info: dict, dry_run: bool = False):
             context=context,
             observations_by_seed=base_observations,
             initial_grids=initial_grids,
+            seed_idx=seed_idx,
         )
         if submit_prediction(api, round_id, seed_idx, pred, dry_run):
             seeds_submitted += 1
 
-    log.info(f"  Safe baseline: {seeds_submitted}/5 seeds submitted")
+    log.info(f"  Submitted: {seeds_submitted}/5 seeds")
 
-    # Phase 3: CHAMPION/CHALLENGER — selective aggressive overwrites
-    try:
-        from seed_selector import compute_seed_trust, select_recipe, predict_with_recipe, DEFAULT_RECIPES
-        log.info("Phase 3: Champion/challenger — per-seed trust evaluation...")
-        calibration = load_calibration()
-        aggressive_count = 0
-        for seed_idx in range(seeds_count):
-            trust = compute_seed_trust(
-                seed_idx,
-                initial_states[seed_idx]["grid"],
-                all_observations.get(seed_idx, []),
-                context, z_est,
-            )
-            recipe_name = select_recipe(trust, DEFAULT_RECIPES)
-            log.info(f"  Seed {seed_idx}: recipe={recipe_name}, "
-                     f"z={trust['z']:.3f}, agreement={trust['v2v3_agreement']:.3f}")
-
-            # Insurance: max 3 aggressive overwrites
-            if recipe_name == "aggressive" and aggressive_count >= 3:
-                recipe_name = "conservative"
-                log.info(f"  Seed {seed_idx}: downgraded to conservative (insurance cap)")
-
-            # Only overwrite if recipe differs from baseline conservative
-            if recipe_name != "conservative":
-                pred = predict_with_recipe(
-                    recipe_name, DEFAULT_RECIPES,
-                    initial_states[seed_idx]["grid"],
-                    all_observations.get(seed_idx, []),
-                    context, z_est, calibration,
-                )
-                if submit_prediction(api, round_id, seed_idx, pred, dry_run):
-                    log.info(f"  Seed {seed_idx}: OVERWRITTEN with {recipe_name}")
-                    if recipe_name == "aggressive":
-                        aggressive_count += 1
-    except Exception as e:
-        log.warning(f"Champion/challenger failed (safe baseline intact): {e}")
-
-    # Record state
+    # Record state — only mark solved when all 5 seeds submitted
     total_queries = sum(len(obs) for obs in all_observations.values())
-    st.mark_round_solved(persistence, round_id, {
-        "round_number": round_num,
-        "queries_used": budget["queries_used"] + total_queries,
-        "seeds_submitted": seeds_submitted,
-        "strategy": "champion_challenger_v1",
-        "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-    })
-
-    log.info(f"=== Round #{round_num} done: {seeds_submitted} seeds, {aggressive_count} aggressive ===")
+    if seeds_submitted >= 5:
+        st.mark_round_solved(persistence, round_id, {
+            "round_number": round_num,
+            "queries_used": budget["queries_used"] + total_queries,
+            "seeds_submitted": seeds_submitted,
+            "strategy": "doctrine_v1",
+            "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        })
+        log.info(f"=== Round #{round_num} done: {seeds_submitted}/5 seeds ===")
+    else:
+        # Partial submit — do NOT mark as solved so next cron run retries
+        log.warning(f"=== Round #{round_num} PARTIAL: only {seeds_submitted}/5 seeds — will retry ===")
 
 
 def observe_seed(
@@ -346,7 +325,7 @@ def observe_seed(
             log.info(f"  [DRY RUN] Seed {seed_index} query {i+1}: viewport ({vx},{vy},{vw},{vh})")
             continue
         try:
-            time.sleep(0.25)  # Rate limit: 5 req/s
+            time.sleep(0.5)  # Rate limit safety margin (429s at 0.25s)
             result = api.simulate(round_id, seed_index, vx, vy, vw, vh)
             observations.append(result)
             log.info(
@@ -354,10 +333,17 @@ def observe_seed(
                 f"viewport ({vx},{vy}) — {result['queries_used']}/{result['queries_max']}"
             )
         except Exception as e:
-            log.error(f"  Seed {seed_index} query {i+1} failed: {e}")
             if "429" in str(e):
-                time.sleep(2)
+                log.warning(f"  Seed {seed_index} query {i+1} rate-limited, retrying in 3s...")
+                time.sleep(3)
+                try:
+                    result = api.simulate(round_id, seed_index, vx, vy, vw, vh)
+                    observations.append(result)
+                    log.info(f"  Seed {seed_index} query {i+1}/{max_queries}: viewport ({vx},{vy}) — RETRY OK")
+                except Exception as e2:
+                    log.error(f"  Seed {seed_index} query {i+1} retry failed: {e2}")
             else:
+                log.error(f"  Seed {seed_index} query {i+1} failed: {e}")
                 break
     return observations
 
@@ -421,30 +407,14 @@ def harvest_ground_truth(api: AstarAPI):
             except Exception as e:
                 log.info(f"  No analysis for round {round_num} seed {seed_idx}: {e}")
 
-    # If new GT was harvested: recalibrate and consult Codex
+    # If new GT was harvested: recalibrate (no external calls in this path)
     if new_gt_rounds:
         log.info("New GT found — recalibrating...")
         try:
             from calibrate import calibrate
             calibrate()
-            # Consult Codex on calibration
-            cal = load_calibration()
-            round_z = cal.get("round_z", {}) if cal else {}
-            codex_advisor.on_calibration_update(
-                len(list(GT_DIR.glob("round_*.json"))), round_z
-            )
         except Exception as e:
             log.error(f"Recalibration failed: {e}")
-
-        # Consult Codex on each newly scored round
-        for round_num, score in new_gt_rounds:
-            if score is not None:
-                try:
-                    cal = load_calibration()
-                    rz = float(cal["round_z"].get(str(round_num), 0)) if cal else None
-                    codex_advisor.on_round_scored(round_num, score, rz)
-                except Exception as e:
-                    log.warning(f"Codex consult failed: {e}")
 
 
 def update_morning_report(api: AstarAPI, event: str = ""):
@@ -567,44 +537,58 @@ def update_morning_report(api: AstarAPI, event: str = ""):
 
 
 def check_and_solve(dry_run: bool = False):
-    """Main entry: check for active round, solve if new, harvest ground truth.
+    """Main entry: check for active round FIRST, then harvest GT.
 
-    Minimal output when nothing changes — saves context tokens in /loop.
+    Priority order: solve > harvest > report. Nothing non-essential in critical path.
+    Filesystem lock prevents concurrent cron overlap.
     """
-    api = AstarAPI(TOKEN)
+    # Filesystem lock — prevent concurrent runs (R3-class disaster prevention)
+    lock_fd = None
+    try:
+        lock_fd = open(LOCK_FILE, "w")
+        fcntl.flock(lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except (IOError, OSError):
+        print("[astar] Another solver instance running — skipping.")
+        if lock_fd:
+            lock_fd.close()
+        return
 
-    # Always try to harvest ground truth from completed rounds
-    harvest_ground_truth(api)
+    try:
+        api = AstarAPI(TOKEN)
 
-    # Check for active round
-    active = api.get_active_round()
-    if active:
-        persistence = st.load()
-        if st.is_round_solved(persistence, active["id"]):
-            print(f"[astar] Round #{active['round_number']} solved. Waiting. closes={active.get('closes_at','?')}")
-            return
-        log.info(f"NEW ROUND: #{active['round_number']} (closes: {active.get('closes_at', '?')})")
-        solve_round(api, active, dry_run)
-        update_morning_report(api, f"Solved round #{active['round_number']} with calibrated Dirichlet strategy")
-        # Show leaderboard after solving
-        try:
-            lb = api.get_leaderboard()
-            if lb:
-                log.info("--- Leaderboard top 5 ---")
-                for entry in lb[:5]:
-                    log.info(f"  #{entry['rank']} {entry['team_name']}: {entry['weighted_score']:.1f}")
-        except Exception:
-            pass
-    else:
-        # No active round — update report periodically (every ~10 ticks)
-        report_file = Path(__file__).parent / "MORNING_REPORT.md"
-        try:
-            age = time.time() - report_file.stat().st_mtime
-            if age > 600:  # Update every 10 min
-                update_morning_report(api)
-        except Exception:
-            update_morning_report(api)
-        print("[astar] No active round.")
+        # PRIORITY 1: Check for active round FIRST — solve before anything else
+        active = api.get_active_round()
+        if active:
+            persistence = st.load()
+            if st.is_round_solved(persistence, active["id"]):
+                print(f"[astar] Round #{active['round_number']} solved. Waiting. closes={active.get('closes_at','?')}")
+            else:
+                log.info(f"NEW ROUND: #{active['round_number']} (closes: {active.get('closes_at', '?')})")
+                solve_round(api, active, dry_run)
+                # Show leaderboard after solving
+                try:
+                    lb = api.get_leaderboard()
+                    if lb:
+                        log.info("--- Leaderboard top 5 ---")
+                        for entry in lb[:5]:
+                            log.info(f"  #{entry['rank']} {entry['team_name']}: {entry['weighted_score']:.1f}")
+                except Exception:
+                    pass
+        else:
+            print("[astar] No active round.")
+
+        # PRIORITY 2: Harvest GT and recalibrate (AFTER solving, never before)
+        harvest_ground_truth(api)
+
+    finally:
+        # Release lock
+        if lock_fd:
+            fcntl.flock(lock_fd, fcntl.LOCK_UN)
+            lock_fd.close()
+            try:
+                LOCK_FILE.unlink()
+            except Exception:
+                pass
 
 
 if __name__ == "__main__":

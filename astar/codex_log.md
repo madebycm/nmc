@@ -154,3 +154,164 @@ Train a regularized regressor and evaluate `R²(z_hat, z_true)` LORO.
 Use `z = 0.04` (effectively keep `0.037854891270399094`, just round).
 
 Reasoning: don’t push higher on `survival=1.0` because mid-sim survival has already proven noisy, and the economy/activity signals are still weak (`port_rate`, `wealth`, food not strong). But there also isn’t a true catastrophe flag here, so forcing z down toward `0.018` would be overreacting. Low-but-not-minimum is the best hedge across regimes.
+
+## [2026-03-20 23:54 UTC] Calibration update (50 files)
+
+1. Don’t add more keys. `50` GT files is still only `10` round-level `z` values, and your `310/475` result already says capacity is not the bottleneck.
+
+2. Don’t add quadratic/piecewise yet. With only `10` true z support points, extra z-shape is still easy to overfit. I’d only try it if LORO residuals vs `z` show a consistent curve across folds.
+
+3. Change confidence scaling only for live `z_hat`, not for oracle-z backtests. Fixed `30` was already neutral in prior testing, but deployment uses noisy `z_hat`, so the clear upside is adaptive shrinkage:
+`alpha_eff = 30 * w`, where `w` reflects z-estimator reliability, or just drop estimated-z concentration to `10-15` and blend toward global mean.
+
+So the only change with clear expected gain is smarter confidence shrinkage for estimated `z`.
+
+## [2026-03-20 23:55 UTC] Round 10 scored 86.2
+
+1. Not by itself. `86.2` only suggests the prior helped overall. It implies your `z` estimate was off only if your live `z_hat` for round 10 was materially above the true low `z=0.0575`. Check that first; if `|z_hat - 0.058|` was large, treat the round as luck/robustness, not validation.
+
+2. Yes: stop using raw `survival_rate` alone. Add mid-sim features that capture collapse dynamics:
+- first-death timing
+- death-rate slope over recent windows
+- concentration/entropy of survivors
+- leader change frequency / margin stability
+- pairwise matchup imbalance or board/control asymmetry
+Use a small calibrated regressor to predict `z` from these, not a single proxy.
+
+3. Yes: lower or make confidence adaptive. Keep `30` only when the `z` estimator is high-confidence. Quick rule:
+- `alpha = c * [w * p(.|z_hat) + (1-w) * p(.|z_mean)]`
+- start with `c=20`
+- let `w` come from estimator reliability; if only survival-based, keep `w <= 0.3`
+
+4. Quick wins next round:
+- fall back to `z_mean` when signals disagree
+- predict a `z` interval, not point `z`
+- clip extreme `z_hat` early in sim
+- backtest adaptive confidence immediately on prior rounds
+
+## [2026-03-21 00:31 UTC] Pre-solve round 11, z=0.5208333134651184
+
+Use `z = 0.419` (clip to the top of the GT-supported healthy range), not `0.5208`.
+
+Reasoning: `0.5208` is an extrapolation beyond the range the z-conditioned model was fit on, so it adds model risk without clear evidence. Mid-sim `survival=1.0` is not trustworthy enough to justify that boost, and you don’t have a clean catastrophic signal either. Clipping at `0.419` preserves the “healthy” interpretation while staying in-distribution and avoiding overconfidence.
+
+## [2026-03-21 03:21 UTC] Calibration update (55 files)
+
+1. Do not add more keys yet. `55` GT files is still small for expanding a `27`-key linear model, and your earlier `310/475` result already says capacity is not the bottleneck.
+
+2. Try non-linear `z` conditioning, but only as a simple piecewise model, not quadratic. Your round `z` values are clearly multi-regime: very low (`~0.02–0.07`), mid (`~0.23–0.33`), and high (`~0.41–0.50`). That pattern is exactly where a linear mapping usually misses. A 3-bin or hinge function has a plausible gain with limited overfit risk.
+
+3. Don’t change confidence scaling as a separate experiment yet. The clearer likely gain is to make scaling `z`-aware via the piecewise conditioning above. Global rescaling alone doesn’t have strong evidence from what you shared.
+
+## [2026-03-21 03:21 UTC] Round 11 scored 79.9
+
+1. `79.9` suggests round 11 was likely a genuinely high-`z` round, not a mean-`z` round. Action: compare your pre-round predicted score at `z_hat` vs at `z_mean`. If `79.9` is much closer to the high-`z` prediction, the estimate was directionally right; if not, `z_hat` was off. Don’t overread a 3-point gap from oracle `82.9`.
+
+2. Yes. Replace raw `survival_rate` with a small feature set:
+- survival by subgroup/class, not just overall
+- time-derivative of survival (`d surv / dt`) and acceleration
+- entropy/concentration of survivors across classes
+- early elimination order / hazard rank
+- variance across parallel sims; unstable rounds should imply low confidence
+
+3. Yes: lower fixed confidence `30`, or make it adaptive. Action: use `alpha = alpha_base * R²_z` or similar, where `R²_z` is out-of-fold z-prediction quality. If z is uncertain, shrink toward the global prior automatically.
+
+4. Quick wins:
+- Stop using a point `z`; use a 3-point mixture (`z_low`, `z_mid`, `z_high`) and average priors.
+- Calibrate on features from the same mid-sim timestamp only.
+- Add a “trust gate”: if z-estimator uncertainty is high, fall back toward global mean.
+
+## [2026-03-21 03:32 UTC] Pre-solve round 12, z=0.6380090713500977
+
+Use `z = 0.419` (or `0.40` if you want a tiny extra hedge), not `0.638`.
+
+Reasoning: `0.638` is outside the GT-supported range, so it forces risky extrapolation in a linear `intercept + slope*z` model. The current dynamics do not show your only reliable catastrophe signals, so I would not push `z` downward. But mid-sim survival is clearly too optimistic historically, so I also would not reward the 100% survival signal with an above-range `z`. Best move: cap at the healthiest in-range value.
+
+## [2026-03-21 06:22 UTC] Pre-solve round 13, z=0.21544715762138367
+
+Use `z = 0.14`.
+
+`0.215` feels too optimistic: mid-sim `survival=1.0` has already proven unreliable, while `avg_food=0.66`, `avg_wealth=0.006`, low population, and weak port activity all point to a fragile state. If your `food < 10` rule is on the same scale, this is exactly the kind of extreme signal you said is actually trustworthy. I would not go full-catastrophic, but I would shift clearly below the mean hedge. A sensible band is `0.12-0.15`, centered at `0.14`.
+
+## [2026-03-21 09:11 UTC] Calibration update (65 files)
+
+1. **Do not add more feature keys yet.**  
+65 GT files is still small relative to a 27-key z-conditioned linear model, and your earlier 310/475-key result already says variance is beating bias. More keys is the least likely clear win.
+
+2. **Try confidence scaling first.**  
+That’s the highest-probability gain: low-dimensional, directly targets calibration error, and is much less overfit-prone than adding features. I’d test a simple shrinked scaling or clipped/saturating scaling.
+
+3. **Only then try mild non-linear z conditioning.**  
+Not full quadratic. Use a **piecewise-linear / 2-3 bin** transform on `z` only, with strong shrinkage toward linear. That can capture the obvious low-z vs high-z regime changes without exploding capacity.
+
+So: **3 first, then a very constrained version of 2, and skip 1 for now.**
+
+## [2026-03-21 09:11 UTC] Round 13 scored 92.3
+
+1. Yes: `92.3` is evidence your round-13 `z` was probably misestimated, especially if the model pushed away from the global prior because `z13=0.226` is below `z_mean=0.306`. Given oracle-`z` beats mean by `+13`, bad `z` can hurt a lot. Treat this as “`z` helps only when estimated well,” not proof the linear prior is wrong.
+
+2. Replace `survival_rate` with early-trajectory signals:
+- death timing / hazard curve, not just alive %
+- class-specific survival and elimination order
+- board-control / resource / position advantage proxies
+- velocity features: change over last 1-2 sim checkpoints
+- disagreement/variance across sims as an uncertainty feature
+
+3. Yes: lower effective confidence when `z` is inferred from mid-sim only. Don’t keep confidence fixed at `30`.
+- Use `confidence = 30 * reliability(zhat)`
+- If `zhat` comes mostly from survival, cut to ~`10-15`
+- Or shrink slope toward 0 when `z` uncertainty is high
+
+4. Quick wins for next round:
+- Blend priors: `P = w*P(.|zhat) + (1-w)*P(.|z_mean)`
+- Make `w` depend on `z`-estimator confidence
+- Add hazard/velocity features to the `z` predictor immediately
+- Clip extreme `zhat` toward mean unless multiple signals agree
+
+## [2026-03-21 09:22 UTC] Pre-solve round 14, z=0.46396395564079285
+
+Use `z = 0.419` (or `0.41` if you want a tiny safety margin), not `0.46396`.
+
+Reasoning: your current estimate is above the GT-supported range, so feeding `0.46396` into a linear `intercept + slope*z` model is extrapolation, which is usually less reliable than the mid-sim “healthy” signal itself. The catastrophic indicators you trust are not present here: survival is high, food is low-ish but nowhere near the disaster threshold, and port/population look stable. So I’d treat this as healthy-but-not-superhuman and clip to the top of the validated range.
+
+## [2026-03-21 12:46 UTC] Pre-solve round 15, z=0.32863849401474
+
+Use `z = 0.26`.
+
+Reasoning: I would not submit `0.3286` unchanged. `survival_rate=1.0` is explicitly not trustworthy mid-sim, while `avg_food=0.699` is far into your own “extreme catastrophe” warning zone if that metric is on the GT scale. Tiny `avg_wealth` and low `port_rate` also don’t support a clearly healthy regime. I also wouldn’t crash all the way to catastrophic `z`, because settlement count and faction count don’t scream total collapse. So a moderate downward adjustment to about `0.26` is the best hedge.
+
+## [2026-03-21 15:01 UTC] Calibration update (75 files)
+
+1. No. `75` files is still small for expanding past `27` keys, and your earlier `310/475` result already says capacity is not the bottleneck. I’d expect more keys to add variance, not gain.
+
+2. Maybe, but only in a very constrained way. Test one extra `z^2` term or a single hinge/piecewise split if LORO residuals vs `z` show curvature. The round values suggest possible nonlinearity at very low `z`, but I would not add flexible piecewise bins.
+
+3. Yes. Confidence scaling is the clearest next lever with expected gain. It changes shrinkage without materially increasing model capacity, so it’s the lowest-overfit path. I’d tune it first with LORO, then only keep quadratic `z` if it adds incremental lift on top.
+
+## [2026-03-21 15:02 UTC] Round 15 scored 90.0
+
+1. No, not by itself. Round 15’s realized `z=0.328` is almost exactly the overall mean `0.322`, so a `90.0` score does not point to a bad z estimate. It suggests the round was won mostly by the non-z features, or by interactions your linear `intercept + slope*z` term does not capture.
+
+2. Yes. Replace `survival_rate` as the main z proxy with mid-sim signals that are closer to end-state structure:
+- class-count vector / alive-by-class composition
+- elimination order and recent hazard rate
+- concentration/entropy of survivors
+- leader margin / pairwise matchup imbalance
+- trend features: last-N-step changes, not just snapshot levels
+
+3. Yes: lower or gate the prior confidence. With weak z observability, `30` is likely too rigid. Quick rule:
+- use `10-15` when z is inferred only from noisy mid-sim signals
+- keep `30` only when z posterior is tight
+- blend `z-conditioned prior` with `global prior` using uncertainty-based weights
+
+4. Quick wins for next round:
+- stop point-estimating z; average predictions over a posterior on z
+- add nonlinear z terms or bin z into regimes
+- train a direct mid-sim -> end-state model, then feed that into the prior
+- backtest confidence shrinkage first; it’s probably the fastest gain
+
+## [2026-03-21 15:06 UTC] Pre-solve round 16, z=0.3115384578704834
+
+Use `z ≈ 0.24` rather than `0.3115`.
+
+Reasoning: I would discount the `100%` mid-sim survival heavily, because you already know it failed badly in round 4. The stronger signal is stress: `avg_food=0.735` and near-zero wealth suggest a fragile regime, even if not full catastrophe yet. I would not slam it to catastrophic `z`, because settlements/factions are still broad and there’s no clear collapse signal beyond scarcity. So a moderate downward adjustment from the hedge value is the safer play.

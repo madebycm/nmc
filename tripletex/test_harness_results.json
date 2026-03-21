@@ -1,0 +1,9 @@
+[
+  {
+    "test": "create_invoice",
+    "passed": false,
+    "detail": "No order found for customer 'Bølgekraft'",
+    "elapsed_s": 25.4,
+    "timestamp": "2026-03-21T02:07:15Z"
+  }
+]

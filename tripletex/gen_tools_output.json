@@ -1,0 +1,2794 @@
+{
+  "tools": [
+    {
+      "name": "search_employee",
+      "description": "Find employees corresponding with sent data.\n\nAPI: GET /employee",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "id": {
+            "type": "STRING",
+            "description": "List of IDs"
+          },
+          "firstName": {
+            "type": "STRING",
+            "description": "Containing"
+          },
+          "lastName": {
+            "type": "STRING",
+            "description": "Containing"
+          },
+          "employeeNumber": {
+            "type": "STRING",
+            "description": "Equals"
+          },
+          "email": {
+            "type": "STRING",
+            "description": "Containing"
+          },
+          "allowInformationRegistration": {
+            "type": "BOOLEAN",
+            "description": "Equals"
+          },
+          "includeContacts": {
+            "type": "BOOLEAN",
+            "description": "Equals"
+          },
+          "departmentId": {
+            "type": "STRING",
+            "description": "List of IDs"
+          },
+          "onlyProjectManagers": {
+            "type": "BOOLEAN",
+            "description": "Equals"
+          },
+          "onlyContacts": {
+            "type": "BOOLEAN",
+            "description": "Equals"
+          },
+          "assignableProjectManagers": {
+            "type": "BOOLEAN",
+            "description": "Equals"
+          },
+          "periodStart": {
+            "type": "STRING",
+            "description": "Equals"
+          },
+          "periodEnd": {
+            "type": "STRING",
+            "description": "Equals"
+          },
+          "hasSystemAccess": {
+            "type": "BOOLEAN",
+            "description": "Equals"
+          },
+          "onlyEmployeeTokens": {
+            "type": "BOOLEAN",
+            "description": "Equals"
+          }
+        }
+      }
+    },
+    {
+      "name": "post_employee",
+      "description": "Create one employee.\n\nAPI: POST /employee",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "firstName": {
+            "type": "STRING"
+          },
+          "lastName": {
+            "type": "STRING"
+          },
+          "employeeNumber": {
+            "type": "STRING"
+          },
+          "dateOfBirth": {
+            "type": "STRING"
+          },
+          "email": {
+            "type": "STRING"
+          },
+          "phoneNumberMobile": {
+            "type": "STRING"
+          },
+          "phoneNumberHome": {
+            "type": "STRING"
+          },
+          "phoneNumberWork": {
+            "type": "STRING"
+          },
+          "nationalIdentityNumber": {
+            "type": "STRING"
+          },
+          "dnumber": {
+            "type": "STRING"
+          },
+          "bankAccountNumber": {
+            "type": "STRING"
+          },
+          "iban": {
+            "type": "STRING",
+            "description": "IBAN field"
+          },
+          "bic": {
+            "type": "STRING",
+            "description": "Bic (swift) field"
+          },
+          "creditorBankCountryId": {
+            "type": "INTEGER",
+            "description": "Country of creditor bank field"
+          },
+          "usesAbroadPayment": {
+            "type": "BOOLEAN",
+            "description": "UsesAbroadPayment field. Determines if we should use domestic or abroad remittance. To be able to use abroad remittance, one has to: 1: have Autopay 2: have valid combination of the fields Iban, Bic (swift) and Country of creditor bank. "
+          },
+          "userType": {
+            "type": "STRING",
+            "enum": [
+              "STANDARD",
+              "EXTENDED",
+              "NO_ACCESS"
+            ],
+            "description": "Define the employee's user type.<br>STANDARD: Reduced access. Users with limited system entitlements.<br>EXTENDED: Users can be given all system entitlements.<br>NO_ACCESS: User with no log on access.<br>Users with access to Tripletex must confirm the email address."
+          },
+          "isContact": {
+            "type": "BOOLEAN",
+            "description": "Determines if the employee is a contact (external) in the company."
+          },
+          "comments": {
+            "type": "STRING"
+          },
+          "address_id": {
+            "type": "INTEGER",
+            "description": "ID of the Address"
+          },
+          "department_id": {
+            "type": "INTEGER",
+            "description": "ID of the Department"
+          },
+          "employeeCategory_id": {
+            "type": "INTEGER",
+            "description": "ID of the EmployeeCategory"
+          }
+        }
+      }
+    },
+    {
+      "name": "put_employee",
+      "description": "Update employee.\n\nAPI: PUT /employee/{id}",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "id": {
+            "type": "INTEGER"
+          },
+          "version": {
+            "type": "INTEGER"
+          },
+          "firstName": {
+            "type": "STRING"
+          },
+          "lastName": {
+            "type": "STRING"
+          },
+          "employeeNumber": {
+            "type": "STRING"
+          },
+          "dateOfBirth": {
+            "type": "STRING"
+          },
+          "email": {
+            "type": "STRING"
+          },
+          "phoneNumberMobile": {
+            "type": "STRING"
+          },
+          "phoneNumberHome": {
+            "type": "STRING"
+          },
+          "phoneNumberWork": {
+            "type": "STRING"
+          },
+          "nationalIdentityNumber": {
+            "type": "STRING"
+          },
+          "dnumber": {
+            "type": "STRING"
+          },
+          "bankAccountNumber": {
+            "type": "STRING"
+          },
+          "iban": {
+            "type": "STRING",
+            "description": "IBAN field"
+          },
+          "bic": {
+            "type": "STRING",
+            "description": "Bic (swift) field"
+          },
+          "creditorBankCountryId": {
+            "type": "INTEGER",
+            "description": "Country of creditor bank field"
+          },
+          "usesAbroadPayment": {
+            "type": "BOOLEAN",
+            "description": "UsesAbroadPayment field. Determines if we should use domestic or abroad remittance. To be able to use abroad remittance, one has to: 1: have Autopay 2: have valid combination of the fields Iban, Bic (swift) and Country of creditor bank. "
+          },
+          "userType": {
+            "type": "STRING",
+            "enum": [
+              "STANDARD",
+              "EXTENDED",
+              "NO_ACCESS"
+            ],
+            "description": "Define the employee's user type.<br>STANDARD: Reduced access. Users with limited system entitlements.<br>EXTENDED: Users can be given all system entitlements.<br>NO_ACCESS: User with no log on access.<br>Users with access to Tripletex must confirm the email address."
+          },
+          "isContact": {
+            "type": "BOOLEAN",
+            "description": "Determines if the employee is a contact (external) in the company."
+          },
+          "comments": {
+            "type": "STRING"
+          },
+          "address_id": {
+            "type": "INTEGER",
+            "description": "ID of the Address"
+          },
+          "department_id": {
+            "type": "INTEGER",
+            "description": "ID of the Department"
+          },
+          "employeeCategory_id": {
+            "type": "INTEGER",
+            "description": "ID of the EmployeeCategory"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
+    },
+    {
+      "name": "search_department",
+      "description": "Find department corresponding with sent data.\n\nAPI: GET /department",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "id": {
+            "type": "STRING",
+            "description": "List of IDs"
+          },
+          "name": {
+            "type": "STRING",
+            "description": "Containing"
+          },
+          "departmentNumber": {
+            "type": "STRING",
+            "description": "Containing"
+          },
+          "departmentManagerId": {
+            "type": "STRING",
+            "description": "List of IDs"
+          },
+          "isInactive": {
+            "type": "BOOLEAN",
+            "description": "true - return only inactive departments; false - return only active departments; unspecified - return both types"
+          }
+        }
+      }
+    },
+    {
+      "name": "post_department",
+      "description": "Add new department.\n\nAPI: POST /department",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "name": {
+            "type": "STRING"
+          },
+          "departmentNumber": {
+            "type": "STRING"
+          },
+          "departmentManager_id": {
+            "type": "INTEGER",
+            "description": "ID of the Employee"
+          },
+          "isInactive": {
+            "type": "BOOLEAN"
+          }
+        }
+      }
+    },
+    {
+      "name": "search_customer",
+      "description": "Find customers corresponding with sent data.\n\nAPI: GET /customer",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "id": {
+            "type": "STRING",
+            "description": "List of IDs"
+          },
+          "customerAccountNumber": {
+            "type": "STRING",
+            "description": "List of customer numbers"
+          },
+          "organizationNumber": {
+            "type": "STRING",
+            "description": "Equals"
+          },
+          "email": {
+            "type": "STRING",
+            "description": "Equals"
+          },
+          "invoiceEmail": {
+            "type": "STRING",
+            "description": "Equals"
+          },
+          "customerName": {
+            "type": "STRING",
+            "description": "Name"
+          },
+          "phoneNumberMobile": {
+            "type": "STRING",
+            "description": "Phone number mobile"
+          },
+          "isInactive": {
+            "type": "BOOLEAN",
+            "description": "Equals"
+          },
+          "accountManagerId": {
+            "type": "STRING",
+            "description": "List of IDs"
+          },
+          "changedSince": {
+            "type": "STRING",
+            "description": "Only return elements that have changed since this date and time"
+          }
+        }
+      }
+    },
+    {
+      "name": "post_customer",
+      "description": "Create customer. Related customer addresses may also be created.\n\nAPI: POST /customer",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "name": {
+            "type": "STRING"
+          },
+          "organizationNumber": {
+            "type": "STRING"
+          },
+          "supplierNumber": {
+            "type": "INTEGER"
+          },
+          "customerNumber": {
+            "type": "INTEGER"
+          },
+          "isSupplier": {
+            "type": "BOOLEAN",
+            "description": "Defines if the customer is also a supplier."
+          },
+          "isInactive": {
+            "type": "BOOLEAN"
+          },
+          "accountManager_id": {
+            "type": "INTEGER",
+            "description": "ID of the Employee"
+          },
+          "department_id": {
+            "type": "INTEGER",
+            "description": "ID of the Department"
+          },
+          "email": {
+            "type": "STRING"
+          },
+          "invoiceEmail": {
+            "type": "STRING"
+          },
+          "overdueNoticeEmail": {
+            "type": "STRING",
+            "description": "The email address of the customer where the noticing emails are sent in case of an overdue"
+          },
+          "bankAccounts": {
+            "type": "ARRAY",
+            "description": "Array of strings",
+            "items": {
+              "type": "STRING"
+            }
+          },
+          "phoneNumber": {
+            "type": "STRING"
+          },
+          "phoneNumberMobile": {
+            "type": "STRING"
+          },
+          "description": {
+            "type": "STRING"
+          },
+          "language": {
+            "type": "STRING",
+            "enum": [
+              "NO",
+              "EN"
+            ]
+          },
+          "isPrivateIndividual": {
+            "type": "BOOLEAN"
+          },
+          "singleCustomerInvoice": {
+            "type": "BOOLEAN",
+            "description": "Enables various orders on one customer invoice."
+          },
+          "invoiceSendMethod": {
+            "type": "STRING",
+            "enum": [
+              "EMAIL",
+              "EHF",
+              "EFAKTURA",
+              "AVTALEGIRO",
+              "VIPPS",
+              "PAPER",
+              "MANUAL"
+            ],
+            "description": "Define the invoicing method for the customer.<br>EMAIL: Send invoices as email.<br>EHF: Send invoices as EHF.<br>EFAKTURA: Send invoices as EFAKTURA.<br>AVTALEGIRO: Send invoices as AVTALEGIRO.<br>VIPPS: Send invoices through VIPPS.<br>PAPER: Send invoices as paper invoice.<br>MANUAL: User will have to send invocie manually.<br>"
+          },
+          "postalAddress_id": {
+            "type": "INTEGER",
+            "description": "ID of the Address"
+          },
+          "physicalAddress_id": {
+            "type": "INTEGER",
+            "description": "ID of the Address"
+          },
+          "deliveryAddress_id": {
+            "type": "INTEGER",
+            "description": "ID of the DeliveryAddress"
+          },
+          "invoicesDueIn": {
+            "type": "INTEGER",
+            "description": "Number of days/months in which invoices created from this customer is due"
+          },
+          "invoicesDueInType": {
+            "type": "STRING",
+            "enum": [
+              "DAYS",
+              "MONTHS",
+              "RECURRING_DAY_OF_MONTH"
+            ],
+            "description": "Set the time unit of invoicesDueIn. The special case RECURRING_DAY_OF_MONTH enables the due date to be fixed to a specific day of the month, in this case the fixed due date will automatically be set as standard on all invoices created from this customer. Note that when RECURRING_DAY_OF_MONTH is set, the due date will be set to the last day of month if \"31\" is set in invoicesDueIn."
+          },
+          "currency_id": {
+            "type": "INTEGER",
+            "description": "ID of the Currency"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
+    },
+    {
+      "name": "put_customer",
+      "description": "Update customer. \n\nAPI: PUT /customer/{id}",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "id": {
+            "type": "INTEGER"
+          },
+          "version": {
+            "type": "INTEGER"
+          },
+          "name": {
+            "type": "STRING"
+          },
+          "organizationNumber": {
+            "type": "STRING"
+          },
+          "supplierNumber": {
+            "type": "INTEGER"
+          },
+          "customerNumber": {
+            "type": "INTEGER"
+          },
+          "isSupplier": {
+            "type": "BOOLEAN",
+            "description": "Defines if the customer is also a supplier."
+          },
+          "isInactive": {
+            "type": "BOOLEAN"
+          },
+          "accountManager_id": {
+            "type": "INTEGER",
+            "description": "ID of the Employee"
+          },
+          "department_id": {
+            "type": "INTEGER",
+            "description": "ID of the Department"
+          },
+          "email": {
+            "type": "STRING"
+          },
+          "invoiceEmail": {
+            "type": "STRING"
+          },
+          "overdueNoticeEmail": {
+            "type": "STRING",
+            "description": "The email address of the customer where the noticing emails are sent in case of an overdue"
+          },
+          "bankAccounts": {
+            "type": "ARRAY",
+            "description": "Array of strings",
+            "items": {
+              "type": "STRING"
+            }
+          },
+          "phoneNumber": {
+            "type": "STRING"
+          },
+          "phoneNumberMobile": {
+            "type": "STRING"
+          },
+          "description": {
+            "type": "STRING"
+          },
+          "language": {
+            "type": "STRING",
+            "enum": [
+              "NO",
+              "EN"
+            ]
+          },
+          "displayName": {
+            "type": "STRING"
+          },
+          "isPrivateIndividual": {
+            "type": "BOOLEAN"
+          },
+          "singleCustomerInvoice": {
+            "type": "BOOLEAN",
+            "description": "Enables various orders on one customer invoice."
+          },
+          "invoiceSendMethod": {
+            "type": "STRING",
+            "enum": [
+              "EMAIL",
+              "EHF",
+              "EFAKTURA",
+              "AVTALEGIRO",
+              "VIPPS",
+              "PAPER",
+              "MANUAL"
+            ],
+            "description": "Define the invoicing method for the customer.<br>EMAIL: Send invoices as email.<br>EHF: Send invoices as EHF.<br>EFAKTURA: Send invoices as EFAKTURA.<br>AVTALEGIRO: Send invoices as AVTALEGIRO.<br>VIPPS: Send invoices through VIPPS.<br>PAPER: Send invoices as paper invoice.<br>MANUAL: User will have to send invocie manually.<br>"
+          },
+          "postalAddress_id": {
+            "type": "INTEGER",
+            "description": "ID of the Address"
+          },
+          "physicalAddress_id": {
+            "type": "INTEGER",
+            "description": "ID of the Address"
+          },
+          "deliveryAddress_id": {
+            "type": "INTEGER",
+            "description": "ID of the DeliveryAddress"
+          },
+          "invoicesDueIn": {
+            "type": "INTEGER",
+            "description": "Number of days/months in which invoices created from this customer is due"
+          },
+          "invoicesDueInType": {
+            "type": "STRING",
+            "enum": [
+              "DAYS",
+              "MONTHS",
+              "RECURRING_DAY_OF_MONTH"
+            ],
+            "description": "Set the time unit of invoicesDueIn. The special case RECURRING_DAY_OF_MONTH enables the due date to be fixed to a specific day of the month, in this case the fixed due date will automatically be set as standard on all invoices created from this customer. Note that when RECURRING_DAY_OF_MONTH is set, the due date will be set to the last day of month if \"31\" is set in invoicesDueIn."
+          },
+          "currency_id": {
+            "type": "INTEGER",
+            "description": "ID of the Currency"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
+    },
+    {
+      "name": "search_contact",
+      "description": "Find contacts corresponding with sent data.\n\nAPI: GET /contact",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "id": {
+            "type": "STRING",
+            "description": "List of IDs"
+          },
+          "firstName": {
+            "type": "STRING",
+            "description": "Containing"
+          },
+          "lastName": {
+            "type": "STRING",
+            "description": "Containing"
+          },
+          "email": {
+            "type": "STRING",
+            "description": "Containing"
+          },
+          "customerId": {
+            "type": "STRING",
+            "description": "List of IDs"
+          },
+          "departmentId": {
+            "type": "STRING",
+            "description": "List of IDs"
+          }
+        }
+      }
+    },
+    {
+      "name": "post_contact",
+      "description": "Create contact.\n\nAPI: POST /contact",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "firstName": {
+            "type": "STRING"
+          },
+          "lastName": {
+            "type": "STRING"
+          },
+          "displayName": {
+            "type": "STRING"
+          },
+          "email": {
+            "type": "STRING"
+          },
+          "phoneNumberMobileCountry_id": {
+            "type": "INTEGER",
+            "description": "ID of the Country"
+          },
+          "phoneNumberMobile": {
+            "type": "STRING"
+          },
+          "phoneNumberWork": {
+            "type": "STRING"
+          },
+          "customer_id": {
+            "type": "INTEGER",
+            "description": "ID of the Customer"
+          },
+          "department_id": {
+            "type": "INTEGER",
+            "description": "ID of the Department"
+          },
+          "isInactive": {
+            "type": "BOOLEAN"
+          }
+        }
+      }
+    },
+    {
+      "name": "search_product",
+      "description": "Find products corresponding with sent data.\n\nAPI: GET /product",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "number": {
+            "type": "STRING",
+            "description": "Deprecated, use productNumber instead"
+          },
+          "ids": {
+            "type": "STRING",
+            "description": "List of IDs"
+          },
+          "productNumber": {
+            "type": "STRING",
+            "description": "Product number to search for (single value)"
+          },
+          "name": {
+            "type": "STRING",
+            "description": "Containing"
+          },
+          "ean": {
+            "type": "STRING",
+            "description": "Equals"
+          },
+          "isInactive": {
+            "type": "BOOLEAN",
+            "description": "Equals"
+          },
+          "isStockItem": {
+            "type": "BOOLEAN",
+            "description": "Equals"
+          },
+          "isSupplierProduct": {
+            "type": "BOOLEAN",
+            "description": "Equals"
+          },
+          "supplierId": {
+            "type": "STRING",
+            "description": "Equals"
+          },
+          "currencyId": {
+            "type": "STRING",
+            "description": "Equals"
+          },
+          "vatTypeId": {
+            "type": "STRING",
+            "description": "Equals"
+          },
+          "productUnitId": {
+            "type": "STRING",
+            "description": "Equals"
+          },
+          "departmentId": {
+            "type": "STRING",
+            "description": "Equals"
+          },
+          "accountId": {
+            "type": "STRING",
+            "description": "Equals"
+          },
+          "costExcludingVatCurrencyFrom": {
+            "type": "NUMBER",
+            "description": "From and including"
+          },
+          "costExcludingVatCurrencyTo": {
+            "type": "NUMBER",
+            "description": "To and excluding"
+          },
+          "priceExcludingVatCurrencyFrom": {
+            "type": "NUMBER",
+            "description": "From and including"
+          },
+          "priceExcludingVatCurrencyTo": {
+            "type": "NUMBER",
+            "description": "To and excluding"
+          },
+          "priceIncludingVatCurrencyFrom": {
+            "type": "NUMBER",
+            "description": "From and including"
+          },
+          "priceIncludingVatCurrencyTo": {
+            "type": "NUMBER",
+            "description": "To and excluding"
+          }
+        }
+      }
+    },
+    {
+      "name": "post_product",
+      "description": "Create new product.\n\nAPI: POST /product",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "name": {
+            "type": "STRING"
+          },
+          "number": {
+            "type": "STRING"
+          },
+          "description": {
+            "type": "STRING"
+          },
+          "orderLineDescription": {
+            "type": "STRING"
+          },
+          "ean": {
+            "type": "STRING"
+          },
+          "costExcludingVatCurrency": {
+            "type": "NUMBER",
+            "description": "Price purchase (cost) excluding VAT in the product's currency"
+          },
+          "expenses": {
+            "type": "NUMBER"
+          },
+          "priceExcludingVatCurrency": {
+            "type": "NUMBER",
+            "description": "Price of purchase excluding VAT in the product's currency"
+          },
+          "priceIncludingVatCurrency": {
+            "type": "NUMBER",
+            "description": "Price of purchase including VAT in the product's currency"
+          },
+          "isInactive": {
+            "type": "BOOLEAN"
+          },
+          "discountGroup_id": {
+            "type": "INTEGER",
+            "description": "ID of the DiscountGroup"
+          },
+          "productUnit_id": {
+            "type": "INTEGER",
+            "description": "ID of the ProductUnit"
+          },
+          "isStockItem": {
+            "type": "BOOLEAN"
+          },
+          "vatType_id": {
+            "type": "INTEGER",
+            "description": "ID of the VatType"
+          },
+          "currency_id": {
+            "type": "INTEGER",
+            "description": "ID of the Currency"
+          },
+          "department_id": {
+            "type": "INTEGER",
+            "description": "ID of the Department"
+          },
+          "account_id": {
+            "type": "INTEGER",
+            "description": "ID of the Account"
+          },
+          "supplier_id": {
+            "type": "INTEGER",
+            "description": "ID of the Supplier"
+          },
+          "resaleProduct_id": {
+            "type": "INTEGER",
+            "description": "ID of the Product"
+          },
+          "isDeletable": {
+            "type": "BOOLEAN",
+            "description": "For performance reasons, field is deprecated and it will always return false."
+          },
+          "hasSupplierProductConnected": {
+            "type": "BOOLEAN"
+          },
+          "weight": {
+            "type": "NUMBER"
+          },
+          "weightUnit": {
+            "type": "STRING",
+            "enum": [
+              "kg",
+              "g",
+              "hg"
+            ]
+          },
+          "volume": {
+            "type": "NUMBER"
+          },
+          "volumeUnit": {
+            "type": "STRING",
+            "enum": [
+              "cm3",
+              "dm3",
+              "m3"
+            ]
+          },
+          "hsnCode": {
+            "type": "STRING"
+          },
+          "image_id": {
+            "type": "INTEGER",
+            "description": "ID of the Document"
+          },
+          "mainSupplierProduct_id": {
+            "type": "INTEGER",
+            "description": "ID of the SupplierProduct"
+          },
+          "minStockLevel": {
+            "type": "NUMBER",
+            "description": "Minimum available stock level for the product. Applicable only to stock items in the Logistics Basics module."
+          }
+        }
+      }
+    },
+    {
+      "name": "post_order",
+      "description": "Create order.\n\nAPI: POST /order",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "customer_id": {
+            "type": "INTEGER",
+            "description": "ID of the Customer"
+          },
+          "contact_id": {
+            "type": "INTEGER",
+            "description": "ID of the Contact"
+          },
+          "attn_id": {
+            "type": "INTEGER",
+            "description": "ID of the Contact"
+          },
+          "receiverEmail": {
+            "type": "STRING"
+          },
+          "number": {
+            "type": "STRING"
+          },
+          "reference": {
+            "type": "STRING"
+          },
+          "ourContactEmployee_id": {
+            "type": "INTEGER",
+            "description": "ID of the Employee"
+          },
+          "department_id": {
+            "type": "INTEGER",
+            "description": "ID of the Department"
+          },
+          "orderDate": {
+            "type": "STRING"
+          },
+          "project_id": {
+            "type": "INTEGER",
+            "description": "ID of the Project"
+          },
+          "invoiceComment": {
+            "type": "STRING",
+            "description": "Comment to be displayed in the invoice based on this order. Can be also found in Invoice.invoiceComment on Invoice objects."
+          },
+          "currency_id": {
+            "type": "INTEGER",
+            "description": "ID of the Currency"
+          },
+          "invoicesDueIn": {
+            "type": "INTEGER",
+            "description": "Number of days/months in which invoices created from this order is due"
+          },
+          "invoicesDueInType": {
+            "type": "STRING",
+            "enum": [
+              "DAYS",
+              "MONTHS",
+              "RECURRING_DAY_OF_MONTH"
+            ],
+            "description": "Set the time unit of invoicesDueIn. The special case RECURRING_DAY_OF_MONTH enables the due date to be fixed to a specific day of the month, in this case the fixed due date will automatically be set as standard on all invoices created from this order. Note that when RECURRING_DAY_OF_MONTH is set, the due date will be set to the last day of month if \"31\" is set in invoicesDueIn."
+          },
+          "deliveryDate": {
+            "type": "STRING"
+          },
+          "deliveryAddress_id": {
+            "type": "INTEGER",
+            "description": "ID of the DeliveryAddress"
+          },
+          "deliveryComment": {
+            "type": "STRING"
+          },
+          "isPrioritizeAmountsIncludingVat": {
+            "type": "BOOLEAN"
+          },
+          "orderLines": {
+            "type": "ARRAY",
+            "description": "Order lines tied to the order. New OrderLines may be embedded here, in some endpoints.",
+            "items": {
+              "type": "OBJECT",
+              "description": "A single order line within the order",
+              "properties": {
+                "product_id": {
+                  "type": "INTEGER",
+                  "description": "Product ID (optional, can use description instead)"
+                },
+                "description": {
+                  "type": "STRING",
+                  "description": "Line description"
+                },
+                "count": {
+                  "type": "NUMBER",
+                  "description": "Quantity"
+                },
+                "unitPriceExcludingVatCurrency": {
+                  "type": "NUMBER",
+                  "description": "Unit price excl. VAT in order currency"
+                },
+                "unitPriceIncludingVatCurrency": {
+                  "type": "NUMBER",
+                  "description": "Unit price incl. VAT in order currency"
+                },
+                "vatType_id": {
+                  "type": "INTEGER",
+                  "description": "VAT type ID"
+                },
+                "discount": {
+                  "type": "NUMBER",
+                  "description": "Discount percentage"
+                },
+                "markup": {
+                  "type": "NUMBER",
+                  "description": "Markup percentage"
+                },
+                "currency_id": {
+                  "type": "INTEGER",
+                  "description": "Currency ID"
+                }
+              }
+            }
+          },
+          "markUpOrderLines": {
+            "type": "NUMBER",
+            "description": "Set mark-up (%) for order lines."
+          },
+          "discountPercentage": {
+            "type": "NUMBER",
+            "description": "Default discount percentage for order lines."
+          }
+        },
+        "required": [
+          "deliveryDate",
+          "orderDate"
+        ]
+      }
+    },
+    {
+      "name": "invoice_order",
+      "description": "Create new invoice or subscription invoice from order.\n\nAPI: PUT /order/{id}/:invoice",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "id": {
+            "type": "INTEGER",
+            "description": "ID of order to invoice."
+          },
+          "invoiceDate": {
+            "type": "STRING",
+            "description": "The invoice date"
+          },
+          "sendToCustomer": {
+            "type": "BOOLEAN",
+            "description": "Send invoice to customer"
+          },
+          "sendType": {
+            "type": "STRING",
+            "enum": [
+              "EMAIL",
+              "EHF",
+              "AVTALEGIRO",
+              "EFAKTURA",
+              "VIPPS",
+              "PAPER",
+              "MANUAL"
+            ],
+            "description": "Send type used for sending the invoice"
+          },
+          "paymentTypeId": {
+            "type": "INTEGER",
+            "description": "Payment type to register prepayment of the invoice. paymentTypeId and paidAmount are optional, but both must be provided if the invoice has already been paid. The payment type must be related to an account with the same currency as the invoice."
+          },
+          "paidAmount": {
+            "type": "NUMBER",
+            "description": "Paid amount to register prepayment of the invoice, in invoice currency. paymentTypeId and paidAmount are optional, but both must be provided if the invoice has already been paid. This amount is in the invoice currency."
+          },
+          "paidAmountAccountCurrency": {
+            "type": "NUMBER",
+            "description": "Amount paid in payment type currency"
+          },
+          "paymentTypeIdRestAmount": {
+            "type": "INTEGER",
+            "description": "Payment type of rest amount. It is possible to have two prepaid payments when invoicing. If paymentTypeIdRestAmount > 0, this second payment will be calculated as invoice amount - paidAmount"
+          },
+          "paidAmountAccountCurrencyRest": {
+            "type": "NUMBER",
+            "description": "Amount rest in payment type currency"
+          },
+          "createOnAccount": {
+            "type": "STRING",
+            "enum": [
+              "NONE",
+              "WITH_VAT",
+              "WITHOUT_VAT"
+            ],
+            "description": "Create on account(a konto)"
+          },
+          "amountOnAccount": {
+            "type": "NUMBER",
+            "description": "Amount on account"
+          },
+          "onAccountComment": {
+            "type": "STRING",
+            "description": "On account comment"
+          },
+          "createBackorder": {
+            "type": "BOOLEAN",
+            "description": "Create a backorder for this order, available only for pilot users"
+          },
+          "invoiceIdIfIsCreditNote": {
+            "type": "INTEGER",
+            "description": "Id of the invoice a credit note refers to"
+          },
+          "overrideEmailAddress": {
+            "type": "STRING",
+            "description": "Will override email address if sendType = EMAIL"
+          }
+        },
+        "required": [
+          "id",
+          "invoiceDate"
+        ]
+      }
+    },
+    {
+      "name": "search_invoice",
+      "description": "Find invoices corresponding with sent data. Includes charged outgoing invoices only.\n\nAPI: GET /invoice",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "id": {
+            "type": "STRING",
+            "description": "List of IDs"
+          },
+          "invoiceDateFrom": {
+            "type": "STRING",
+            "description": "From and including"
+          },
+          "invoiceDateTo": {
+            "type": "STRING",
+            "description": "To and excluding"
+          },
+          "invoiceNumber": {
+            "type": "STRING",
+            "description": "Equals"
+          },
+          "kid": {
+            "type": "STRING",
+            "description": "Equals"
+          },
+          "voucherId": {
+            "type": "STRING",
+            "description": "List of IDs"
+          },
+          "customerId": {
+            "type": "STRING",
+            "description": "Equals"
+          }
+        },
+        "required": [
+          "invoiceDateFrom",
+          "invoiceDateTo"
+        ]
+      }
+    },
+    {
+      "name": "payment_invoice",
+      "description": "Update invoice. The invoice is updated with payment information. The amount is in the invoice\u2019s currency.\n\nAPI: PUT /invoice/{id}/:payment",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "id": {
+            "type": "INTEGER",
+            "description": "Invoice id"
+          },
+          "paymentDate": {
+            "type": "STRING",
+            "description": "Payment date"
+          },
+          "paymentTypeId": {
+            "type": "INTEGER",
+            "description": "PaymentType id"
+          },
+          "paidAmount": {
+            "type": "NUMBER",
+            "description": "Amount paid by the customer in the currency determined by the account of the paymentType"
+          },
+          "paidAmountCurrency": {
+            "type": "NUMBER",
+            "description": "Amount paid by customer in the invoice currency. Optional, but required for invoices in alternate currencies."
+          }
+        },
+        "required": [
+          "id",
+          "paidAmount",
+          "paymentDate",
+          "paymentTypeId"
+        ]
+      }
+    },
+    {
+      "name": "createCreditNote_invoice",
+      "description": "Creates a new Invoice representing a credit memo that nullifies the given invoice. Updates this invoice and any pre-existing inverse invoice.\n\nAPI: PUT /invoice/{id}/:createCreditNote",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "id": {
+            "type": "INTEGER",
+            "description": "Invoice id"
+          },
+          "date": {
+            "type": "STRING",
+            "description": "Credit note date"
+          },
+          "comment": {
+            "type": "STRING",
+            "description": "Comment"
+          },
+          "creditNoteEmail": {
+            "type": "STRING",
+            "description": "The credit note will not be sent if the customer send type is email and this field is empty"
+          },
+          "sendToCustomer": {
+            "type": "BOOLEAN",
+            "description": "Equals"
+          },
+          "sendType": {
+            "type": "STRING",
+            "enum": [
+              "EMAIL",
+              "EHF",
+              "EFAKTURA",
+              "AVTALEGIRO",
+              "VIPPS",
+              "PAPER",
+              "MANUAL",
+              "DIRECT",
+              "AUTOINVOICE_EHF_OUTBOUND",
+              "AUTOINVOICE_EHF_INCOMING",
+              "PEPPOL_EHF_INCOMING"
+            ],
+            "description": "Equals"
+          }
+        },
+        "required": [
+          "date",
+          "id"
+        ]
+      }
+    },
+    {
+      "name": "send_invoice",
+      "description": "Send invoice by ID and sendType. Optionally override email recipient.\n\nAPI: PUT /invoice/{id}/:send",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "id": {
+            "type": "INTEGER",
+            "description": "Element ID"
+          },
+          "sendType": {
+            "type": "STRING",
+            "enum": [
+              "EMAIL",
+              "EHF",
+              "AVTALEGIRO",
+              "EFAKTURA",
+              "VIPPS",
+              "PAPER",
+              "MANUAL"
+            ],
+            "description": "SendType"
+          },
+          "overrideEmailAddress": {
+            "type": "STRING",
+            "description": "Will override email address if sendType = EMAIL"
+          }
+        },
+        "required": [
+          "id",
+          "sendType"
+        ]
+      }
+    },
+    {
+      "name": "search_travelExpense",
+      "description": "Find travel expenses corresponding with sent data.\n\nAPI: GET /travelExpense",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "employeeId": {
+            "type": "STRING",
+            "description": "Equals"
+          },
+          "departmentId": {
+            "type": "STRING",
+            "description": "Equals"
+          },
+          "projectId": {
+            "type": "STRING",
+            "description": "Equals"
+          },
+          "projectManagerId": {
+            "type": "STRING",
+            "description": "Equals"
+          },
+          "departureDateFrom": {
+            "type": "STRING",
+            "description": "From and including"
+          },
+          "returnDateTo": {
+            "type": "STRING",
+            "description": "To and excluding"
+          },
+          "state": {
+            "type": "STRING",
+            "enum": [
+              "ALL",
+              "REJECTED",
+              "OPEN",
+              "APPROVED",
+              "SALARY_PAID",
+              "DELIVERED"
+            ],
+            "description": "category"
+          }
+        }
+      }
+    },
+    {
+      "name": "post_travelExpense",
+      "description": "Create travel expense.\n\nAPI: POST /travelExpense",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "project_id": {
+            "type": "INTEGER",
+            "description": "ID of the Project"
+          },
+          "employee_id": {
+            "type": "INTEGER",
+            "description": "ID of the Employee"
+          },
+          "department_id": {
+            "type": "INTEGER",
+            "description": "ID of the Department"
+          },
+          "vatType_id": {
+            "type": "INTEGER",
+            "description": "ID of the VatType"
+          },
+          "paymentCurrency_id": {
+            "type": "INTEGER",
+            "description": "ID of the Currency"
+          },
+          "travelDetails": {
+            "type": "OBJECT",
+            "properties": {
+              "isForeignTravel": {
+                "type": "BOOLEAN"
+              },
+              "isDayTrip": {
+                "type": "BOOLEAN"
+              },
+              "isCompensationFromRates": {
+                "type": "BOOLEAN"
+              },
+              "departureDate": {
+                "type": "STRING"
+              },
+              "returnDate": {
+                "type": "STRING"
+              },
+              "detailedJourneyDescription": {
+                "type": "STRING"
+              },
+              "departureFrom": {
+                "type": "STRING"
+              },
+              "destination": {
+                "type": "STRING"
+              },
+              "departureTime": {
+                "type": "STRING"
+              },
+              "returnTime": {
+                "type": "STRING"
+              },
+              "purpose": {
+                "type": "STRING"
+              }
+            },
+            "description": "TravelDetails details"
+          },
+          "isChargeable": {
+            "type": "BOOLEAN"
+          },
+          "travelAdvance": {
+            "type": "NUMBER"
+          },
+          "title": {
+            "type": "STRING"
+          },
+          "perDiemCompensations": {
+            "type": "ARRAY",
+            "description": "Link to individual per diem compensations.",
+            "items": {
+              "type": "OBJECT"
+            }
+          },
+          "costs": {
+            "type": "ARRAY",
+            "description": "Link to individual costs.",
+            "items": {
+              "type": "OBJECT"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "delete_travelExpense",
+      "description": "Delete travel expense.\n\nAPI: DELETE /travelExpense/{id}",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "id": {
+            "type": "INTEGER",
+            "description": "Element ID"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
+    },
+    {
+      "name": "post_travelExpense_cost",
+      "description": "Create cost.\n\nAPI: POST /travelExpense/cost",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "travelExpense_id": {
+            "type": "INTEGER",
+            "description": "ID of the TravelExpense"
+          },
+          "vatType_id": {
+            "type": "INTEGER",
+            "description": "ID of the VatType"
+          },
+          "currency_id": {
+            "type": "INTEGER",
+            "description": "ID of the Currency"
+          },
+          "costCategory_id": {
+            "type": "INTEGER",
+            "description": "ID of the TravelCostCategory"
+          },
+          "paymentType_id": {
+            "type": "INTEGER",
+            "description": "ID of the TravelPaymentType"
+          },
+          "category": {
+            "type": "STRING"
+          },
+          "comments": {
+            "type": "STRING"
+          },
+          "rate": {
+            "type": "NUMBER"
+          },
+          "amountCurrencyIncVat": {
+            "type": "NUMBER"
+          },
+          "amountNOKInclVAT": {
+            "type": "NUMBER"
+          },
+          "isChargeable": {
+            "type": "BOOLEAN"
+          },
+          "date": {
+            "type": "STRING"
+          },
+          "participants": {
+            "type": "ARRAY",
+            "description": "Link to individual expense participant.",
+            "items": {
+              "type": "OBJECT"
+            }
+          },
+          "predictions": {
+            "type": "OBJECT"
+          }
+        },
+        "required": [
+          "travelExpense_id"
+        ]
+      }
+    },
+    {
+      "name": "delete_travelExpense_cost",
+      "description": "Delete cost.\n\nAPI: DELETE /travelExpense/cost/{id}",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "id": {
+            "type": "INTEGER",
+            "description": "Element ID"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
+    },
+    {
+      "name": "search_travelExpense_paymentType",
+      "description": "Find payment type corresponding with sent data.\n\nAPI: GET /travelExpense/paymentType",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "id": {
+            "type": "STRING",
+            "description": "List of IDs"
+          },
+          "description": {
+            "type": "STRING",
+            "description": "Containing"
+          },
+          "isInactive": {
+            "type": "BOOLEAN",
+            "description": "Equals"
+          },
+          "showOnEmployeeExpenses": {
+            "type": "BOOLEAN",
+            "description": "Equals"
+          },
+          "query": {
+            "type": "STRING",
+            "description": "Containing"
+          }
+        }
+      }
+    },
+    {
+      "name": "search_travelExpense_costCategory",
+      "description": "Find cost category corresponding with sent data.\n\nAPI: GET /travelExpense/costCategory",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "id": {
+            "type": "STRING",
+            "description": "List of IDs"
+          },
+          "description": {
+            "type": "STRING",
+            "description": "Containing"
+          },
+          "isInactive": {
+            "type": "BOOLEAN",
+            "description": "Equals"
+          },
+          "showOnEmployeeExpenses": {
+            "type": "BOOLEAN",
+            "description": "Equals"
+          },
+          "query": {
+            "type": "STRING",
+            "description": "Equals"
+          }
+        }
+      }
+    },
+    {
+      "name": "search_project",
+      "description": "Find projects corresponding with sent data.\n\nAPI: GET /project",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "id": {
+            "type": "STRING",
+            "description": "List of IDs"
+          },
+          "name": {
+            "type": "STRING",
+            "description": "Containing"
+          },
+          "number": {
+            "type": "STRING",
+            "description": "Equals"
+          },
+          "isOffer": {
+            "type": "BOOLEAN",
+            "description": "Equals"
+          },
+          "projectManagerId": {
+            "type": "STRING",
+            "description": "List of IDs"
+          },
+          "customerAccountManagerId": {
+            "type": "STRING",
+            "description": "List of IDs"
+          },
+          "employeeInProjectId": {
+            "type": "STRING",
+            "description": "List of IDs"
+          },
+          "departmentId": {
+            "type": "STRING",
+            "description": "List of IDs"
+          },
+          "startDateFrom": {
+            "type": "STRING",
+            "description": "From and including"
+          },
+          "startDateTo": {
+            "type": "STRING",
+            "description": "To and excluding"
+          },
+          "endDateFrom": {
+            "type": "STRING",
+            "description": "From and including"
+          },
+          "endDateTo": {
+            "type": "STRING",
+            "description": "To and excluding"
+          },
+          "isClosed": {
+            "type": "BOOLEAN",
+            "description": "Equals"
+          },
+          "isFixedPrice": {
+            "type": "BOOLEAN",
+            "description": "Equals"
+          },
+          "customerId": {
+            "type": "STRING",
+            "description": "Equals"
+          },
+          "externalAccountsNumber": {
+            "type": "STRING",
+            "description": "Containing"
+          },
+          "includeRecentlyClosed": {
+            "type": "BOOLEAN",
+            "description": "If isClosed is false, include projects that have been closed within the last 3 months. Equals"
+          }
+        }
+      }
+    },
+    {
+      "name": "post_project",
+      "description": "Add new project.\n\nAPI: POST /project",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "name": {
+            "type": "STRING"
+          },
+          "number": {
+            "type": "STRING",
+            "description": "If NULL, a number is generated automatically."
+          },
+          "description": {
+            "type": "STRING"
+          },
+          "projectManager_id": {
+            "type": "INTEGER",
+            "description": "ID of the Employee"
+          },
+          "department_id": {
+            "type": "INTEGER",
+            "description": "ID of the Department"
+          },
+          "mainProject_id": {
+            "type": "INTEGER",
+            "description": "ID of the Project"
+          },
+          "startDate": {
+            "type": "STRING"
+          },
+          "endDate": {
+            "type": "STRING"
+          },
+          "customer_id": {
+            "type": "INTEGER",
+            "description": "ID of the Customer"
+          },
+          "isClosed": {
+            "type": "BOOLEAN"
+          },
+          "isInternal": {
+            "type": "BOOLEAN"
+          },
+          "isOffer": {
+            "type": "BOOLEAN",
+            "description": "If is Project Offer set to true, if is Project set to false. The default value is false."
+          },
+          "isFixedPrice": {
+            "type": "BOOLEAN",
+            "description": "Project is fixed price if set to true, hourly rate if set to false."
+          },
+          "projectCategory_id": {
+            "type": "INTEGER",
+            "description": "ID of the ProjectCategory"
+          },
+          "deliveryAddress_id": {
+            "type": "INTEGER",
+            "description": "ID of the Address"
+          },
+          "reference": {
+            "type": "STRING"
+          },
+          "externalAccountsNumber": {
+            "type": "STRING"
+          },
+          "vatType_id": {
+            "type": "INTEGER",
+            "description": "ID of the VatType"
+          },
+          "fixedprice": {
+            "type": "NUMBER",
+            "description": "Fixed price amount, in the project's currency."
+          },
+          "currency_id": {
+            "type": "INTEGER",
+            "description": "ID of the Currency"
+          },
+          "markUpOrderLines": {
+            "type": "NUMBER",
+            "description": "Set mark-up (%) for order lines."
+          },
+          "markUpFeesEarned": {
+            "type": "NUMBER",
+            "description": "Set mark-up (%) for fees earned."
+          },
+          "isPriceCeiling": {
+            "type": "BOOLEAN",
+            "description": "Set to true if an hourly rate project has a price ceiling."
+          },
+          "priceCeilingAmount": {
+            "type": "NUMBER",
+            "description": "Price ceiling amount, in the project's currency."
+          },
+          "contact_id": {
+            "type": "INTEGER",
+            "description": "ID of the Contact"
+          },
+          "attention_id": {
+            "type": "INTEGER",
+            "description": "ID of the Contact"
+          },
+          "invoiceComment": {
+            "type": "STRING",
+            "description": "Comment for project invoices"
+          },
+          "invoiceDueDate": {
+            "type": "INTEGER",
+            "description": "invoice due date"
+          },
+          "invoiceDueDateType": {
+            "type": "STRING",
+            "enum": [
+              "DAYS",
+              "MONTHS",
+              "RECURRING_DAY_OF_MONTH"
+            ],
+            "description": "Set the time unit of invoiceDueDate. The special case RECURRING_DAY_OF_MONTH enables the due date to be fixed to a specific day of the month, in this case the fixed due date will automatically be set as standard on all invoices created from this project. Note that when RECURRING_DAY_OF_MONTH is set, the due date will be set to the last day of month if \"31\" is set in invoicesDueIn."
+          },
+          "invoiceReceiverEmail": {
+            "type": "STRING",
+            "description": "Set the project's invoice receiver email. Will override the default invoice receiver email of any customer that may also be set in the request body."
+          },
+          "accessType": {
+            "type": "STRING",
+            "enum": [
+              "NONE",
+              "READ",
+              "WRITE"
+            ],
+            "description": "READ/WRITE access on project"
+          }
+        }
+      }
+    },
+    {
+      "name": "search_ledger_voucher",
+      "description": "Find vouchers corresponding with sent data.\n\nAPI: GET /ledger/voucher",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "id": {
+            "type": "STRING",
+            "description": "List of IDs"
+          },
+          "number": {
+            "type": "STRING",
+            "description": "List of IDs"
+          },
+          "numberFrom": {
+            "type": "INTEGER",
+            "description": "From and including"
+          },
+          "numberTo": {
+            "type": "INTEGER",
+            "description": "To and excluding"
+          },
+          "typeId": {
+            "type": "STRING",
+            "description": "List of IDs"
+          },
+          "dateFrom": {
+            "type": "STRING",
+            "description": "From and including"
+          },
+          "dateTo": {
+            "type": "STRING",
+            "description": "To and excluding"
+          }
+        },
+        "required": [
+          "dateFrom",
+          "dateTo"
+        ]
+      }
+    },
+    {
+      "name": "post_ledger_voucher",
+      "description": "Add new voucher. IMPORTANT: Also creates postings. Only the gross amounts will be used. Amounts should be rounded to 2 decimals.\n\nAPI: POST /ledger/voucher",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "sendToLedger": {
+            "type": "BOOLEAN",
+            "description": "Should the voucher be sent to ledger? Requires the \"Advanced Voucher\" permission."
+          },
+          "date": {
+            "type": "STRING"
+          },
+          "description": {
+            "type": "STRING"
+          },
+          "voucherType_id": {
+            "type": "INTEGER",
+            "description": "ID of the VoucherType"
+          },
+          "reverseVoucher_id": {
+            "type": "INTEGER",
+            "description": "ID of the Voucher"
+          },
+          "postings": {
+            "type": "ARRAY",
+            "description": "Array of Posting objects (each needs at minimum an 'id' field, or full object for creation)",
+            "items": {
+              "type": "OBJECT",
+              "description": "A single posting/journal line within the voucher",
+              "properties": {
+                "account_id": {
+                  "type": "INTEGER",
+                  "description": "Ledger account ID (required)"
+                },
+                "amountGross": {
+                  "type": "NUMBER",
+                  "description": "Gross amount incl. VAT in NOK (use positive for debit, negative for credit)"
+                },
+                "amountGrossCurrency": {
+                  "type": "NUMBER",
+                  "description": "Gross amount in foreign currency (if applicable)"
+                },
+                "currency_id": {
+                  "type": "INTEGER",
+                  "description": "Currency ID (omit for NOK)"
+                },
+                "vatType_id": {
+                  "type": "INTEGER",
+                  "description": "VAT type ID"
+                },
+                "description": {
+                  "type": "STRING",
+                  "description": "Posting description/text"
+                },
+                "date": {
+                  "type": "STRING",
+                  "description": "Posting date (YYYY-MM-DD), defaults to voucher date"
+                },
+                "customer_id": {
+                  "type": "INTEGER",
+                  "description": "Customer ID (for receivable postings)"
+                },
+                "supplier_id": {
+                  "type": "INTEGER",
+                  "description": "Supplier ID (for payable postings)"
+                },
+                "employee_id": {
+                  "type": "INTEGER",
+                  "description": "Employee ID"
+                },
+                "project_id": {
+                  "type": "INTEGER",
+                  "description": "Project ID"
+                },
+                "department_id": {
+                  "type": "INTEGER",
+                  "description": "Department ID"
+                },
+                "product_id": {
+                  "type": "INTEGER",
+                  "description": "Product ID"
+                }
+              }
+            }
+          },
+          "document_id": {
+            "type": "INTEGER",
+            "description": "ID of the Document"
+          },
+          "attachment_id": {
+            "type": "INTEGER",
+            "description": "ID of the Document"
+          },
+          "externalVoucherNumber": {
+            "type": "STRING",
+            "description": "External voucher number. Maximum 70 characters."
+          },
+          "ediDocument_id": {
+            "type": "INTEGER",
+            "description": "ID of the Document"
+          },
+          "vendorInvoiceNumber": {
+            "type": "STRING",
+            "description": "Vendor invoice number."
+          }
+        }
+      }
+    },
+    {
+      "name": "delete_ledger_voucher",
+      "description": "Delete voucher by ID.\n\nAPI: DELETE /ledger/voucher/{id}",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "id": {
+            "type": "INTEGER",
+            "description": "Element ID"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
+    },
+    {
+      "name": "search_ledger_account",
+      "description": "Find accounts corresponding with sent data.\n\nAPI: GET /ledger/account",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "id": {
+            "type": "STRING",
+            "description": "List of IDs"
+          },
+          "number": {
+            "type": "STRING",
+            "description": "List of IDs"
+          },
+          "isBankAccount": {
+            "type": "BOOLEAN",
+            "description": "Equals"
+          },
+          "isInactive": {
+            "type": "BOOLEAN",
+            "description": "Equals"
+          },
+          "isApplicableForSupplierInvoice": {
+            "type": "BOOLEAN",
+            "description": "Equals"
+          },
+          "ledgerType": {
+            "type": "STRING",
+            "enum": [
+              "GENERAL",
+              "CUSTOMER",
+              "VENDOR",
+              "EMPLOYEE",
+              "ASSET"
+            ],
+            "description": "Ledger type"
+          },
+          "isBalanceAccount": {
+            "type": "BOOLEAN",
+            "description": "Balance account"
+          },
+          "saftCode": {
+            "type": "STRING",
+            "description": "SAF-T code"
+          }
+        }
+      }
+    },
+    {
+      "name": "get_company",
+      "description": "Find company by ID.\n\nAPI: GET /company/{id}",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "id": {
+            "type": "INTEGER",
+            "description": "Element ID"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
+    },
+    {
+      "name": "get_company_withLoginAccess",
+      "description": "Returns client customers (with accountant/auditor relation) where the current user has login access (proxy login).\n\nAPI: GET /company/>withLoginAccess",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {}
+      }
+    },
+    {
+      "name": "search_invoice_paymentType",
+      "description": "Find payment type corresponding with sent data.\n\nAPI: GET /invoice/paymentType",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "id": {
+            "type": "STRING",
+            "description": "List of IDs"
+          },
+          "description": {
+            "type": "STRING",
+            "description": "Containing"
+          },
+          "query": {
+            "type": "STRING",
+            "description": "Containing"
+          }
+        }
+      }
+    },
+    {
+      "name": "grantEntitlementsByTemplate_employee_entitlement",
+      "description": "[BETA] Update employee entitlements.\n\nAPI: PUT /employee/entitlement/:grantEntitlementsByTemplate",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "employeeId": {
+            "type": "INTEGER",
+            "description": "Employee ID"
+          },
+          "template": {
+            "type": "STRING",
+            "enum": [
+              "NONE_PRIVILEGES",
+              "ALL_PRIVILEGES",
+              "INVOICING_MANAGER",
+              "PERSONELL_MANAGER",
+              "ACCOUNTANT",
+              "AUDITOR",
+              "DEPARTMENT_LEADER"
+            ],
+            "description": "Template"
+          }
+        },
+        "required": [
+          "employeeId",
+          "template"
+        ]
+      }
+    },
+    {
+      "name": "search_supplier",
+      "description": "Find suppliers corresponding with sent data.\n\nAPI: GET /supplier",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "id": {
+            "type": "STRING",
+            "description": "List of IDs"
+          },
+          "supplierNumber": {
+            "type": "STRING",
+            "description": "List of IDs"
+          },
+          "organizationNumber": {
+            "type": "STRING",
+            "description": "Equals"
+          },
+          "email": {
+            "type": "STRING",
+            "description": "Equals"
+          },
+          "invoiceEmail": {
+            "type": "STRING",
+            "description": "Equals"
+          },
+          "isInactive": {
+            "type": "BOOLEAN",
+            "description": "Equals"
+          },
+          "accountManagerId": {
+            "type": "STRING",
+            "description": "List of IDs"
+          },
+          "changedSince": {
+            "type": "STRING",
+            "description": "Only return elements that have changed since this date and time"
+          },
+          "isWholesaler": {
+            "type": "BOOLEAN",
+            "description": "Equals"
+          },
+          "showProducts": {
+            "type": "BOOLEAN",
+            "description": "Equals"
+          }
+        }
+      }
+    },
+    {
+      "name": "post_supplier",
+      "description": "Create supplier. Related supplier addresses may also be created.\n\nAPI: POST /supplier",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "name": {
+            "type": "STRING"
+          },
+          "organizationNumber": {
+            "type": "STRING"
+          },
+          "supplierNumber": {
+            "type": "INTEGER"
+          },
+          "email": {
+            "type": "STRING"
+          },
+          "bankAccounts": {
+            "type": "ARRAY",
+            "description": "[DEPRECATED] List of the bank account numbers for this supplier. Norwegian bank account numbers only.",
+            "items": {
+              "type": "STRING"
+            }
+          },
+          "invoiceEmail": {
+            "type": "STRING"
+          },
+          "phoneNumber": {
+            "type": "STRING"
+          },
+          "phoneNumberMobile": {
+            "type": "STRING"
+          },
+          "description": {
+            "type": "STRING"
+          },
+          "isPrivateIndividual": {
+            "type": "BOOLEAN"
+          },
+          "postalAddress_id": {
+            "type": "INTEGER",
+            "description": "ID of the Address"
+          },
+          "physicalAddress_id": {
+            "type": "INTEGER",
+            "description": "ID of the Address"
+          },
+          "deliveryAddress_id": {
+            "type": "INTEGER",
+            "description": "ID of the DeliveryAddress"
+          },
+          "category1_id": {
+            "type": "INTEGER",
+            "description": "ID of the CustomerCategory"
+          },
+          "category2_id": {
+            "type": "INTEGER",
+            "description": "ID of the CustomerCategory"
+          },
+          "category3_id": {
+            "type": "INTEGER",
+            "description": "ID of the CustomerCategory"
+          },
+          "currency_id": {
+            "type": "INTEGER",
+            "description": "ID of the Currency"
+          },
+          "ledgerAccount_id": {
+            "type": "INTEGER",
+            "description": "ID of the Account"
+          },
+          "language": {
+            "type": "STRING",
+            "enum": [
+              "NO",
+              "EN"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "post_incomingInvoice",
+      "description": "[BETA] create an invoice\n\nAPI: POST /incomingInvoice",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "sendTo": {
+            "type": "STRING",
+            "description": "'inbox' | 'nonPosted' | 'ledger' | null. When null: defaults to 'inbox'."
+          },
+          "invoiceHeader": {
+            "type": "OBJECT",
+            "properties": {
+              "vendorId": {
+                "type": "INTEGER",
+                "description": "The Incoming invoice vendor"
+              },
+              "invoiceDate": {
+                "type": "STRING",
+                "description": "The date the invoice was issued."
+              },
+              "dueDate": {
+                "type": "STRING",
+                "description": "The date the invoice is due."
+              },
+              "currencyId": {
+                "type": "INTEGER",
+                "description": "Currency used in the invoice."
+              },
+              "invoiceAmount": {
+                "type": "NUMBER",
+                "description": "Amount including VAT."
+              },
+              "description": {
+                "type": "STRING",
+                "description": "Description of the invoice."
+              },
+              "invoiceNumber": {
+                "type": "STRING",
+                "description": "Number of the invoice"
+              },
+              "voucherTypeId": {
+                "type": "INTEGER",
+                "description": "Voucher type of the invoice."
+              },
+              "purchaseOrderId": {
+                "type": "INTEGER",
+                "description": "The purchase order that the invoice belongs to."
+              }
+            },
+            "description": "IncomingInvoiceHeaderExternalWrite details"
+          },
+          "orderLines": {
+            "type": "ARRAY",
+            "description": "Array of IncomingOrderLineExternalWrite objects (each needs at minimum an 'id' field, or full object for creation)",
+            "items": {
+              "type": "OBJECT",
+              "description": "A single line on the supplier invoice",
+              "properties": {
+                "externalId": {
+                  "type": "STRING",
+                  "description": "REQUIRED. Unique external ID for this line (use 'line1', 'line2', etc.)"
+                },
+                "accountId": {
+                  "type": "INTEGER",
+                  "description": "Ledger account ID (e.g. 6300 for office services)"
+                },
+                "vatTypeId": {
+                  "type": "INTEGER",
+                  "description": "VAT type ID (5=25% incoming/inng\u00e5ende MVA, 6=exempt, 31=15% food)"
+                },
+                "amountInclVat": {
+                  "type": "NUMBER",
+                  "description": "Line amount INCLUDING VAT in invoice currency"
+                },
+                "description": {
+                  "type": "STRING",
+                  "description": "Line description"
+                },
+                "count": {
+                  "type": "NUMBER",
+                  "description": "Quantity (default 1)"
+                },
+                "departmentId": {
+                  "type": "INTEGER",
+                  "description": "Department ID (optional)"
+                },
+                "projectId": {
+                  "type": "INTEGER",
+                  "description": "Project ID (optional)"
+                },
+                "productId": {
+                  "type": "INTEGER",
+                  "description": "Product ID (optional)"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    ,
+    {
+      "name": "search_employee_employment",
+      "description": "Find employments.\n\nAPI: GET /employee/employment",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "employeeId": {
+            "type": "STRING",
+            "description": "List of IDs"
+          },
+          "fields": {
+            "type": "STRING",
+            "description": "Fields filter"
+          },
+          "from": {
+            "type": "STRING",
+            "description": "From index"
+          },
+          "count": {
+            "type": "STRING",
+            "description": "Number of elements to return"
+          },
+          "sorting": {
+            "type": "STRING",
+            "description": "Sorting pattern"
+          }
+        }
+      }
+    },
+    {
+      "name": "post_employee_employment",
+      "description": "Create one employment.\n\nAPI: POST /employee/employment",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "employee_id": {
+            "type": "INTEGER",
+            "description": "ID of the Employee"
+          },
+          "startDate": {
+            "type": "STRING",
+            "description": "Start date (YYYY-MM-DD)"
+          },
+          "endDate": {
+            "type": "STRING",
+            "description": "End date (YYYY-MM-DD)"
+          },
+          "employmentId": {
+            "type": "STRING",
+            "description": "Employment ID (external reference)"
+          },
+          "isMainEmployer": {
+            "type": "BOOLEAN",
+            "description": "Whether this is the main employer"
+          },
+          "division_id": {
+            "type": "INTEGER",
+            "description": "ID of the Division"
+          },
+          "taxDeductionCode": {
+            "type": "STRING",
+            "description": "Tax deduction code"
+          }
+        },
+        "required": [
+          "employee_id",
+          "startDate"
+        ]
+      }
+    },
+    {
+      "name": "put_employee_employment",
+      "description": "Update an employment.\n\nAPI: PUT /employee/employment/{id}",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "id": {
+            "type": "INTEGER",
+            "description": "Element ID"
+          },
+          "version": {
+            "type": "INTEGER",
+            "description": "Object version for optimistic locking"
+          },
+          "employee_id": {
+            "type": "INTEGER",
+            "description": "ID of the Employee"
+          },
+          "startDate": {
+            "type": "STRING",
+            "description": "Start date (YYYY-MM-DD)"
+          },
+          "endDate": {
+            "type": "STRING",
+            "description": "End date (YYYY-MM-DD)"
+          },
+          "employmentId": {
+            "type": "STRING",
+            "description": "Employment ID (external reference)"
+          },
+          "isMainEmployer": {
+            "type": "BOOLEAN",
+            "description": "Whether this is the main employer"
+          },
+          "division_id": {
+            "type": "INTEGER",
+            "description": "ID of the Division"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
+    },
+    {
+      "name": "search_employee_employment_details",
+      "description": "Find employment details.\n\nAPI: GET /employee/employment/details",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "employmentId": {
+            "type": "STRING",
+            "description": "List of IDs"
+          },
+          "fields": {
+            "type": "STRING",
+            "description": "Fields filter"
+          },
+          "from": {
+            "type": "STRING",
+            "description": "From index"
+          },
+          "count": {
+            "type": "STRING",
+            "description": "Number of elements to return"
+          },
+          "sorting": {
+            "type": "STRING",
+            "description": "Sorting pattern"
+          }
+        }
+      }
+    },
+    {
+      "name": "post_employee_employment_details",
+      "description": "Create employment details.\n\nAPI: POST /employee/employment/details",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "employment_id": {
+            "type": "INTEGER",
+            "description": "ID of the Employment"
+          },
+          "date": {
+            "type": "STRING",
+            "description": "Date (YYYY-MM-DD)"
+          },
+          "employmentType": {
+            "type": "STRING",
+            "enum": [
+              "ORDINARY",
+              "MARITIME",
+              "FREELANCE",
+              "NOT_CHOSEN"
+            ],
+            "description": "Employment type"
+          },
+          "remunerationType": {
+            "type": "STRING",
+            "enum": [
+              "MONTHLY_WAGE",
+              "HOURLY_WAGE",
+              "COMMISION_PERCENTAGE",
+              "FEE",
+              "NOT_CHOSEN",
+              "PIECEWORK_WAGE"
+            ],
+            "description": "Remuneration type"
+          },
+          "workingHoursScheme": {
+            "type": "STRING",
+            "enum": [
+              "NOT_SHIFT",
+              "ROUND_THE_CLOCK",
+              "SHIFT_365",
+              "OFFSHORE_336",
+              "CONTINUOUS",
+              "OTHER_SHIFT"
+            ],
+            "description": "Working hours scheme"
+          },
+          "occupationCode_id": {
+            "type": "INTEGER",
+            "description": "ID of the OccupationCode"
+          },
+          "percentageOfFullTimeEquivalent": {
+            "type": "NUMBER",
+            "description": "Percentage of full-time equivalent (0-100)"
+          },
+          "annualSalary": {
+            "type": "NUMBER",
+            "description": "Annual salary"
+          },
+          "hourlyWage": {
+            "type": "NUMBER",
+            "description": "Hourly wage"
+          }
+        },
+        "required": [
+          "employment_id",
+          "date"
+        ]
+      }
+    },
+    {
+      "name": "put_employee_employment_details",
+      "description": "Update employment details.\n\nAPI: PUT /employee/employment/details/{id}",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "id": {
+            "type": "INTEGER",
+            "description": "Element ID"
+          },
+          "version": {
+            "type": "INTEGER",
+            "description": "Object version for optimistic locking"
+          },
+          "employment_id": {
+            "type": "INTEGER",
+            "description": "ID of the Employment"
+          },
+          "date": {
+            "type": "STRING",
+            "description": "Date (YYYY-MM-DD)"
+          },
+          "employmentType": {
+            "type": "STRING",
+            "description": "Employment type"
+          },
+          "remunerationType": {
+            "type": "STRING",
+            "description": "Remuneration type"
+          },
+          "workingHoursScheme": {
+            "type": "STRING",
+            "description": "Working hours scheme"
+          },
+          "occupationCode_id": {
+            "type": "INTEGER",
+            "description": "ID of the OccupationCode"
+          },
+          "percentageOfFullTimeEquivalent": {
+            "type": "NUMBER",
+            "description": "Percentage of full-time equivalent (0-100)"
+          },
+          "annualSalary": {
+            "type": "NUMBER",
+            "description": "Annual salary"
+          },
+          "hourlyWage": {
+            "type": "NUMBER",
+            "description": "Hourly wage"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
+    },
+    {
+      "name": "search_employee_employment_occupationCode",
+      "description": "Search occupation codes.\n\nAPI: GET /employee/employment/occupationCode",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "id": {
+            "type": "STRING",
+            "description": "List of IDs"
+          },
+          "nameNO": {
+            "type": "STRING",
+            "description": "Containing"
+          },
+          "code": {
+            "type": "STRING",
+            "description": "Containing"
+          },
+          "fields": {
+            "type": "STRING",
+            "description": "Fields filter"
+          },
+          "from": {
+            "type": "STRING",
+            "description": "From index"
+          },
+          "count": {
+            "type": "STRING",
+            "description": "Number of elements to return"
+          },
+          "sorting": {
+            "type": "STRING",
+            "description": "Sorting pattern"
+          }
+        }
+      }
+    },
+    {
+      "name": "post_ledger_accountingDimensionName",
+      "description": "Create an accounting dimension name.\n\nAPI: POST /ledger/accountingDimensionName",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "dimensionName": {
+            "type": "STRING",
+            "description": "Name of the dimension"
+          },
+          "description": {
+            "type": "STRING",
+            "description": "Description of the dimension"
+          },
+          "active": {
+            "type": "BOOLEAN",
+            "description": "Whether the dimension is active"
+          }
+        },
+        "required": [
+          "dimensionName"
+        ]
+      }
+    },
+    {
+      "name": "search_ledger_accountingDimensionName",
+      "description": "Search accounting dimension names.\n\nAPI: GET /ledger/accountingDimensionName/search",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "dimensionIndex": {
+            "type": "INTEGER",
+            "description": "Dimension index (1-3)"
+          },
+          "activeOnly": {
+            "type": "BOOLEAN",
+            "description": "Only active dimensions"
+          },
+          "onlyDimensionsWithActiveValues": {
+            "type": "BOOLEAN",
+            "description": "Only dimensions that have active values"
+          },
+          "fields": {
+            "type": "STRING",
+            "description": "Fields filter"
+          },
+          "from": {
+            "type": "STRING",
+            "description": "From index"
+          },
+          "count": {
+            "type": "STRING",
+            "description": "Number of elements to return"
+          },
+          "sorting": {
+            "type": "STRING",
+            "description": "Sorting pattern"
+          }
+        }
+      }
+    },
+    {
+      "name": "post_ledger_accountingDimensionValue",
+      "description": "Create an accounting dimension value.\n\nAPI: POST /ledger/accountingDimensionValue",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "displayName": {
+            "type": "STRING",
+            "description": "Display name of the value"
+          },
+          "dimensionIndex": {
+            "type": "INTEGER",
+            "description": "Dimension index (1-3)"
+          },
+          "number": {
+            "type": "STRING",
+            "description": "Value number/code"
+          },
+          "active": {
+            "type": "BOOLEAN",
+            "description": "Whether the value is active"
+          },
+          "showInVoucherRegistration": {
+            "type": "BOOLEAN",
+            "description": "Show in voucher registration"
+          },
+          "position": {
+            "type": "INTEGER",
+            "description": "Sort position"
+          }
+        },
+        "required": [
+          "displayName",
+          "dimensionIndex"
+        ]
+      }
+    },
+    {
+      "name": "search_ledger_accountingDimensionValue",
+      "description": "Search accounting dimension values.\n\nAPI: GET /ledger/accountingDimensionValue/search",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "dimensionIndex": {
+            "type": "INTEGER",
+            "description": "Dimension index (1-3)"
+          },
+          "activeOnly": {
+            "type": "BOOLEAN",
+            "description": "Only active values"
+          },
+          "showInVoucherRegistration": {
+            "type": "BOOLEAN",
+            "description": "Only values shown in voucher registration"
+          },
+          "fields": {
+            "type": "STRING",
+            "description": "Fields filter"
+          },
+          "from": {
+            "type": "STRING",
+            "description": "From index"
+          },
+          "count": {
+            "type": "STRING",
+            "description": "Number of elements to return"
+          },
+          "sorting": {
+            "type": "STRING",
+            "description": "Sorting pattern"
+          }
+        }
+      }
+    },
+    {
+      "name": "createReminder_invoice",
+      "description": "Create invoice reminder (purring).\n\nAPI: PUT /invoice/{id}/:createReminder",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "id": {
+            "type": "INTEGER",
+            "description": "Invoice ID"
+          },
+          "type": {
+            "type": "STRING",
+            "enum": [
+              "SOFT_REMINDER",
+              "REMINDER",
+              "NOTICE_OF_DEBT_COLLECTION",
+              "DEBT_COLLECTION"
+            ],
+            "description": "Reminder type"
+          },
+          "date": {
+            "type": "STRING",
+            "description": "Reminder date (YYYY-MM-DD)"
+          },
+          "includeCharge": {
+            "type": "BOOLEAN",
+            "description": "Include reminder charge (purregebyr)"
+          },
+          "includeInterest": {
+            "type": "BOOLEAN",
+            "description": "Include interest"
+          },
+          "dispatchType": {
+            "type": "STRING",
+            "enum": [
+              "EMAIL",
+              "SMS",
+              "NETS_PRINT",
+              "OWN_PRINTER",
+              "SFTP",
+              "API"
+            ],
+            "description": "Dispatch method"
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "date"
+        ]
+      }
+    }
+  ],
+  "_meta": {
+    "count": 50
+  }
+}
