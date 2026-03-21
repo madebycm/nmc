@@ -382,6 +382,7 @@ def ensemble_predict(
     context: np.ndarray | None = None,
     observations_by_seed: dict[int, list[dict]] | None = None,
     initial_grids: list | None = None,
+    nn_weight_nudge: float = 0.0,
 ) -> np.ndarray:
     """Full ensemble: NN (v2+v3+v4) + Dirichlet + Empirical Anchoring.
 
@@ -413,22 +414,40 @@ def ensemble_predict(
         blended = dir_pred
         log.info("Using Dirichlet-only (no NN available)")
     else:
-        # Harness v2 optimized (2026-03-20 20:30):
-        # nn=0.60, replay=0, v2=0.15, v3=0.70, zt=[0.05, 0.12, 0.25]
-        # Uses linear ramp (matching harness _compute_nn_weight exactly)
-        NN_MAX = 0.65
-        t1, t2, t3 = 0.05, 0.12, 0.25
+        # Inverted-U NN weight curve (saturday.md directive):
+        # NN peaks at moderate z, decays earlier and deeper for healthy z
+        # Live evidence: R13 moderate=92.3 (good), R11/R14 healthy≈80 (weak), R12=29 (OOD)
+        # Don't push peak above 0.65 without OOF evidence
+        NN_PEAK = 0.65      # max NN weight at moderate z (proven at R13)
+        NN_HEALTHY = 0.20   # lower floor for healthy (was 0.30 — less NN on healthy)
+        t1, t2, t3 = 0.05, 0.12, 0.25  # ramp-up thresholds
+        t4 = 0.35           # earlier healthy dropoff (was 0.40)
+        t5 = 0.60           # reach floor faster (was 0.70)
         if z < t1:
             nn_weight = 0.0
             log.info(f"Catastrophic z={z:.3f} — pure Dirichlet (0% NN)")
         elif z < t2:
             frac = (z - t1) / (t2 - t1)
-            nn_weight = NN_MAX * 0.4 * frac
+            nn_weight = NN_PEAK * 0.4 * frac
         elif z < t3:
             frac = (z - t2) / (t3 - t2)
-            nn_weight = NN_MAX * (0.4 + 0.4 * frac)
+            nn_weight = NN_PEAK * (0.4 + 0.4 * frac)
+        elif z < t4:
+            nn_weight = NN_PEAK
         else:
-            nn_weight = NN_MAX
+            # Healthy dropoff: linear decrease from NN_PEAK to NN_HEALTHY
+            frac = min((z - t4) / (t5 - t4), 1.0)
+            nn_weight = NN_PEAK * (1.0 - frac) + NN_HEALTHY * frac
+
+        # Per-seed asymmetric nudge: can decrease NN weight more than increase
+        # Avoiding a bad healthy seed > over-promoting a good one
+        if nn_weight_nudge != 0.0 and nn_weight > 0:
+            nn_weight_before = nn_weight
+            nudge = 0.30 * nn_weight_nudge  # scale factor
+            nn_weight = np.clip(nn_weight + nudge, nn_weight - 0.15, nn_weight + 0.10)
+            nn_weight = max(0.0, min(nn_weight, NN_PEAK))
+            if abs(nn_weight - nn_weight_before) > 0.01:
+                log.info(f"Per-seed nudge: nn_weight {nn_weight_before:.3f} -> {nn_weight:.3f}")
 
         if nn_weight > 0:
             dir_weight = 1.0 - nn_weight
@@ -454,12 +473,33 @@ def predict_for_seed(
     context: np.ndarray | None = None,
     observations_by_seed: dict[int, list[dict]] | None = None,
     initial_grids: list | None = None,
+    seed_idx: int | None = None,
 ) -> np.ndarray:
-    """Main entry point: best available prediction for one seed."""
+    """Main entry point: best available prediction for one seed.
+
+    If seed_idx provided + observations_by_seed available, computes per-seed
+    z and applies asymmetric blend nudge (can decrease more than increase).
+    """
     calibration = load_calibration()
+
+    # Compute per-seed z nudge
+    z_nudge = 0.0
+    if seed_idx is not None and observations_by_seed and initial_grids:
+        try:
+            z_round = estimate_z_from_context(context) if context is not None else 0.283
+            # Seed-local z from this seed's observations only
+            seed_obs = observations_by_seed.get(seed_idx, observations)
+            seed_ctx = compute_context_vector({0: seed_obs}, [initial_grids[seed_idx] if seed_idx < len(initial_grids) else initial_grid])
+            z_seed = estimate_z_from_context(seed_ctx)
+            z_nudge = z_seed - z_round
+            log.info(f"Seed {seed_idx}: z_seed={z_seed:.3f}, z_round={z_round:.3f}, nudge={z_nudge:+.3f}")
+        except Exception as e:
+            log.warning(f"Per-seed z failed: {e}")
+
     return ensemble_predict(
         initial_grid, observations, calibration,
         context=context,
         observations_by_seed=observations_by_seed,
         initial_grids=initial_grids,
+        nn_weight_nudge=z_nudge,
     )

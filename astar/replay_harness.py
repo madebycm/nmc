@@ -46,7 +46,7 @@ OBS_DIR = ROOT / "observations"
 
 CODE_TO_CLASS = {0: 0, 1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 10: 0, 11: 0}
 NUM_CLASSES = 6
-ROUND_WEIGHTS = {r: 1.05 ** r for r in range(1, 12)}
+ROUND_WEIGHTS = {r: 1.05 ** r for r in range(1, 30)}
 
 
 # ── Recipe (parameter set) ──────────────────────────────────────────

@@ -1,7 +1,7 @@
 """
 NM i AI 2026 - NorgesGruppen Data: Object Detection + Classification
-Two-stage pipeline: ONNX YOLOv8x 1280px detection → timm EVA-02 hybrid classifier
-Hybrid: confidence-routed class-mean kNN + supervised softmax
+Two-stage pipeline: ONNX YOLOv8x 1280px detection → timm EVA-02 softmax classifier
+v5.2: Top-K + 2-view classification TTA (orig + scale224 logit averaging)
 Author: bergen@j6x.com
 """
 import argparse
@@ -19,8 +19,6 @@ import onnxruntime as ort
 SCRIPT_DIR = Path(__file__).parent
 DETECTOR_PATH = SCRIPT_DIR / "detector.onnx"
 CLASSIFIER_PATH = SCRIPT_DIR / "classifier.safetensors"
-REF_EMB_PATH = SCRIPT_DIR / "ref_embeddings_finetuned.npy"
-REF_LABELS_PATH = SCRIPT_DIR / "ref_labels.json"
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -28,11 +26,6 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 CLIP_MEAN = (0.48145466, 0.4578275, 0.40821073)
 CLIP_STD = (0.26862954, 0.26130258, 0.27577711)
 NUM_CLASSES = 356
-
-# kNN config (sweep winner: cmean T=0.15 a=0.45 route conf<0.5)
-KNN_ROUTE_THRESH = 0.5   # route crops with softmax conf below this
-KNN_ALPHA = 0.45          # softmax weight when routed (0.55 for kNN)
-KNN_TEMP = 0.15           # temperature for kNN class-mean scores
 
 
 def load_detector():
@@ -52,23 +45,6 @@ def load_classifier():
     model.train(False)
     model = model.half().to(DEVICE)
     return model
-
-
-def load_ref_embeddings():
-    """Load reference embeddings and precompute per-class mean similarities."""
-    emb = np.load(str(REF_EMB_PATH))  # [6606, 768] FP16
-    with open(str(REF_LABELS_PATH)) as f:
-        labels = json.load(f)
-    ref_emb = torch.from_numpy(emb).float().to(DEVICE)
-    ref_labels = torch.tensor(labels, dtype=torch.long, device=DEVICE)
-
-    # Precompute per-class ref counts for class-mean aggregation
-    ref_counts = torch.zeros(NUM_CLASSES, device=DEVICE)
-    for c in range(NUM_CLASSES):
-        ref_counts[c] = (ref_labels == c).sum()
-    ref_counts = ref_counts.clamp(min=1)
-
-    return ref_emb, ref_labels, ref_counts
 
 
 def letterbox(img, new_shape=1280):
@@ -183,10 +159,10 @@ def nms(boxes, scores, iou_threshold):
     return keep
 
 
-def _prepare_crop(crop):
-    """Resize(256, bicubic) → CenterCrop(224) → float tensor."""
+def _prepare_crop(crop, resize_short_edge=256):
+    """Resize(short_edge, bicubic) → CenterCrop(224) → float tensor."""
     w, h = crop.size
-    scale = 256 / min(w, h)
+    scale = resize_short_edge / min(w, h)
     nw, nh = round(w * scale), round(h * scale)
     img = crop.resize((nw, nh), Image.BICUBIC)
     left = (nw - 224) // 2
@@ -197,13 +173,19 @@ def _prepare_crop(crop):
     ).permute(2, 0, 1)  # HWC -> CHW
 
 
-@torch.no_grad()
-def classify_crops_hybrid(classifier, crops, ref_emb, ref_labels, ref_counts):
-    """Confidence-routed hybrid: softmax for confident crops, class-mean kNN blend for uncertain.
+TOP_K = 15           # Submit top-K category predictions per detection
+SCORE_DECAY = 0.7    # Score decay factor per rank
+TEMPERATURE = 0.9    # Softmax temperature (OOF-tuned)
+ALPHA = 0.4          # Classification weight in additive fusion
 
-    When softmax conf >= 0.5: pure supervised prediction.
-    When softmax conf < 0.5: blend 0.45*softmax + 0.55*kNN (class-mean, T=0.15).
-    """
+
+TTA_VIEWS = [256, 224]  # resize_short_edge values for classification TTA
+
+
+@torch.no_grad()
+def classify_crops(classifier, crops):
+    """Classify crops with 2-view TTA (orig 256 + scale224), logit averaging.
+    v5.2: OOF-validated +0.001 blend on top of v5.1's top-K."""
     if len(crops) == 0:
         return [], []
 
@@ -211,51 +193,31 @@ def classify_crops_hybrid(classifier, crops, ref_emb, ref_labels, ref_counts):
     std_t = torch.tensor(CLIP_STD, dtype=torch.float16).view(1, 3, 1, 1).to(DEVICE)
 
     batch_size = 64
-    all_cats = []
-    all_confs = []
+    # Accumulate logits across TTA views
+    all_logits = None
 
-    for i in range(0, len(crops), batch_size):
-        batch_crops = crops[i:i + batch_size]
-        tensors = [_prepare_crop(c) for c in batch_crops]
-        batch = torch.stack(tensors).half().to(DEVICE)
-        batch = (batch - mean_t) / std_t
-        B = batch.shape[0]
+    for resize_edge in TTA_VIEWS:
+        view_logits = []
+        for i in range(0, len(crops), batch_size):
+            batch_crops = crops[i:i + batch_size]
+            tensors = [_prepare_crop(c, resize_short_edge=resize_edge) for c in batch_crops]
+            batch = torch.stack(tensors).half().to(DEVICE)
+            batch = (batch - mean_t) / std_t
+            features = classifier.forward_features(batch)
+            logits = classifier.forward_head(features)
+            view_logits.append(logits.float())
 
-        # Single forward pass: features + logits
-        features = classifier.forward_features(batch)        # [B, tokens, 768]
-        logits = classifier.forward_head(features)            # [B, 356]
+        view_all = torch.cat(view_logits, dim=0)  # [N, NUM_CLASSES]
+        if all_logits is None:
+            all_logits = view_all
+        else:
+            all_logits = torch.maximum(all_logits, view_all)
 
-        # Softmax probabilities
-        p_softmax = torch.softmax(logits.float(), dim=1)      # [B, 356]
-        confs_soft, _ = p_softmax.max(dim=1)                   # [B]
+    # Max-logit aggregation, then temperature-scaled softmax
+    probs = torch.softmax(all_logits / TEMPERATURE, dim=1)
+    topk_confs, topk_cats = probs.topk(TOP_K, dim=1)
 
-        # kNN: CLS token → L2 normalize → cosine sim → class-mean aggregation
-        cls_feat = features[:, 0].float()                      # [B, 768]
-        cls_feat = cls_feat / (cls_feat.norm(dim=1, keepdim=True) + 1e-8)
-        sims = cls_feat @ ref_emb.T                            # [B, 6606]
-
-        # Class-mean: sum sims per class, divide by class count
-        class_sum = torch.zeros(B, NUM_CLASSES, device=DEVICE)
-        expanded_labels = ref_labels.unsqueeze(0).expand(B, -1)  # [B, 6606]
-        class_sum.scatter_add_(1, expanded_labels, sims)
-        class_mean = class_sum / ref_counts.unsqueeze(0)        # [B, 356]
-
-        # kNN probability via softmax with temperature
-        p_knn = torch.softmax(class_mean / KNN_TEMP, dim=1)    # [B, 356]
-
-        # Confidence routing
-        route_mask = (confs_soft < KNN_ROUTE_THRESH).unsqueeze(1)  # [B, 1]
-        p_final = torch.where(
-            route_mask,
-            KNN_ALPHA * p_softmax + (1 - KNN_ALPHA) * p_knn,
-            p_softmax,
-        )
-
-        confs, preds = p_final.max(dim=1)
-        all_cats.extend(preds.cpu().tolist())
-        all_confs.extend(confs.cpu().tolist())
-
-    return all_cats, all_confs
+    return topk_cats.cpu().tolist(), topk_confs.cpu().tolist()
 
 
 def main():
@@ -267,7 +229,6 @@ def main():
     # Load models
     detector = load_detector()
     classifier = load_classifier()
-    ref_emb, ref_labels, ref_counts = load_ref_embeddings()
 
     det_input_name = detector.get_inputs()[0].name
     predictions = []
@@ -301,7 +262,7 @@ def main():
             boxes = boxes[top_idx]
             det_scores = det_scores[top_idx]
 
-        # Stage 2: Crop and classify with hybrid softmax + kNN
+        # Stage 2: Crop and classify (pure softmax, no kNN)
         crops = []
         valid_indices = []
         for idx, box in enumerate(boxes):
@@ -313,38 +274,48 @@ def main():
             valid_indices.append(idx)
 
         if len(crops) > 0:
-            cat_ids, cls_confs = classify_crops_hybrid(
-                classifier, crops, ref_emb, ref_labels, ref_counts
-            )
+            cat_ids, cls_confs = classify_crops(classifier, crops)
         else:
             cat_ids, cls_confs = [], []
 
-        # Score: use det_score for ranking (det is 70% of total score,
-        # and maxDets=100 means ranking quality dominates).
-        # Fused score lets bad classifications demote good detections.
+        # Score: top-K category predictions with decayed scores
+        # v5.1: OOF-validated +0.012 improvement over single-category predictions
+        img_preds = []
         for j, idx in enumerate(valid_indices):
             det_s = float(det_scores[idx])
-            predictions.append({
-                "image_id": image_id,
-                "category_id": int(cat_ids[j]) if j < len(cat_ids) else 0,
-                "bbox": [
-                    round(float(boxes[idx][0]), 1),
-                    round(float(boxes[idx][1]), 1),
-                    round(float(boxes[idx][2]), 1),
-                    round(float(boxes[idx][3]), 1),
-                ],
-                "score": round(det_s, 4),
-            })
+            bbox = [
+                round(float(boxes[idx][0]), 1),
+                round(float(boxes[idx][1]), 1),
+                round(float(boxes[idx][2]), 1),
+                round(float(boxes[idx][3]), 1),
+            ]
+            if j < len(cat_ids):
+                topk_c = cat_ids[j]    # list of K category ids
+                topk_s = cls_confs[j]  # list of K confidences
+                for rank in range(len(topk_c)):
+                    cls_s = float(topk_s[rank])
+                    score = (1 - ALPHA) * det_s + ALPHA * cls_s
+                    if rank > 0:
+                        score *= SCORE_DECAY ** rank
+                    if score < 0.01:
+                        break
+                    img_preds.append({
+                        "image_id": image_id,
+                        "category_id": int(topk_c[rank]),
+                        "bbox": bbox,
+                        "score": round(score, 4),
+                    })
+            else:
+                img_preds.append({
+                    "image_id": image_id,
+                    "category_id": 0,
+                    "bbox": bbox,
+                    "score": round(det_s, 4),
+                })
 
-    # Keep only top 100 per image (matches COCO maxDets=100 eval cap)
-    from collections import defaultdict
-    by_image = defaultdict(list)
-    for p in predictions:
-        by_image[p["image_id"]].append(p)
-    predictions = []
-    for img_id in sorted(by_image):
-        preds = sorted(by_image[img_id], key=lambda x: x["score"], reverse=True)
-        predictions.extend(preds[:100])
+        # Keep top predictions per image (safe output size, COCO maxDets=100)
+        img_preds.sort(key=lambda p: p["score"], reverse=True)
+        predictions.extend(img_preds[:500])
 
     # Write output
     Path(args.output).parent.mkdir(parents=True, exist_ok=True)

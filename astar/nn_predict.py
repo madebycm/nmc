@@ -379,32 +379,55 @@ def predict(
 ) -> np.ndarray | None:
     """Multi-model ensemble prediction with TTA.
 
-    Uses v4 (context-conditioned U-Net) if available and context provided,
-    plus v2/v3 blended by z-adaptive weights.
+    Uses v2/v3 blended by z-adaptive weights.
+    Z is clipped to training support range to prevent OOD disasters.
+    On healthy rounds (z>0.45), z-TTA averages across small band for robustness.
     """
     grid = np.array(initial_grid, dtype=np.int32)
+
+    # Z-clip: prevent OOD disaster (R12 was z=0.638, outside training support)
+    Z_TRAIN_MIN, Z_TRAIN_MAX = 0.018, 0.599
+    z_raw = z
+    z = float(np.clip(z, Z_TRAIN_MIN, Z_TRAIN_MAX))
+    if z != z_raw:
+        log.warning(f"Z clipped: {z_raw:.3f} -> {z:.3f} (training range [{Z_TRAIN_MIN}, {Z_TRAIN_MAX}])")
+
+    # Regime-adaptive v2:v3 ratio — v2 more stable OOD on healthy rounds
+    if z_raw > 0.40:
+        v2_w, v3_w = 0.25, 0.60
+        log.info(f"Healthy regime (z={z_raw:.3f}): boosted v2 ratio 0.25:0.60")
+    else:
+        v2_w, v3_w = 0.15, 0.70
 
     preds = []
     weights = []
 
-    # Harness v2 (2026-03-20 20:30): replay=0, v2=0.15, v3=0.70 is optimal
-    # Replay model adds nothing when we have 45 obs queries (never sparse)
-    # v4 still disabled (hurts all rounds)
-    log.info("Harness v2 optimal: replay=0 v2=0.15 v3=0.70 (v4 OFF)")
+    # Determine z values for prediction (z-TTA on healthy rounds)
+    if z_raw > 0.45:
+        z_band = [z, max(z - 0.03, Z_TRAIN_MIN), min(z + 0.03, Z_TRAIN_MAX)]
+        log.info(f"Z-TTA: averaging over {[f'{zz:.3f}' for zz in z_band]}")
+    else:
+        z_band = [z]
 
-    # V2: posterior expert (smaller, faster)
+    # V2: stable backbone
     model_v2 = _load_model("v2")
     if model_v2 is not None:
-        p = _predict_with_tta_v2v3(model_v2, grid, z) if tta else _predict_single_v2v3(model_v2, grid, z)
-        preds.append(p)
-        weights.append(0.10)
+        v2_preds = []
+        for zz in z_band:
+            p = _predict_with_tta_v2v3(model_v2, grid, zz) if tta else _predict_single_v2v3(model_v2, grid, zz)
+            v2_preds.append(p)
+        preds.append(np.mean(v2_preds, axis=0))
+        weights.append(v2_w)
 
-    # V3: strongest posterior expert (dominant)
+    # V3: strongest expert
     model_v3 = _load_model("v3")
     if model_v3 is not None:
-        p = _predict_with_tta_v2v3(model_v3, grid, z) if tta else _predict_single_v2v3(model_v3, grid, z)
-        preds.append(p)
-        weights.append(0.70)
+        v3_preds = []
+        for zz in z_band:
+            p = _predict_with_tta_v2v3(model_v3, grid, zz) if tta else _predict_single_v2v3(model_v3, grid, zz)
+            v3_preds.append(p)
+        preds.append(np.mean(v3_preds, axis=0))
+        weights.append(v3_w)
 
     if not preds:
         return None
