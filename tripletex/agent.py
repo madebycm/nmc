@@ -118,6 +118,20 @@ def _pre_validate(tool_name: str, args: dict) -> dict:
         # Default sendType if not specified
         args.setdefault("sendType", "EMAIL")
 
+    elif tool_name == "payment_invoice":
+        # Sanity check: if paidAmountCurrency >> paidAmount, they're likely swapped
+        # paidAmount = NOK (bank currency, larger number)
+        # paidAmountCurrency = foreign currency (smaller number)
+        paid = args.get("paidAmount", 0) or 0
+        paid_cur = args.get("paidAmountCurrency")
+        if paid_cur is not None and paid > 0 and paid_cur > 0:
+            if paid_cur > paid * 1.5:
+                # paidAmountCurrency is much larger than paidAmount — almost certainly swapped
+                log.warning("AUTOFIX: payment_invoice paidAmount/paidAmountCurrency likely swapped "
+                            "(paidAmount=%.2f, paidAmountCurrency=%.2f) — swapping", paid, paid_cur)
+                args["paidAmount"] = paid_cur
+                args["paidAmountCurrency"] = paid
+
     return args
 
 
@@ -130,8 +144,9 @@ _ENTITY_FIELDS = {
     "department": ["id", "name", "departmentNumber"],
     "product": ["id", "name", "number", "priceExcludingVatCurrency", "vatType"],
     "order": ["id", "number", "customer", "orderDate", "deliveryDate"],
-    "invoice": ["id", "invoiceNumber", "invoiceDate", "customer", "amountOutstanding",
-                 "amountOutstandingTotal", "amount", "amountCurrency",
+    "invoice": ["id", "invoiceNumber", "invoiceDate", "invoiceDueDate", "customer",
+                 "currency", "amountOutstanding", "amountOutstandingTotal",
+                 "amount", "amountCurrency",
                  "amountExcludingVat", "amountExcludingVatCurrency",
                  "isCredited", "isPaid"],
     "travelExpense": ["id", "title", "employee", "status", "totalAmount"],
