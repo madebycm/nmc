@@ -478,9 +478,14 @@ def _call_gemini(contents: list, api_key: str, force_tool: bool = False) -> dict
         },
     }
     # Force function calling mode — prevents text-only stalls
+    # NOTE: mode="ANY" with ALL tools exceeds Gemini's schema complexity limit.
+    # Use allowedFunctionNames to restrict to submit_plan (small schema).
     if force_tool:
         payload["toolConfig"] = {
-            "functionCallingConfig": {"mode": "ANY"}
+            "functionCallingConfig": {
+                "mode": "ANY",
+                "allowedFunctionNames": ["submit_plan"],
+            }
         }
     for attempt in range(3):
         try:
@@ -720,8 +725,8 @@ def solve_task_sync(body: dict):
 
     for turn in range(MAX_TURNS):
         log.info("Agent turn %d/%d", turn + 1, MAX_TURNS)
-        # Force tool calling on first 3 turns and after text-only responses
-        force = (turn < 3) or (text_only_count > 0)
+        # Force tool calling on first turn (submit_plan), nudge on text-only
+        force = (turn == 0)
         result = _call_gemini(contents, api_key, force_tool=force)
 
         candidates = result.get("candidates", [])
