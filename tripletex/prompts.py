@@ -54,16 +54,34 @@ COMMON PATTERNS:
     CRITICAL: each posting MUST have row >= 1 (row 0 is reserved for system-generated VAT postings).
     CRITICAL: each posting MUST have amountGrossCurrency set equal to amountGross.
     For expense with VAT: set vatType_id on expense posting. System auto-generates VAT row.
-14. REGISTER SUPPLIER INVOICE (leverandørfaktura / Rechnung vom Lieferanten):
+14. REGISTER SUPPLIER INVOICE (leverandørfaktura / Rechnung vom Lieferanten / factura de proveedor / facture fournisseur):
     → post_supplier(name, organizationNumber) OR search_supplier to find existing
     → search_ledger_account (find expense account, e.g. 4000 or 6300)
-    → post_ledger_voucher(date=today, description="...", sendToLedger=true, postings=[
-        {row=1, account_id=EXPENSE_ACCT, vatType_id=1, amountGross=TOTAL_INCL_VAT, amountGrossCurrency=TOTAL_INCL_VAT, date=today},
-        {row=2, account_id=2400_ID, supplier_id=SUPPLIER_ID, amountGross=-TOTAL_INCL_VAT, amountGrossCurrency=-TOTAL_INCL_VAT, date=today}
-      ])
-    The expense posting with vatType_id=1 (25% input VAT) auto-generates the VAT row on account 2710.
-    Account 2400 (leverandørgjeld) REQUIRES supplier_id on the posting.
-    For multiple VAT rates: create separate expense postings per rate (row=1,2,...), then one AP posting.
+    → post_incomingInvoice(
+        sendTo="ledger",
+        invoiceHeader={
+          vendorId: SUPPLIER_ID,
+          invoiceDate: "YYYY-MM-DD",
+          dueDate: "YYYY-MM-DD" (30 days after invoiceDate if not specified),
+          currencyId: 1,
+          invoiceAmount: TOTAL_INCL_VAT,
+          invoiceNumber: "INV-XXXX",
+          description: "Supplier invoice from ..."
+        },
+        orderLines=[{
+          externalId: "line1",
+          accountId: EXPENSE_ACCOUNT_ID,
+          vatTypeId: 1,
+          amountInclVat: AMOUNT_INCL_VAT,
+          description: "...",
+          count: 1
+        }]
+      )
+    CRITICAL: Use post_incomingInvoice, NOT post_ledger_voucher, for supplier invoices.
+    CRITICAL: vendorId is the supplier ID from post_supplier or search_supplier response.
+    CRITICAL: accountId in orderLines is the ledger account ID (search_ledger_account first).
+    For multiple lines/VAT rates: add separate entries in orderLines array.
+    FALLBACK: If post_incomingInvoice returns 403, use post_ledger_voucher with the old pattern.
 15. CREATE SUPPLIER: post_supplier(name, organizationNumber, email, ...)
 16. SEND INVOICE: send_invoice(id=invoiceId, sendType="EMAIL") — sends an already-created invoice
     NOTE: invoice_order with sendToCustomer=true already sends it. Only use send_invoice for re-sending.
@@ -83,10 +101,21 @@ COMMON PATTERNS:
     → repeat for each value
 19. OVERDUE INVOICE + REMINDER:
     → search_invoice(invoiceDateFrom="2020-01-01", invoiceDateTo=today)
-    → find invoice where amountOutstanding > 0
+    → find invoice where amountOutstanding > 0 — use the EXISTING overdue invoice, NEVER create a new one
     → createReminder_invoice(id=invoiceId, type="SOFT_REMINDER", date=today, includeCharge=true, includeInterest=false)
+    CRITICAL: The reminder date MUST be AFTER the invoice's dueDate. Use today's date if the invoice is already past due.
+    CRITICAL: There is ALWAYS an existing overdue invoice in the system — search for it, do NOT create a new invoice.
     NOTE: type can be SOFT_REMINDER, REMINDER, or NOTICE_OF_DEBT_COLLECTION.
     The charge (purregebyr) is set via includeCharge=true (boolean, not an amount).
+    For "late fees" or "frais de retard": if the task asks for a specific fee amount, the reminder itself handles charges via includeCharge=true. You do NOT need to create a separate voucher/posting for the fee unless explicitly asked.
+20. CUSTOM DIMENSION + VOUCHER LINKED TO DIMENSION VALUE:
+    → post_ledger_accountingDimensionName(dimensionName="...", description="...", active=true)
+    → read dimensionIndex from response (auto-assigned, 1-3)
+    → post_ledger_accountingDimensionValue(displayName="Value1", dimensionIndex=N, number="01", active=true) — repeat for each value
+    → To link a voucher posting to a dimension value: include the dimension field in each posting.
+      For dimensionIndex=1, set "department" field. For dimensionIndex=2 or 3, use tripletex_api to post the voucher with the dimension reference.
+    → search_ledger_account(number=XXXX) — find account ID
+    → post_ledger_voucher(date=today, description="...", sendToLedger=true, postings=[...])
 
 FALLBACK — UNKNOWN TASK TYPES:
 If you don't have a specific typed tool for a task, use these two tools:

@@ -1,8 +1,46 @@
 # Overnight Autonomous Run — March 21, 2026
 
-## STATUS: ACTIVE PUSH — 2 bullets remaining, gap 0.0115
+## STATUS: BULLET 1 IN FLIGHT — 2 bullets remaining, gap 0.0115
 ## v5.4_cos20 test: 0.9140 (#25) | Leader: 0.9255 (14 subs) | Gap: 0.0115
-## Best OOF: 0.7598 (MixUp E3 cos/20 + TTA + K=15)
+## Best OOF: 0.7567 (New recipe fold-1 mirror E1) — GO SIGNAL CONFIRMED
+
+---
+
+## March 21, 17:00 CET — Fold-1 Mirror Results & Go/No-Go
+
+### New Recipe Fold-1 OOF Comparison (CRITICAL)
+| Checkpoint | det_mAP | cls_mAP | blend | vs CE | vs orig MixUp |
+|---|---|---|---|---|---|
+| CE-only (anchor) | 0.7780 | 0.6996 | 0.7545 | — | — |
+| Original MixUp fold-1 | 0.7753 | 0.6807 | 0.7469 | -0.0076 | — |
+| **New recipe E1** | **0.7781** | **0.7067** | **0.7567** | **+0.0022** | **+0.0098** |
+| New recipe E2 | 0.7783 | 0.7058 | 0.7566 | +0.0021 | +0.0097 |
+
+### Key Findings
+1. **Detection flat** (~0.778) — confirms only classifier quality matters
+2. **Original MixUp fold-1 WORSE than CE-only** (-0.0076 blend) — surprising
+3. **New recipe E1 is best-ever fold-1 OOF** (+0.0098 blend vs orig MixUp)
+4. **E2 already declining** → E1 is peak (matches cos/5 finding: 1 epoch is optimal)
+5. **cls_mAP +0.0260** vs original MixUp — massive, clears +0.015 bar
+
+### Go/No-Go: **GO for Bullet 1**
+- +0.0098 blend > +0.006 threshold (vs original MixUp)
+- +0.0260 cls_mAP > +0.015 threshold
+- All-data E1 training started at 16:12 UTC
+
+### All Dead Levers (confirmed)
+- Soft-NMS: HURTS (-0.002 to -0.006)
+- WBF: CATASTROPHIC (0.5561 vs 0.7776 det)
+- CE+MX ensemble: marginal + doesn't fit budget
+- NMS/T/K/alpha sweeps: saturated
+- INT8 detector: risky, not needed
+- Selective top-K: no improvement
+
+### Bullet 2 Plan: Detector-Crop Adaptation
+- Train classifier on 50% GT crops + 50% detector-produced crops
+- Fixes train/infer mismatch (trained on ideal GT, deployed on noisy detector boxes)
+- Script ready: `train_detcrop.py`
+- Fold-1 mirror first, then all-data if positive
 
 ### CRITICAL INCIDENT — March 21 ~13:00
 - **Bullet #1 BURNED**: submission_5.4_cos20.zip failed — predictions.json 18MB, exceeds undocumented 10MB platform limit
