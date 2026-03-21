@@ -46,17 +46,22 @@ def _pick_precision_targets(
     z: float = None, base_observations: dict = None,
     context: np.ndarray = None, initial_grids: list = None,
 ) -> list[tuple[int, int, int, int, int]]:
-    """Pick precision queries by MODEL DISAGREEMENT (NN vs Dirichlet KL).
+    """Pick precision queries by ENTROPY-WEIGHTED INFORMATION GAIN.
 
-    Targets tiles where our two models disagree most — these are the cells
-    where additional observation data most changes the final prediction.
-    Spreads across seeds for MC diversity.
+    Targets tiles where:
+    1. Prediction entropy is HIGH (uncertain cells = highest score impact)
+    2. Model disagreement is HIGH (NN vs Dirichlet)
+    3. Observation count is LOW (most info gain from new observation)
+
+    This directly optimizes for the competition metric: entropy-weighted KL.
     """
     scored = []
+    from strategy import compute_empirical_observations
 
-    # Try to get NN and Dirichlet predictions for disagreement scoring
+    # Get current model predictions for each seed
     nn_preds = {}
     dir_preds = {}
+    obs_coverage = {}  # track observation coverage per seed
     try:
         import nn_predict
         from strategy import dirichlet_predict, load_calibration
@@ -69,8 +74,11 @@ def _pick_precision_targets(
             if nn_p is not None:
                 nn_preds[seed_idx] = nn_p
                 dir_preds[seed_idx] = dir_p
+            # Track observation coverage
+            _, n_obs = compute_empirical_observations(obs)
+            obs_coverage[seed_idx] = n_obs
     except Exception as e:
-        log.warning(f"Disagreement scoring failed, falling back to entropy: {e}")
+        log.warning(f"Precision scoring failed, falling back to entropy: {e}")
 
     # Compute per-seed z for alive gating
     seed_z = {}
@@ -99,18 +107,28 @@ def _pick_precision_targets(
 
         for x, y, w, h in tiles:
             if seed_idx in nn_preds and gate > 0:
-                # JS divergence (symmetric, stable) between NN and Dirichlet
                 nn_tile = nn_preds[seed_idx][y:y+h, x:x+w]
                 dir_tile = dir_preds[seed_idx][y:y+h, x:x+w]
                 eps = 1e-8
+
+                # 1. Prediction entropy (directly from ensemble mean)
                 m_tile = 0.5 * (nn_tile + dir_tile)
+                pred_entropy = -(m_tile * np.log(m_tile + eps)).sum(axis=-1)
+
+                # 2. Model disagreement (JS divergence)
                 js = 0.5 * (nn_tile * np.log((nn_tile + eps) / (m_tile + eps))).sum(axis=-1) \
                    + 0.5 * (dir_tile * np.log((dir_tile + eps) / (m_tile + eps))).sum(axis=-1)
-                # Add entropy bonus for mixed regions
-                entropy = -(m_tile * np.log(m_tile + eps)).sum(axis=-1)
-                score = float(gate * (js.mean() + 0.15 * entropy.mean()))
+
+                # 3. Low-coverage bonus (cells with fewer observations gain more)
+                n_obs_tile = obs_coverage.get(seed_idx, np.zeros((h_map, w_map)))[y:y+h, x:x+w]
+                coverage_bonus = 1.0 / (n_obs_tile + 1.0)  # 1/1=1.0, 1/2=0.5, 1/3=0.33
+
+                # Combined: entropy-weighted info gain
+                # Entropy is the weight in the competition metric, so high-entropy cells
+                # are where we need to be most accurate
+                info_gain = pred_entropy * (js + 0.1) * coverage_bonus
+                score = float(gate * info_gain.mean())
             else:
-                # Fallback: settlement density (gated)
                 region = grid[y:y+h, x:x+w]
                 score = float(gate * np.isin(region, [1, 2, 3]).sum())
 
@@ -211,35 +229,53 @@ def solve_round(api: AstarAPI, round_info: dict, dry_run: bool = False):
         log.warning("No queries left!")
         return
 
-    queries_per_seed = min(QUERIES_PER_SEED, queries_left // seeds_count)
-    all_observations = {}
+    initial_grids = [initial_states[i]["grid"] for i in range(seeds_count)]
+    tiles = _full_tiling(map_w, map_h)  # 9 tiles
+    all_observations = {s: [] for s in range(seeds_count)}
 
-    # Phase 1: Observe all seeds
-    log.info(f"Phase 1: Observing ({queries_per_seed} queries/seed)...")
-    for seed_idx in range(seeds_count):
-        viewports = compute_smart_viewports(
-            initial_states[seed_idx]["grid"], map_w, map_h
-        )
-        observations = observe_seed(
-            api, round_id, seed_idx, viewports, queries_per_seed, dry_run
-        )
-        all_observations[seed_idx] = observations
-        log.info(f"  Seed {seed_idx}: {len(observations)} observations collected")
+    # Phase 1: MANDATORY base scan — interleaved across seeds, retry on failure
+    # Do tile 0 for all seeds, then tile 1 for all seeds, etc.
+    # This spreads rate-limit pain evenly — no seed is structurally disadvantaged.
+    log.info(f"Phase 1: Interleaved base scan ({len(tiles)} tiles × {seeds_count} seeds = {len(tiles)*seeds_count} queries)...")
+    base_success = 0
+    for tile_idx, (vx, vy, vw, vh) in enumerate(tiles):
+        for seed_idx in range(seeds_count):
+            if dry_run:
+                log.info(f"  [DRY RUN] tile {tile_idx} seed {seed_idx}: ({vx},{vy})")
+                continue
+            # Mandatory: retry until success — do NOT advance past a failed tile
+            for attempt in range(5):
+                try:
+                    time.sleep(0.8)  # Conservative: 45/45 matters more than speed
+                    result = api.simulate(round_id, seed_idx, vx, vy, vw, vh)
+                    all_observations[seed_idx].append(result)
+                    base_success += 1
+                    if tile_idx == 0 or (tile_idx == 8 and seed_idx == seeds_count - 1):
+                        log.info(f"  tile {tile_idx} seed {seed_idx}: ({vx},{vy}) — {result['queries_used']}/{result['queries_max']}")
+                    break
+                except Exception as e:
+                    if "429" in str(e):
+                        wait = 2.0 + attempt * 1.5  # Increasing backoff
+                        log.warning(f"  tile {tile_idx} seed {seed_idx}: 429, retry in {wait:.0f}s (attempt {attempt+1}/5)")
+                        time.sleep(wait)
+                    else:
+                        log.error(f"  tile {tile_idx} seed {seed_idx}: {e}")
+                        break
+    log.info(f"  Base scan: {base_success}/{len(tiles)*seeds_count} queries successful")
 
-    # Snapshot base observations (before precision queries) for unbiased context
+    # Snapshot base observations for unbiased context
     base_observations = {k: list(v) for k, v in all_observations.items()}
 
-    # Compute preliminary z from base observations for adaptive targeting
-    initial_grids = [initial_states[i]["grid"] for i in range(seeds_count)]
+    # Compute z from base observations
     context = compute_context_vector(base_observations, initial_grids)
     z_est = estimate_z_from_context(context)
-    log.info(f"Preliminary z from {sum(len(v) for v in base_observations.values())} base queries: {z_est:.3f}")
+    log.info(f"z estimate: {z_est:.3f} (from {base_success} base queries)")
 
-    # Phase 1b: Adaptive precision — use remaining budget on high-value viewports
+    # Phase 1b: Precision queries — only AFTER all base tiles succeeded
     budget_after = api.get_budget()
     precision_left = budget_after["queries_max"] - budget_after["queries_used"]
     if precision_left > 0 and not dry_run:
-        log.info(f"Phase 1b: {precision_left} adaptive queries (settlement-dense, coastal, spread across seeds)...")
+        log.info(f"Phase 1b: {precision_left} precision queries (JS-divergence targeted)...")
         precision_targets = _pick_precision_targets(
             initial_states, seeds_count, precision_left,
             z=z_est, base_observations=base_observations,
@@ -247,13 +283,20 @@ def solve_round(api: AstarAPI, round_info: dict, dry_run: bool = False):
         )
         for seed_idx, vx, vy, vw, vh in precision_targets:
             try:
-                time.sleep(0.25)
+                time.sleep(0.8)
                 result = api.simulate(round_id, seed_idx, vx, vy, vw, vh)
                 all_observations[seed_idx].append(result)
-                log.info(f"  Precision: seed {seed_idx} viewport ({vx},{vy}) — {result['queries_used']}/{result['queries_max']}")
             except Exception as e:
-                log.warning(f"  Precision query failed: {e}")
-                break
+                if "429" in str(e):
+                    time.sleep(3)
+                    try:
+                        result = api.simulate(round_id, seed_idx, vx, vy, vw, vh)
+                        all_observations[seed_idx].append(result)
+                    except Exception:
+                        pass
+                else:
+                    log.warning(f"  Precision failed: {e}")
+                    break
 
     # Save all data with base/precision split for faithful replay
     _save_round_data(round_num, detail, all_observations, base_observations)
@@ -309,43 +352,7 @@ def solve_round(api: AstarAPI, round_info: dict, dry_run: bool = False):
         log.warning(f"=== Round #{round_num} PARTIAL: only {seeds_submitted}/5 seeds — will retry ===")
 
 
-def observe_seed(
-    api: AstarAPI,
-    round_id: str,
-    seed_index: int,
-    viewports: list[tuple[int, int, int, int]],
-    max_queries: int,
-    dry_run: bool,
-) -> list[dict]:
-    """Run simulation queries for one seed."""
-    observations = []
-    for i in range(min(max_queries, len(viewports))):
-        vx, vy, vw, vh = viewports[i]
-        if dry_run:
-            log.info(f"  [DRY RUN] Seed {seed_index} query {i+1}: viewport ({vx},{vy},{vw},{vh})")
-            continue
-        try:
-            time.sleep(0.5)  # Rate limit safety margin (429s at 0.25s)
-            result = api.simulate(round_id, seed_index, vx, vy, vw, vh)
-            observations.append(result)
-            log.info(
-                f"  Seed {seed_index} query {i+1}/{max_queries}: "
-                f"viewport ({vx},{vy}) — {result['queries_used']}/{result['queries_max']}"
-            )
-        except Exception as e:
-            if "429" in str(e):
-                log.warning(f"  Seed {seed_index} query {i+1} rate-limited, retrying in 3s...")
-                time.sleep(3)
-                try:
-                    result = api.simulate(round_id, seed_index, vx, vy, vw, vh)
-                    observations.append(result)
-                    log.info(f"  Seed {seed_index} query {i+1}/{max_queries}: viewport ({vx},{vy}) — RETRY OK")
-                except Exception as e2:
-                    log.error(f"  Seed {seed_index} query {i+1} retry failed: {e2}")
-            else:
-                log.error(f"  Seed {seed_index} query {i+1} failed: {e}")
-                break
-    return observations
+    # observe_seed removed — replaced by interleaved base scan in solve_round
 
 
 def submit_prediction(

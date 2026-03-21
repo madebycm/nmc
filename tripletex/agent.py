@@ -466,7 +466,7 @@ log.info("Loaded %d typed tools", len(TOOLS))
 
 # ─── Gemini API call ───
 
-def _call_gemini(contents: list, api_key: str) -> dict:
+def _call_gemini(contents: list, api_key: str, force_tool: bool = False) -> dict:
     url = GEMINI_URL.format(GEMINI_MODEL) + f"?key={api_key}"
     payload = {
         "systemInstruction": {"parts": [{"text": SYSTEM_PROMPT}]},
@@ -477,6 +477,11 @@ def _call_gemini(contents: list, api_key: str) -> dict:
             "maxOutputTokens": 8192,
         },
     }
+    # Force function calling mode — prevents text-only stalls
+    if force_tool:
+        payload["toolConfig"] = {
+            "functionCallingConfig": {"mode": "ANY"}
+        }
     for attempt in range(3):
         try:
             resp = requests.post(url, json=payload, timeout=180)
@@ -692,13 +697,18 @@ def solve_task_sync(body: dict):
     }
     t0 = time.time()
 
-    # Build user message — parse all attachments through the universal pipeline
-    parts = []
+    # Build user message — task prompt FIRST, then attachments
+    # (Gemini processes parts in order; prompt first reduces "analysis paralysis" on CSV data)
+    today = date.today().isoformat()
+    has_files = len(files) > 0
+    file_instruction = ""
+    if has_files:
+        file_instruction = ("\n\nIMPORTANT: Files are attached below with data you need. "
+                           "Read the data and use tools immediately. Do NOT describe what you would do — actually DO IT. "
+                           "Start by calling submit_plan, then execute each step with tool calls.")
+    parts = [{"text": f"Today's date: {today}\n\nComplete this accounting task:\n\n{prompt}{file_instruction}"}]
     for f in files:
         parts.extend(_parse_attachment(f))
-
-    today = date.today().isoformat()
-    parts.append({"text": f"Today's date: {today}\n\nComplete this accounting task:\n\n{prompt}"})
     contents = [{"role": "user", "parts": parts}]
 
     # Agent loop
@@ -706,9 +716,13 @@ def solve_task_sync(body: dict):
     last_error_sig = None
     auth_failed = False
 
+    text_only_count = 0  # Track consecutive text-only responses
+
     for turn in range(MAX_TURNS):
         log.info("Agent turn %d/%d", turn + 1, MAX_TURNS)
-        result = _call_gemini(contents, api_key)
+        # Force tool calling on first 3 turns and after text-only responses
+        force = (turn < 3) or (text_only_count > 0)
+        result = _call_gemini(contents, api_key, force_tool=force)
 
         candidates = result.get("candidates", [])
         if not candidates:
@@ -724,15 +738,28 @@ def solve_task_sync(body: dict):
 
         fn_calls = [p for p in model_parts if "functionCall" in p]
         if not fn_calls:
-            if turn < 5:
-                nudge = ("You MUST use tools. Do NOT respond with only text. "
-                         "If you cannot do the full task, do as much as possible — "
-                         "create vouchers, search accounts, create entities. "
-                         "Partial work earns partial credit. Use tools NOW.")
+            text_only_count += 1
+            if turn < 8:
+                if turn == 0:
+                    nudge = ("SYSTEM: You responded with text only. This is FORBIDDEN. "
+                             "You MUST call submit_plan as your FIRST action. "
+                             "Parse the task, classify it, and submit your plan NOW. "
+                             "Every text-only response wastes a turn and risks 0% score.")
+                elif turn < 3:
+                    nudge = ("SYSTEM: STILL no tool calls. You are wasting turns. "
+                             "Call submit_plan immediately with task_type and steps. "
+                             "If the task involves files/CSV data, the data is already parsed above — use it. "
+                             "Partial credit > 0 credit. USE TOOLS NOW.")
+                else:
+                    nudge = ("You MUST use tools. Do NOT respond with only text. "
+                             "If you cannot do the full task, do as much as possible — "
+                             "create vouchers, search accounts, create entities. "
+                             "Partial work earns partial credit. Use tools NOW.")
                 contents.append({"role": "user", "parts": [{"text": nudge}]})
                 continue
             break
 
+        text_only_count = 0  # Reset on successful tool call
         fn_responses = []
         done = False
         turn_had_error = False
