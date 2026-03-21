@@ -1,8 +1,31 @@
 # Overnight Autonomous Run — March 21, 2026
 
-## STATUS: BULLET 1 IN FLIGHT — 2 bullets remaining, gap 0.0115
-## v5.4_cos20 test: 0.9140 (#25) | Leader: 0.9255 (14 subs) | Gap: 0.0115
-## Best OOF: 0.7567 (New recipe fold-1 mirror E1) — GO SIGNAL CONFIRMED
+## STATUS: BULLET 2 SUBMITTED (detcrop E4) — awaiting score
+## Best test: 0.9161 (Bullet 1 newrecipe) | Leader: 0.9255 | Gap: 0.0094
+## Bullet 2: detcrop alldata E4, same inference stack, only classifier weights changed
+## Next: adaptive emission sweep (post-midnight bullets)
+
+---
+
+## March 21, ~19:15 CET — BULLET 1 RESULT + Bullet 2 Status
+
+### Bullet 1: 0.9161 (+0.0021 over 0.9140)
+- **New recipe E1 all-data** (strong aug + LS 0.05 + cos/60)
+- Gap to leader narrowed: 0.0115 → **0.0094**
+- **CORRECTION**: "near-perfect translation" was misattributed — fold delta was vs CE anchor, live delta was vs v5.4_cos20. Different baselines. Only trust paired deltas from the same evaluator.
+
+### Bullet 2: Detector-Crop Adaptation — ALL-DATA TRAINING LAUNCHED
+
+**Paired OOF eval (18:25 UTC, single evaluator, same detector cache + fold split):**
+| Checkpoint | det_mAP | cls_mAP | blend | vs baseline |
+|---|---|---|---|---|
+| newrecipe E1 (baseline) | 0.7781 | 0.7067 | 0.7567 | — |
+| detcrop E4 (winner) | 0.7774 | 0.7136 | 0.7582 | **+0.0015** |
+| (E1-E3, E5 all worse — narrow peak at E4) |
+
+**Signal**: +0.0015 blend, +0.0069 cls_mAP, det flat. Narrow but real.
+**All-data training**: started 18:35 UTC, 42K samples, ETA ~19:55 UTC.
+**Plan**: Package E3+E4, submit E4 as Bullet 2 before midnight.
 
 ---
 
@@ -347,7 +370,8 @@ All CE configurations saturate at **0.7545**. MixUp is the only path beyond this
 | Version | Test Score | Delta | Key Change |
 |---------|-----------|-------|------------|
 | v5.0 | 0.9104 | — | Baseline: CE-only, K=1, no TTA |
-| v5.4_cos20 | **0.9140** | **+0.0036** | MixUp cos/20 + K=15 + 2-view TTA |
+| v5.4_cos20 | 0.9140 | +0.0036 | MixUp cos/20 + K=15 + 2-view TTA |
+| **Bullet 1 (newrecipe)** | **0.9161** | **+0.0057** | **New recipe E1: strong aug + LS 0.05 + cos/60** |
 | Leader | **0.9255** | +0.0151 | Unknown (14 submissions) |
 
 ### Gap Analysis

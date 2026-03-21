@@ -24,6 +24,34 @@ def floor_and_normalize(pred: np.ndarray) -> np.ndarray:
     return pred / pred.sum(axis=-1, keepdims=True)
 
 
+def apply_physics_mask(pred: np.ndarray, initial_grid) -> np.ndarray:
+    """Force physically impossible outcomes to zero, redistribute mass.
+
+    Hard rules verified against ALL 80 GT files (0 exceptions):
+    - Ocean cells (code 5) → always ocean (class 5)
+    - Mountain cells (code 10) → always mountain (class 0)
+
+    Applied AFTER ensemble blend, BEFORE final floor_and_normalize.
+    """
+    grid = np.asarray(initial_grid, dtype=np.int32)
+    result = pred.copy()
+
+    # Ocean: force 100% class 5
+    ocean_mask = grid == 5
+    if ocean_mask.any():
+        result[ocean_mask] = 0.0
+        result[ocean_mask, 5] = 1.0
+
+    # Mountain: force 100% class 0
+    mountain_mask = grid == 10
+    if mountain_mask.any():
+        result[mountain_mask] = 0.0
+        result[mountain_mask, 0] = 1.0
+
+    # Re-apply floor and normalize (maintains PROB_FLOOR on non-masked cells)
+    return floor_and_normalize(result)
+
+
 # ── Global Context Vector ────────────────────────────────────────────
 
 
@@ -187,32 +215,42 @@ def compute_empirical_observations(
 
 
 def empirical_anchor(
-    nn_pred: np.ndarray,
+    model_pred: np.ndarray,
     obs_counts: np.ndarray,
     n_observed: np.ndarray,
-    anchor_weight: float = 0.07,
+    concentration: float = 30.0,
 ) -> np.ndarray:
-    """Blend NN prediction with empirical observations.
+    """Dirichlet conjugate posterior: update model prediction with observations.
 
-    Only anchors cells with n_obs >= 2 to avoid double-counting with Dirichlet
-    (which already incorporates single observations as Bayesian updates).
-    Conservative weight: observations are single stochastic samples.
+    Treats model prediction as a Dirichlet prior with given concentration,
+    then adds observation counts as evidence. This is the principled Bayesian
+    update — NOT raw frequency blending (which is catastrophic with n=1 samples).
+
+    posterior_alpha = model_pred * concentration + obs_counts
+    posterior = posterior_alpha / sum(posterior_alpha)
+
+    Concentration controls prior strength:
+      concentration=30: ~3 observations worth of prior (model dominates with few obs)
+      concentration=15: ~1.5 observations worth (balanced)
+      concentration=5: observations dominate quickly
+
+    With concentration=30 and n_obs=1: prior contributes 30/31 ≈ 97%
+    With concentration=30 and n_obs=5: prior contributes 30/35 ≈ 86%
+    With concentration=30 and n_obs=10: prior contributes 30/40 ≈ 75%
     """
-    result = nn_pred.copy()
-    anchor_mask = n_observed >= 2  # Only anchor with 2+ observations
+    result = model_pred.copy()
 
-    if not anchor_mask.any():
+    if not np.any(n_observed >= 1):
         return result
 
-    empirical = obs_counts.copy()
-    empirical[anchor_mask] /= n_observed[anchor_mask, None]
-
-    # Weight scales gently: 2 obs = base, 3+ = 1.5x base
-    weight_map = np.zeros_like(n_observed)
-    weight_map[anchor_mask] = anchor_weight * np.minimum(n_observed[anchor_mask] - 1, 2)
-
-    for c in range(NUM_CLASSES):
-        result[:, :, c] = (1 - weight_map) * nn_pred[:, :, c] + weight_map * empirical[:, :, c]
+    obs_mask = n_observed >= 1
+    # Convert model prediction to Dirichlet pseudo-counts
+    alpha_prior = result * concentration
+    # Add observation evidence
+    alpha_posterior = alpha_prior.copy()
+    alpha_posterior[obs_mask] += obs_counts[obs_mask]
+    # Normalize to get posterior prediction
+    result = alpha_posterior / alpha_posterior.sum(axis=-1, keepdims=True)
 
     return floor_and_normalize(result)
 
@@ -439,12 +477,12 @@ def ensemble_predict(
             frac = min((z - t4) / (t5 - t4), 1.0)
             nn_weight = NN_PEAK * (1.0 - frac) + NN_HEALTHY * frac
 
-        # Per-seed asymmetric nudge: can decrease NN weight more than increase
-        # Avoiding a bad healthy seed > over-promoting a good one
+        # Per-seed asymmetric nudge: gated, conservative alpha
+        # Only active when seed has full 9/9 coverage and meaningful z deviation
         if nn_weight_nudge != 0.0 and nn_weight > 0:
             nn_weight_before = nn_weight
-            nudge = 0.30 * nn_weight_nudge  # scale factor
-            nn_weight = np.clip(nn_weight + nudge, nn_weight - 0.15, nn_weight + 0.10)
+            nudge = 0.15 * nn_weight_nudge  # conservative alpha (was 0.30)
+            nn_weight = np.clip(nn_weight + nudge, nn_weight - 0.10, nn_weight + 0.05)
             nn_weight = max(0.0, min(nn_weight, NN_PEAK))
             if abs(nn_weight - nn_weight_before) > 0.01:
                 log.info(f"Per-seed nudge: nn_weight {nn_weight_before:.3f} -> {nn_weight:.3f}")
@@ -459,9 +497,17 @@ def ensemble_predict(
         else:
             blended = dir_pred
 
-    # Empirical anchoring: replay harness shows 0.0 is optimal, skip
+    # Bayesian posterior update: TESTED, HURTS at every concentration level
+    # With 76.6% cells at 1 observation, empirical is too noisy to improve model
+    # concentration=200: -0.04, concentration=30: -0.64, concentration=10: -3.09
+    # The NN+Dirichlet blend is already better calibrated than obs evidence
     # obs_counts, n_observed = compute_empirical_observations(observations)
-    # blended = empirical_anchor(blended, obs_counts, n_observed, anchor_weight=0.0)
+    # if n_observed.max() >= 1:
+    #     blended = empirical_anchor(blended, obs_counts, n_observed, concentration=30.0)
+
+    # Physics masking: force impossible outcomes to zero, redistribute mass
+    # Verified against ALL 80 GT files: ocean and mountain NEVER change
+    blended = apply_physics_mask(blended, initial_grid)
 
     return blended
 
@@ -482,17 +528,27 @@ def predict_for_seed(
     """
     calibration = load_calibration()
 
-    # Compute per-seed z nudge
+    # Compute per-seed z nudge — gated: only on full coverage + meaningful deviation
     z_nudge = 0.0
     if seed_idx is not None and observations_by_seed and initial_grids:
         try:
             z_round = estimate_z_from_context(context) if context is not None else 0.283
-            # Seed-local z from this seed's observations only
             seed_obs = observations_by_seed.get(seed_idx, observations)
-            seed_ctx = compute_context_vector({0: seed_obs}, [initial_grids[seed_idx] if seed_idx < len(initial_grids) else initial_grid])
-            z_seed = estimate_z_from_context(seed_ctx)
-            z_nudge = z_seed - z_round
-            log.info(f"Seed {seed_idx}: z_seed={z_seed:.3f}, z_round={z_round:.3f}, nudge={z_nudge:+.3f}")
+            # Gate: only nudge if this seed has full 9/9 base coverage
+            if len(seed_obs) < 9:
+                log.info(f"Seed {seed_idx}: only {len(seed_obs)}/9 base obs — nudge disabled")
+                z_nudge = 0.0
+            else:
+                seed_ctx = compute_context_vector({0: seed_obs}, [initial_grids[seed_idx] if seed_idx < len(initial_grids) else initial_grid])
+                z_seed = estimate_z_from_context(seed_ctx)
+                delta = z_seed - z_round
+                # Gate: only nudge when deviation is meaningfully large (>0.03)
+                if abs(delta) > 0.03:
+                    z_nudge = delta
+                    log.info(f"Seed {seed_idx}: z_seed={z_seed:.3f}, z_round={z_round:.3f}, nudge={z_nudge:+.3f}")
+                else:
+                    z_nudge = 0.0
+                    log.info(f"Seed {seed_idx}: z_seed={z_seed:.3f}, z_round={z_round:.3f}, delta={delta:+.3f} (below gate)")
         except Exception as e:
             log.warning(f"Per-seed z failed: {e}")
 

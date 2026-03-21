@@ -27,6 +27,7 @@ COMMON PATTERNS:
 
 1. CREATE CUSTOMER: post_customer(name, email, phoneNumber, organizationNumber, ...)
 2. CREATE EMPLOYEE: search_department → post_employee(firstName, lastName, email, department_id, dateOfBirth="1990-01-01")
+   OPTIONAL: nationalIdentityNumber (personnummer), bankAccountNumber, phoneNumberMobile, address, comments
 3. CREATE EMPLOYEE AS ADMIN: search_department → post_employee(firstName, lastName, email, department_id, userType="EXTENDED") → grantEntitlementsByTemplate_employee_entitlement(employeeId, template="ALL_PRIVILEGES")
 4. CREATE DEPARTMENT: post_department(name)
 5. CREATE PRODUCT: post_product(name, number, priceExcludingVatCurrency, vatType_id=3)
@@ -34,7 +35,10 @@ COMMON PATTERNS:
    → post_customer (if new customer)
    → search_product by productNumber (for each product, ONE at a time)
    → post_order(customer_id, orderDate=today, deliveryDate=today, orderLines=[{product_id, count, unitPriceExcludingVatCurrency}])
+     OPTIONAL order fields: reference (order reference code), department_id (all lines inherit), project_id (link to project)
+     OPTIONAL orderLine fields: discount (% discount per line, e.g. 20 for 20%), description (line-level text), vatType_id (override product VAT)
    → invoice_order(id=orderId, invoiceDate=today, sendToCustomer=true)
+     OPTIONAL invoice fields: invoiceDueDate (override default due date)
    NOTE: invoice_order RETURNS an Invoice object with id, amountOutstanding etc. Use these values directly.
 7. ORDER + INVOICE + FULL PAYMENT:
    → Same as #6, then read amountOutstanding from the invoice response
@@ -63,6 +67,7 @@ COMMON PATTERNS:
     CRITICAL: each posting MUST have amountGrossCurrency set equal to amountGross.
     CRITICAL: When the task specifies exact account numbers (e.g. "compte 6030", "Konto 2900"), use THOSE numbers. Do NOT substitute a different account because the name seems wrong — the task knows which account to use.
     For expense with VAT: set vatType_id on expense posting. System auto-generates VAT row.
+    OPTIONAL posting fields: project_id (link to project), employee_id (link to employee), customer_id (link to customer), department_id (link to department), supplier_id (link to supplier). Use when the task mentions these entities in connection with the journal entry.
 14. REGISTER SUPPLIER INVOICE / RECEIPT / EXPENSE FROM VENDOR:
     This pattern applies to ANY expense from an external supplier — invoices, receipts (kvittering), purchase documents.
     → post_supplier(name, organizationNumber) OR search_supplier to find existing
@@ -109,12 +114,15 @@ COMMON PATTERNS:
 17. CREATE EMPLOYEE WITH EMPLOYMENT CONTRACT:
     → search_department
     → post_employee(firstName, lastName, email, department_id, dateOfBirth="1990-01-01")
-    → post_employee_employment(employee_id, startDate, isMainEmployer=true)
+    → post_employee_employment(employee_id, startDate, isMainEmployer=true, taxDeductionCode="loennFraHovedarbeidsgiver")
+      taxDeductionCode values: loennFraHovedarbeidsgiver (main employer, DEFAULT), loennFraBiarbeidsgiver (secondary), pensjon (pension)
     → search_employee_employment_occupationCode(code="XXXX" or nameNO="...")
     → post_employee_employment_details(employment_id, date=startDate,
         occupationCode_id, annualSalary, percentageOfFullTimeEquivalent,
         employmentType="ORDINARY", remunerationType="MONTHLY_WAGE",
         workingHoursScheme="NOT_SHIFT")
+      OPTIONAL: employmentForm="PERMANENT" (or TEMPORARY), hourlyWage (if remunerationType="HOURLY_WAGE")
+      remunerationType values: MONTHLY_WAGE, HOURLY_WAGE, COMMISION_PERCENTAGE, FEE, PIECEWORK_WAGE
 18. CREATE CUSTOM ACCOUNTING DIMENSION:
     → post_ledger_accountingDimensionName(dimensionName="...", description="...", active=true)
     → read dimensionIndex from response (auto-assigned, 1-3, max 3 free dimensions)
@@ -134,10 +142,20 @@ COMMON PATTERNS:
     → post_ledger_accountingDimensionName(dimensionName="...", description="...", active=true)
     → read dimensionIndex from response (auto-assigned, 1-3)
     → post_ledger_accountingDimensionValue(displayName="Value1", dimensionIndex=N, number="01", active=true) — repeat for each value
-    → To link a voucher posting to a dimension value: include the dimension field in each posting.
-      For dimensionIndex=1, set "department" field. For dimensionIndex=2 or 3, use tripletex_api to post the voucher with the dimension reference.
     → search_ledger_account(number=XXXX) — find account ID
-    → post_ledger_voucher(date=today, description="...", sendToLedger=true, postings=[...])
+    → To link a voucher posting to a dimension value, use tripletex_api:
+      tripletex_api(method="POST", path="/ledger/voucher", query_params={"sendToLedger": true}, body={
+        "date": "YYYY-MM-DD", "description": "...",
+        "postings": [{
+          "row": 1, "date": "YYYY-MM-DD",
+          "account": {"id": ACCOUNT_ID},
+          "amountGross": AMOUNT, "amountGrossCurrency": AMOUNT,
+          "freeAccountingDimension1": {"id": DIMENSION_VALUE_ID}
+        }, ...]
+      })
+    CRITICAL: Use freeAccountingDimension1 for dimensionIndex=1, freeAccountingDimension2 for index=2, freeAccountingDimension3 for index=3.
+    CRITICAL: The value is a ref object: {"id": DIMENSION_VALUE_ID} — use the ID from post_ledger_accountingDimensionValue response.
+    CRITICAL: You MUST use tripletex_api (not post_ledger_voucher) because the typed tool doesn't support freeAccountingDimension fields.
 
 21. MULTI-CURRENCY INVOICE PAYMENT + AGIO (valutadifferanse / exchange rate difference):
     When a customer was invoiced in a foreign currency (EUR, USD, etc.) and pays at a different exchange rate:

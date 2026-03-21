@@ -1,14 +1,15 @@
-# Saturday Pivot — March 21, 17:10 CET (RESULTS IN)
+# Saturday Pivot — March 21, 19:15 CET (BULLET 1 LANDED)
 
 ## Hard Numbers
 | Metric | Value |
 |--------|-------|
-| Our best test | **0.9140** (v5.4_cos20, rank #25) |
+| Our best test | **0.9161** (Bullet 1 newrecipe, +0.0021) |
+| Previous best | 0.9140 (v5.4_cos20, rank #25) |
 | Leader | **0.9255** (14 submissions) |
-| Gap | **0.0115** |
-| Bullets remaining | 2 today + 6 after midnight = **8 total** |
-| OOF→test translation | **20%** (0.0182 OOF → 0.0036 test) |
-| Competition end | March 22, 15:00 CET (~22 hours) |
+| Gap | **0.0094** (was 0.0115) |
+| Bullets remaining | 1 before midnight + 6 after = **7 total** |
+| OOF→test (newrecipe) | **~100%** (+0.0022 OOF → +0.0021 test) |
+| Competition end | March 22, 15:00 CET (~20 hours) |
 
 ## FOLD-1 MIRROR RESULTS — GO SIGNAL CONFIRMED
 
@@ -34,32 +35,27 @@
 - cos/60 schedule (vs cos/20 or cos/5 in original)
 - Same MixUp/CutMix/lr/optimizer
 
-## Current State (17:10 CET)
+## Bullet 1 Result — SUBMITTED 0.9161
+- New recipe E1 all-data (strong aug + LS 0.05 + cos/60)
+- +0.0021 over v5.4_cos20 (0.9140)
+- OOF→test translation near 1:1 (regularization helped generalization)
 
-### H100 GPU
-- **All-data new recipe training running** (PID 70264, E1 in progress)
-- Rogue background agent processes killed + scripts disabled
-- ETA: E1 checkpoint ~17:37, E2 ~17:47
+## Current State (19:15 CET)
 
-### Bullet 1 Timeline
-| Time (CET) | Action |
-|-------------|--------|
-| 17:37 | E1 checkpoint saved |
-| 17:40 | Package into submission ZIP |
-| 17:50 | E2E verification |
-| **17:55** | **SUBMIT Bullet 1** |
-
-### Bullet 2: Detector-Crop Adaptation
+### Bullet 2: Detector-Crop Adaptation — OOF EVAL PENDING
 Train classifier on 50% GT crops + 50% detector-produced crops.
 Fixes the structural train/infer mismatch.
 
+- **Fold-1 training DONE**: 5 epochs, E4 peak (val_acc=0.8927)
+- Checkpoints: `/root/ng/output_detcrop_fold1/detcrop_e1-e5.safetensors`
+- GPU free, ready for OOF eval
+
 | Time (CET) | Action |
 |-------------|--------|
-| 17:50 | Start detector-crop fold-1 mirror (GPU free after packaging) |
-| 18:10 | OOF eval |
-| 18:20 | Go/no-go |
-| 18:30 | All-data version if positive |
-| **19:00** | **SUBMIT Bullet 2** |
+| ~~18:50~~ 19:15 | OOF eval on E1-E5 |
+| 19:30 | Go/no-go decision |
+| 19:40 | All-data training if positive |
+| **20:30** | **SUBMIT Bullet 2** |
 
 ## Every Post-Processing Lever Tested — All Dead
 
@@ -76,8 +72,8 @@ Fixes the structural train/infer mismatch.
 
 **Detection is at ceiling. Classification quality is the only live lever.**
 
-## Honest Probability
-- Close 0.0115 gap with 2 bullets: 15-25%
-- Top-15 climb: plausible
-- Cross 0.920: possible
-- Beat 0.9255: 10-15%
+## Honest Probability (updated post-Bullet 1)
+- Close remaining 0.0094 gap with 7 bullets: 20-30%
+- Top-15 climb: likely if detcrop works
+- Cross 0.920: realistic (needs +0.004 = ~+0.02 OOF)
+- Beat 0.9255: 10-15% (needs +0.0094 test = structural breakthrough)

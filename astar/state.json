@@ -99,6 +99,13 @@
       "seeds_submitted": 5,
       "strategy": "champion_challenger_v1",
       "timestamp": "2026-03-21T15:07:06Z"
+    },
+    "3eb0c25d-28fa-48ca-b8e1-fc249e3918e9": {
+      "round_number": 17,
+      "queries_used": 50,
+      "seeds_submitted": 5,
+      "strategy": "doctrine_v1",
+      "timestamp": "2026-03-21T18:13:39Z"
     }
   },
   "observations": {},

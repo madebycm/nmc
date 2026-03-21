@@ -2498,6 +2498,18 @@
           "hourlyWage": {
             "type": "NUMBER",
             "description": "Hourly wage"
+          },
+          "employmentForm": {
+            "type": "STRING",
+            "description": "Employment form: PERMANENT, TEMPORARY, etc.",
+            "enum": [
+              "PERMANENT",
+              "TEMPORARY",
+              "PERMANENT_AND_HIRED_OUT",
+              "TEMPORARY_AND_HIRED_OUT",
+              "TEMPORARY_ON_CALL",
+              "NOT_CHOSEN"
+            ]
           }
         },
         "required": [

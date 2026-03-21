@@ -169,6 +169,7 @@ REF_FIELDS = {
     "employment_id": "employment",
     "occupationCode_id": "occupationCode",
     "division_id": "division",
+    "asset_id": "asset",
 }
 
 # Reverse mapping: nested key → flat key (for canonicalization)
