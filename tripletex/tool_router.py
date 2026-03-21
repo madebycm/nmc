@@ -60,6 +60,7 @@ TOOL_MAP = {
     # Project
     "search_project":       ("GET",    "/project",             "query"),
     "post_project":         ("POST",   "/project",             "body"),
+    "put_project":          ("PUT",    "/project/{id}",        "path_body"),
     # Ledger
     "search_ledger_voucher": ("GET",   "/ledger/voucher",      "query"),
     "post_ledger_voucher":  ("POST",   "/ledger/voucher",      "body_query"),
@@ -97,20 +98,20 @@ QUERY_FIELDS = {
 # ─── Per-tool search field defaults ───
 # Replaces blanket fields="*" with compact field lists.
 SEARCH_FIELDS = {
-    "search_employee": "id,firstName,lastName,email,employeeNumber,department(id,name)",
-    "search_customer": "id,name,organizationNumber,customerNumber,email,supplierNumber",
-    "search_product": "id,name,number,priceExcludingVatCurrency,vatType(id)",
-    "search_invoice": "id,invoiceNumber,invoiceDate,customer(id,name),amountOutstanding,amountExcludingVatCurrency,isCredited",
+    "search_employee": "id,firstName,lastName,email,employeeNumber,dateOfBirth,department(id,name)",
+    "search_customer": "id,name,organizationNumber,customerNumber,email,phoneNumber,supplierNumber",
+    "search_product": "id,name,number,priceExcludingVatCurrency,vatType(id,name)",
+    "search_invoice": "id,invoiceNumber,invoiceDate,invoiceDueDate,customer(id,name),currency(id,code),amountOutstanding,amountOutstandingTotal,amount,amountCurrency,amountExcludingVat,amountExcludingVatCurrency,isCredited,isCreditNote,isApproved",
     "search_department": "id,name,departmentNumber",
-    "search_contact": "id,firstName,lastName,email,customer(id,name)",
-    "search_project": "id,name,number,projectManager(id,firstName,lastName),customer(id,name)",
-    "search_travelExpense": "id,title,employee(id,firstName,lastName)",
+    "search_contact": "id,firstName,lastName,email,phoneNumber,customer(id,name)",
+    "search_project": "id,name,number,version,isFixedPrice,fixedprice,projectManager(id,firstName,lastName),customer(id,name),startDate,endDate",
+    "search_travelExpense": "id,title,state,amount,employee(id,firstName,lastName),travelDetails(departureDate,returnDate)",
     "search_travelExpense_paymentType": "id,description,displayName",
     "search_travelExpense_costCategory": "id,description,displayName",
     "search_invoice_paymentType": "id,description,displayName,debitAccount(id,number)",
-    "search_ledger_voucher": "id,number,date,description",
+    "search_ledger_voucher": "id,number,date,description,year",
     "search_ledger_account": "id,number,name",
-    "search_supplier": "id,name,supplierNumber,organizationNumber,email",
+    "search_supplier": "id,name,supplierNumber,organizationNumber,email,phoneNumber",
     "search_employee_employment": "id,employee(id,firstName,lastName),startDate,endDate,employmentId",
     "search_employee_employment_details": "id,employment(id),date,annualSalary,percentageOfFullTimeEquivalent,occupationCode(id,code,nameNO),employmentType,remunerationType,workingHoursScheme",
     "search_employee_employment_occupationCode": "id,code,nameNO",
@@ -188,11 +189,35 @@ def _unflatten_refs(params: dict) -> dict:
     return result
 
 
+
+# camelCase flat → nested ref mapping (Gemini often emits these in postings/orderLines)
+_CAMEL_REF_FIELDS = {
+    "accountId": "account",
+    "vatTypeId": "vatType",
+    "departmentId": "department",
+    "productId": "product",
+    "customerId": "customer",
+    "supplierId": "supplier",
+    "employeeId": "employee",
+    "projectId": "project",
+    "currencyId": "currency",
+    "vendorId": "vendor",
+    "costCategoryId": "costCategory",
+    "paymentTypeId": "paymentType",
+    "travelExpenseId": "travelExpense",
+    "contactId": "contact",
+    "employmentId": "employment",
+    "occupationCodeId": "occupationCode",
+    "projectManagerId": "projectManager",
+}
+
+
 def _canonicalize_nested_item(item: dict) -> dict:
     """Canonicalize a nested array item (orderLine, posting, etc.).
 
-    Accepts BOTH formats from the model:
-      - flat: product_id: 123 → product: {"id": 123}
+    Accepts ALL formats from the model:
+      - flat underscore: product_id: 123 → product: {"id": 123}
+      - flat camelCase:  accountId: 123  → account: {"id": 123}
       - nested: product: {"id": 123} → kept as-is
       - nested without id wrapper: product: 123 → product: {"id": 123}
     """
@@ -202,6 +227,14 @@ def _canonicalize_nested_item(item: dict) -> dict:
             # Flat _id format → convert to nested
             ref_name = REF_FIELDS[k]
             result[ref_name] = {"id": v}
+        elif k in _CAMEL_REF_FIELDS:
+            # Flat camelCase format → convert to nested
+            ref_name = _CAMEL_REF_FIELDS[k]
+            if isinstance(v, dict) and "id" in v:
+                result[ref_name] = v
+            else:
+                result[ref_name] = {"id": v}
+            log.info("CANONICALIZE: %s → %s: {id: %s}", k, ref_name, v)
         elif k in _REF_NAMES and isinstance(v, dict) and "id" in v:
             # Already nested format → keep as-is
             result[k] = v
@@ -213,12 +246,48 @@ def _canonicalize_nested_item(item: dict) -> dict:
     return result
 
 
-def _canonicalize_all_arrays(params: dict) -> dict:
+def _canonicalize_all_arrays(params: dict, tool_name: str = "") -> dict:
     """Canonicalize refs inside ALL array-of-dict values."""
     for key, value in params.items():
         if isinstance(value, list) and value and isinstance(value[0], dict):
-            params[key] = [_canonicalize_nested_item(item) for item in value]
+            # incomingInvoice orderLines need FLAT format (accountId, vatTypeId)
+            if tool_name == "post_incomingInvoice" and key == "orderLines":
+                params[key] = [_flatten_for_incoming_invoice(item) for item in value]
+            else:
+                params[key] = [_canonicalize_nested_item(item) for item in value]
     return params
+
+
+def _flatten_for_incoming_invoice(item: dict) -> dict:
+    """Ensure incomingInvoice orderLines use FLAT format (accountId, vatTypeId, etc.).
+
+    The incomingInvoice API expects flat integer fields, not nested objects.
+    Convert any nested refs back to flat: account:{id:X} → accountId:X
+    """
+    result = {}
+    # Reverse mapping: nested key → flat camelCase key
+    _NESTED_TO_FLAT = {
+        "account": "accountId",
+        "vatType": "vatTypeId",
+        "department": "departmentId",
+        "product": "productId",
+        "customer": "customerId",
+        "supplier": "supplierId",
+        "project": "projectId",
+    }
+    for k, v in item.items():
+        if k in _NESTED_TO_FLAT and isinstance(v, dict) and "id" in v:
+            result[_NESTED_TO_FLAT[k]] = v["id"]
+        elif k in REF_FIELDS:
+            # underscore format (account_id) → camelCase (accountId)
+            ref_name = REF_FIELDS[k]
+            if ref_name in _NESTED_TO_FLAT:
+                result[_NESTED_TO_FLAT[ref_name]] = v
+            else:
+                result[k] = v
+        else:
+            result[k] = v
+    return result
 
 
 def route_tool_call(tool_name: str, args: dict) -> tuple:
@@ -266,12 +335,12 @@ def route_tool_call(tool_name: str, args: dict) -> tuple:
             else:
                 body_args[k] = v
         body = _unflatten_refs(body_args)
-        body = _canonicalize_all_arrays(body)
+        body = _canonicalize_all_arrays(body, tool_name=tool_name)
         return method, endpoint, query_params or None, body
 
     elif param_type in ("body", "path_body"):
         body = _unflatten_refs(args)
-        body = _canonicalize_all_arrays(body)
+        body = _canonicalize_all_arrays(body, tool_name=tool_name)
         return method, endpoint, None, body
 
     else:

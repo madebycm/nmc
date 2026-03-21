@@ -1153,7 +1153,7 @@
     },
     {
       "name": "payment_invoice",
-      "description": "Update invoice. The invoice is updated with payment information. The amount is in the invoice\u2019s currency.\n\nAPI: PUT /invoice/{id}/:payment",
+      "description": "Update invoice. The invoice is updated with payment information. The amount is in the invoice’s currency.\n\nAPI: PUT /invoice/{id}/:payment",
       "parameters": {
         "type": "OBJECT",
         "properties": {
@@ -2260,7 +2260,7 @@
                 },
                 "vatTypeId": {
                   "type": "INTEGER",
-                  "description": "VAT type ID (5=25% incoming/inng\u00e5ende MVA, 6=exempt, 31=15% food)"
+                  "description": "VAT type ID (5=25% incoming/inngående MVA, 6=exempt, 31=15% food)"
                 },
                 "amountInclVat": {
                   "type": "NUMBER",
@@ -2291,8 +2291,7 @@
           }
         }
       }
-    }
-    ,
+    },
     {
       "name": "search_employee_employment",
       "description": "Find employments.\n\nAPI: GET /employee/employment",
@@ -2784,6 +2783,80 @@
           "id",
           "type",
           "date"
+        ]
+      }
+    },
+    {
+      "name": "put_project",
+      "description": "Update an existing project.\n\nAPI: PUT /project/{id}\n\nREQUIRES version field for optimistic locking. Get version from search_project response.",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "id": {
+            "type": "INTEGER",
+            "description": "Project ID"
+          },
+          "name": {
+            "type": "STRING"
+          },
+          "version": {
+            "type": "INTEGER",
+            "description": "REQUIRED for PUT. Get from search_project response. Optimistic locking version."
+          },
+          "number": {
+            "type": "STRING"
+          },
+          "description": {
+            "type": "STRING"
+          },
+          "projectManager_id": {
+            "type": "INTEGER",
+            "description": "ID of the Employee"
+          },
+          "department_id": {
+            "type": "INTEGER",
+            "description": "ID of the Department"
+          },
+          "startDate": {
+            "type": "STRING"
+          },
+          "endDate": {
+            "type": "STRING"
+          },
+          "customer_id": {
+            "type": "INTEGER",
+            "description": "ID of the Customer"
+          },
+          "isClosed": {
+            "type": "BOOLEAN"
+          },
+          "isFixedPrice": {
+            "type": "BOOLEAN",
+            "description": "Project is fixed price if set to true, hourly rate if set to false."
+          },
+          "fixedprice": {
+            "type": "NUMBER",
+            "description": "Fixed price amount, in the project currency."
+          },
+          "currency_id": {
+            "type": "INTEGER",
+            "description": "ID of the Currency"
+          },
+          "isInternal": {
+            "type": "BOOLEAN"
+          },
+          "vatType_id": {
+            "type": "INTEGER",
+            "description": "ID of the VatType"
+          },
+          "reference": {
+            "type": "STRING"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "version"
         ]
       }
     }

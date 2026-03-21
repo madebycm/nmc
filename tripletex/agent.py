@@ -23,7 +23,8 @@ GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY", "")
 GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-pro")
 GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/{}:generateContent"
 
-MAX_TURNS = 25
+MAX_TURNS = 40
+WARN_TURNS_LEFT = 3  # inject "wrap up" warning when this many turns remain
 
 
 # ─── Runtime autofixes ───
@@ -148,9 +149,9 @@ _ENTITY_FIELDS = {
                  "currency", "amountOutstanding", "amountOutstandingTotal",
                  "amount", "amountCurrency",
                  "amountExcludingVat", "amountExcludingVatCurrency",
-                 "isCredited", "isPaid"],
-    "travelExpense": ["id", "title", "employee", "status", "totalAmount"],
-    "project": ["id", "name", "number", "projectManager", "customer"],
+                 "isCredited", "isCreditNote", "isApproved"],
+    "travelExpense": ["id", "title", "employee", "state", "amount"],
+    "project": ["id", "name", "number", "version", "isFixedPrice", "fixedprice", "projectManager", "customer"],
     "voucher": ["id", "number", "date", "description"],
     "supplier": ["id", "name", "supplierNumber", "organizationNumber"],
     "contact": ["id", "firstName", "lastName", "email"],
@@ -175,7 +176,7 @@ def _extract_fields(obj: dict, fields: list) -> dict:
             # Compact nested refs to just id + name/displayName
             if isinstance(val, dict) and "id" in val:
                 compact = {"id": val["id"]}
-                for k in ("name", "displayName", "number", "firstName", "lastName"):
+                for k in ("name", "displayName", "number", "firstName", "lastName", "code"):
                     if k in val:
                         compact[k] = val[k]
                 val = compact
@@ -329,7 +330,134 @@ def _load_tools():
             "required": ["method", "path"],
         },
     })
+    # Plan submission tool — forces model to plan before executing
+    tools.append({
+        "name": "submit_plan",
+        "description": "REQUIRED FIRST STEP: Submit your execution plan BEFORE making any API calls. The plan will be validated and you will receive feedback. You MUST call this tool first.",
+        "parameters": {
+            "type": "OBJECT",
+            "properties": {
+                "task_type": {
+                    "type": "STRING",
+                    "description": "Task category: customer, employee, employee_contract, department, order_invoice, order_invoice_payment, payment_existing, credit_note, travel_expense, project, project_milestone, journal_entry, correction_voucher, supplier_invoice, reminder, bank_reconciliation, fx_payment_agio, dimension, payroll, other",
+                },
+                "steps": {
+                    "type": "ARRAY",
+                    "description": "Ordered list of planned API operations",
+                    "items": {
+                        "type": "OBJECT",
+                        "properties": {
+                            "action": {"type": "STRING", "description": "Tool name or API call to make"},
+                            "purpose": {"type": "STRING", "description": "What this step accomplishes"},
+                            "key_values": {"type": "OBJECT", "description": "Important parameter values (amounts, account numbers, IDs)"},
+                        },
+                    },
+                },
+            },
+            "required": ["task_type", "steps"],
+        },
+    })
     return tools
+
+
+# ─── Plan validator ───
+
+def _validate_plan(task_type: str, steps: list) -> tuple[bool, str]:
+    """Validate a submitted plan. Returns (approved, feedback)."""
+    issues = []
+    step_actions = [s.get("action", "") for s in steps]
+
+    # Check journal entry / correction voucher balance
+    if task_type in ("journal_entry", "correction_voucher"):
+        for s in steps:
+            kv = s.get("key_values", {})
+            postings = kv.get("postings", [])
+            if postings and isinstance(postings, list):
+                total = sum(p.get("amountGross", 0) for p in postings if isinstance(p, dict))
+                if abs(total) > 0.01:
+                    issues.append(f"REJECTED: Postings do not balance (sum={total:.2f}). Debit=positive, Credit=negative. Fix amounts and resubmit.")
+
+    # Correction voucher: verify reversal logic
+    if task_type == "correction_voucher":
+        has_voucher = any("voucher" in a.lower() for a in step_actions)
+        if not has_voucher:
+            issues.append("REJECTED: Correction voucher task must include post_ledger_voucher steps to create correction entries.")
+        # Check for reversal sign guidance
+        for s in steps:
+            kv = s.get("key_values", {})
+            postings = kv.get("postings", [])
+            if postings:
+                for p in postings:
+                    if isinstance(p, dict) and "amountGross" not in p:
+                        issues.append("WARNING: Each posting must have amountGross. Positive=debit, negative=credit. To REVERSE a debit, use negative amount on the SAME account.")
+
+    # Credit note: MUST use createCreditNote_invoice, not manual voucher
+    if task_type == "credit_note":
+        has_credit_tool = any("createCreditNote" in a for a in step_actions)
+        if not has_credit_tool:
+            issues.append("REJECTED: Credit note tasks MUST use createCreditNote_invoice tool. Do NOT create manual vouchers. Resubmit with createCreditNote_invoice(id=invoiceId).")
+
+    # Reminder: MUST use createReminder_invoice
+    if task_type == "reminder":
+        has_reminder_tool = any("createReminder" in a or "createReminder_invoice" in a for a in step_actions)
+        if not has_reminder_tool:
+            issues.append("REJECTED: Reminder tasks MUST use createReminder_invoice tool. Do NOT create manual invoices/products for reminder fees. Resubmit with createReminder_invoice.")
+
+    # Payment tasks: MUST use payment_invoice
+    if task_type in ("order_invoice_payment", "payment_existing"):
+        has_payment = any("payment_invoice" in a for a in step_actions)
+        if not has_payment:
+            issues.append("REJECTED: Payment tasks MUST use payment_invoice tool. Do NOT use manual vouchers for payments — vouchers do not update invoice amountOutstanding.")
+
+    # FX payment: check field ordering
+    if task_type == "fx_payment_agio":
+        for s in steps:
+            kv = s.get("key_values", {})
+            paid = kv.get("paidAmount", 0)
+            paid_cur = kv.get("paidAmountCurrency", 0)
+            if paid and paid_cur and paid_cur > paid * 1.5:
+                issues.append("REJECTED: paidAmount (NOK, larger) and paidAmountCurrency (foreign, smaller) appear swapped. paidAmount=NOK amount received by bank, paidAmountCurrency=foreign currency amount on invoice.")
+
+    # Payment reversal detection: must use payment_invoice with negative amount, NOT voucher
+    # Check ALL task types — reversal can be misclassified
+    step_text = " ".join(s.get("purpose", "") + " " + s.get("action", "") for s in steps).lower()
+    reversal_keywords = ["reverse", "storn", "tilbakefør", "zurückge", "estorn", "annul",
+                         "cancel payment", "returned", "undo", "remove payment", "rückgängig",
+                         "tilbakebetal", "refund", "reimburse", "rembours"]
+    is_payment_reversal = any(kw in step_text for kw in reversal_keywords)
+    if is_payment_reversal:
+        has_payment_tool = any("payment_invoice" in a for a in step_actions)
+        if not has_payment_tool:
+            issues.append("REJECTED: Payment reversals MUST use payment_invoice with NEGATIVE paidAmount. Do NOT use post_ledger_voucher — vouchers do not update the invoice's amountOutstanding. Resubmit with payment_invoice(paidAmount=-AMOUNT).")
+        else:
+            # Verify the paidAmount is actually negative
+            for s in steps:
+                if "payment_invoice" in s.get("action", ""):
+                    kv = s.get("key_values", {})
+                    paid = kv.get("paidAmount", 0)
+                    if isinstance(paid, (int, float)) and paid > 0:
+                        issues.append("WARNING: Payment reversal detected but paidAmount is positive. For reversals, paidAmount MUST be NEGATIVE (e.g. -1000).")
+
+    # Project milestone: should have put_project and order/invoice for billing
+    if task_type == "project_milestone":
+        has_put_project = any("put_project" in a or ("tripletex_api" in a and "project" in s.get("purpose", "").lower()) for a, s in zip(step_actions, steps))
+        if not has_put_project:
+            issues.append("WARNING: Project milestone tasks should use put_project to set fixedprice. Remember to include version field from search_project response.")
+        has_invoice = any("invoice_order" in a or "post_order" in a for a in step_actions)
+        if not has_invoice:
+            issues.append("WARNING: Project milestone invoicing requires post_order + invoice_order to bill the milestone amount.")
+
+    # Supplier invoice: check for fallback awareness
+    if task_type == "supplier_invoice":
+        has_incoming = any("incomingInvoice" in a for a in step_actions)
+        has_voucher_fallback = any("voucher" in a.lower() for a in step_actions)
+        if has_incoming and not has_voucher_fallback:
+            issues.append("WARNING: post_incomingInvoice may return 403. Plan a fallback using post_ledger_voucher (debit expense account, credit account 2400 with supplier_id).")
+
+    if issues:
+        return False, "\n".join(issues)
+
+    return True, f"APPROVED. Task type: {task_type}, {len(steps)} steps. Execute exactly as planned."
 
 
 TOOLS = _load_tools()
@@ -624,6 +752,20 @@ def solve_task_sync(body: dict):
                 })
                 continue
 
+            if tool_name == "submit_plan":
+                task_type = args.get("task_type", "other")
+                plan_steps = args.get("steps", [])
+                approved, feedback = _validate_plan(task_type, plan_steps)
+                log.info("Plan submitted: type=%s, steps=%d, approved=%s", task_type, len(plan_steps), approved)
+                if not approved:
+                    log.warning("Plan REJECTED: %s", feedback)
+                    feedback = f"⛔ PLAN REJECTED — YOU MUST FIX AND RESUBMIT before making any API calls.\n\n{feedback}\n\nCall submit_plan again with the corrected plan. Do NOT proceed with rejected steps."
+                task_record["plan"] = {"type": task_type, "steps": len(plan_steps), "approved": approved}
+                fn_responses.append({
+                    "functionResponse": {"name": tool_name, "response": {"result": feedback}}
+                })
+                continue
+
             if tool_name == "search_tripletex_spec":
                 query = args.get("query", "")
                 method_filter = args.get("method_filter")
@@ -747,9 +889,37 @@ def solve_task_sync(body: dict):
         if done:
             break
 
+        # Turn-limit warning: inject "wrap up" message near the end
+        turns_remaining = MAX_TURNS - (turn + 1)
+        if turns_remaining == WARN_TURNS_LEFT and not done:
+            log.warning("Turn budget warning: %d turns remaining", turns_remaining)
+            contents.append({"role": "user", "parts": [
+                {"text": f"SYSTEM: You have {turns_remaining} turns remaining. You MUST call task_complete NOW to secure partial credit for the work done so far. Summarize what you accomplished and what remains."}
+            ]})
+
+    # If loop ended without task_complete, force a completion record
+    if task_record["outcome"] == "unknown":
+        log.warning("Turn limit reached without task_complete — forcing completion")
+        task_record["outcome"] = "forced_completion_at_turn_limit"
+        # Give Gemini one final chance to summarize
+        contents.append({"role": "user", "parts": [
+            {"text": "SYSTEM: Turn limit reached. Call task_complete immediately with a summary of everything you accomplished."}
+        ]})
+        try:
+            result = _call_gemini(contents, api_key)
+            candidates = result.get("candidates", [])
+            if candidates:
+                parts = candidates[0].get("content", {}).get("parts", [])
+                for p in parts:
+                    fc = p.get("functionCall", {})
+                    if fc.get("name") == "task_complete":
+                        task_record["outcome"] = "completed_at_limit"
+                        task_record["summary"] = fc.get("args", {}).get("summary", "")
+                        log.info("Forced task_complete: %s", task_record["summary"])
+        except Exception as e:
+            log.warning("Failed forced completion call: %s", e)
+
     task_record["turns"] = min(turn + 1, MAX_TURNS)
     task_record["elapsed_s"] = round(time.time() - t0, 1)
-    if task_record["outcome"] == "unknown":
-        task_record["outcome"] = "no_completion_signal"
     _log_task(task_record)
     log.info("Agent finished after %d turns (%.1fs)", task_record["turns"], task_record["elapsed_s"])
