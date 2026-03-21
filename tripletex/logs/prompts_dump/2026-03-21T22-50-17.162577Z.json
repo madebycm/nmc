@@ -1,0 +1,13 @@
+{
+    "prompt": "Me har ein ny tilsett som heiter Turid Kvamme, f\u00f8dd 31. May 1985. Opprett vedkomande som tilsett med e-post turid.kvamme@example.org og startdato 18. September 2026.",
+    "body": {
+        "prompt": "Me har ein ny tilsett som heiter Turid Kvamme, f\u00f8dd 31. May 1985. Opprett vedkomande som tilsett med e-post turid.kvamme@example.org og startdato 18. September 2026.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "6WdoTqh8wQfpciZBTnwjmHqB8y7QOZQRhSNQoIqOkAQ"
+        }
+    },
+    "ip": "34.34.240.91",
+    "logged_at": "2026-03-21T22:50:17.162577Z"
+}

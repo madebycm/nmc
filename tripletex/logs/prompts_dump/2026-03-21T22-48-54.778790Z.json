@@ -1,0 +1,19 @@
+{
+    "prompt": "We need the Togbillett expense from this receipt posted to department Produksjon. Use the correct expense account and ensure proper VAT treatment.",
+    "body": {
+        "prompt": "We need the Togbillett expense from this receipt posted to department Produksjon. Use the correct expense account and ensure proper VAT treatment.",
+        "files": [
+            {
+                "filename": "files/kvittering_en_04.pdf",
+                "content_base64": "JVBERi0xLjMKJenr8b8KMSAwIG9iago8PAovQ291bnQgMQovS2lkcyBbMyAwIFJdCi9NZWRpYUJveCBbMCAwIDU5NS4yOCA4NDEuODldCi9UeXBlIC9QYWdlcwo+PgplbmRvYmoKMiAwIG9iago8PAovT3BlbkFjdGlvbiBbMyAwIFIgL0ZpdEggbnVsbF0KL1BhZ2VMYXlvdXQgL09uZUNvbHVtbgovUGFnZXMgMSAwIFIKL1R5cGUgL0NhdGFsb2cKPj4KZW5kb2JqCjMgMCBvYmoKPDwKL0NvbnRlbnRzIDQgMCBSCi9QYXJlbnQgMSAwIFIKL1Jlc291cmNlcyA3IDAgUgovVHlwZSAvUGFnZQo+PgplbmRvYmoKNCAwIG9iago8PAovRmlsdGVyIC9GbGF0ZURlY29kZQovTGVuZ3RoIDM4NQo+PgpzdHJlYW0KeJx9U0tPGzEQvvMr5oJUJBg8tseP3BqVZ9W0glXuruKkIbuJ5Gzp38fJJuBdoMexv8fMN7aE+xOBbOHfybiCy2sC0igEVHO4qnZH0kl0BqxnJAvVDL5MHsdnUD0d7i+vJfg+QxkkAmsVer9n3IbndVyENgDbc1CCGL6l0DRxXQhJ9ugsWDZH2s+0wHUagffOG6M092zfd9rVlgSS2gt8n95V1dXD3eQGLoAUCoVSSDOUEW8y0qFiyGaoCBpQOmuZY13DI2SOIiQHxgqUnc00pHjU7DMaYJPHUQMF1pwbKSV+peV2EGrZ1psrC1RdOtVm8XtZ17FtCyITofQljIQXe6VVKnAHNZVXr7uownweYfV3PYsp1mH7tCl3w1KiphKvzUD0kBxZ9FzM3dV57te06YOx2Gt0dBirDXU7Ks2FRtvDEKmh/f9C4/wSHe+ZAH9iCs/wY/o1P7jTng2ZHaoAS6c/S461RNN9h3HcNQxNnI1gHGdpOW+3q0163coLefrIUwplbmRzdHJlYW0KZW5kb2JqCjUgMCBvYmoKPDwKL0Jhc2VGb250IC9IZWx2ZXRpY2EtQm9sZAovRW5jb2RpbmcgL1dpbkFuc2lFbmNvZGluZwovU3VidHlwZSAvVHlwZTEKL1R5cGUgL0ZvbnQKPj4KZW5kb2JqCjYgMCBvYmoKPDwKL0Jhc2VGb250IC9IZWx2ZXRpY2EKL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcKL1N1YnR5cGUgL1R5cGUxCi9UeXBlIC9Gb250Cj4+CmVuZG9iago3IDAgb2JqCjw8Ci9Gb250IDw8L0YxIDUgMCBSCi9GMiA2IDAgUj4+Ci9Qcm9jU2V0IFsvUERGIC9UZXh0IC9JbWFnZUIgL0ltYWdlQyAvSW1hZ2VJXQo+PgplbmRvYmoKOCAwIG9iago8PAovQ3JlYXRpb25EYXRlIChEOjIwMjYwMzE4MDk0MDUwWikKPj4KZW5kb2JqCnhyZWYKMCA5CjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDAxNSAwMDAwMCBuIAowMDAwMDAwMTAyIDAwMDAwIG4gCjAwMDAwMDAyMDUgMDAwMDAgbiAKMDAwMDAwMDI4NSAwMDAwMCBuIAowMDAwMDAwNzQyIDAwMDAwIG4gCjAwMDAwMDA4NDQgMDAwMDAgbiAKMDAwMDAwMDk0MSAwMDAwMCBuIAowMDAwMDAxMDM4IDAwMDAwIG4gCnRyYWlsZXIKPDwKL1NpemUgOQovUm9vdCAyIDAgUgovSW5mbyA4IDAgUgovSUQgWzw0Qzk4Qzk1NUU5MEE4Q0E2M0VFNkZBQUE1NUVGRkY0Mj48NEM5OEM5NTVFOTBBOENBNjNFRTZGQUFBNTVFRkZGNDI+XQo+PgpzdGFydHhyZWYKMTA5MwolJUVPRgo=",
+                "mime_type": "application/pdf"
+            }
+        ],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "5-oYGHLS2Xim4x6v_msf4dmpCB9YNBgmQhyYNsFASfE"
+        }
+    },
+    "ip": "34.34.240.63",
+    "logged_at": "2026-03-21T22:48:54.778790Z"
+}

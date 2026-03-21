@@ -1,0 +1,13 @@
+{
+    "prompt": "Um dos seus clientes tem uma fatura vencida. Encontre a fatura vencida e registe uma taxa de lembrete de 40 NOK. Debito contas a receber (1500), credito receitas de lembrete (3400). Tamb\u00e9m crie uma fatura para a taxa de lembrete ao cliente e envie-a. Al\u00e9m disso, registe um pagamento parcial de 5000 NOK na fatura vencida.",
+    "body": {
+        "prompt": "Um dos seus clientes tem uma fatura vencida. Encontre a fatura vencida e registe uma taxa de lembrete de 40 NOK. Debito contas a receber (1500), credito receitas de lembrete (3400). Tamb\u00e9m crie uma fatura para a taxa de lembrete ao cliente e envie-a. Al\u00e9m disso, registe um pagamento parcial de 5000 NOK na fatura vencida.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "oVg0OvUnk3m5SqL9-AmlWFbzwL3vYVs2q00eBtL6uuw"
+        }
+    },
+    "ip": "34.34.240.90",
+    "logged_at": "2026-03-21T22:47:27.927300Z"
+}

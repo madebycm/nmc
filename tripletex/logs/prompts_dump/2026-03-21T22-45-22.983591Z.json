@@ -1,0 +1,13 @@
+{
+    "prompt": "Create the product \"Textbook\" with product number 9036. The price is 33950 NOK excluding VAT, using the 0% VAT rate for books.",
+    "body": {
+        "prompt": "Create the product \"Textbook\" with product number 9036. The price is 33950 NOK excluding VAT, using the 0% VAT rate for books.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "8rmB6iNZfmq5tjwwf6K98nfCz-L4ufHDu0HlDWF_B70"
+        }
+    },
+    "ip": "34.34.240.90",
+    "logged_at": "2026-03-21T22:45:22.983591Z"
+}

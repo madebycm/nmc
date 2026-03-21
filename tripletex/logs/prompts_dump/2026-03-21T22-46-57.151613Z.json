@@ -1,0 +1,13 @@
+{
+    "prompt": "We have a new employee named Sophie Clark, born 3. March 1981. Please create them as an employee with email sophie.clark@example.org and start date 3. July 2026.",
+    "body": {
+        "prompt": "We have a new employee named Sophie Clark, born 3. March 1981. Please create them as an employee with email sophie.clark@example.org and start date 3. July 2026.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "arLQDbGlzjcF1JKvX5kL-00siVbuR9c7RMZhbuyGtG0"
+        }
+    },
+    "ip": "34.34.240.90",
+    "logged_at": "2026-03-21T22:46:57.151613Z"
+}

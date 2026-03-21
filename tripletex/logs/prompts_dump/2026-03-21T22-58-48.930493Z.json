@@ -1,0 +1,13 @@
+{
+    "prompt": "Execute the complete project lifecycle for 'Data Platform Windmill' (Windmill Ltd, org no. 958181620): 1) The project has a budget of 202250 NOK. 2) Log time: William Walker (project manager, william.walker@example.org) 34 hours and James Wilson (consultant, james.wilson@example.org) 71 hours. 3) Register supplier cost of 57950 NOK from Greenfield Ltd (org no. 937578261). 4) Create a customer invoice for the project.",
+    "body": {
+        "prompt": "Execute the complete project lifecycle for 'Data Platform Windmill' (Windmill Ltd, org no. 958181620): 1) The project has a budget of 202250 NOK. 2) Log time: William Walker (project manager, william.walker@example.org) 34 hours and James Wilson (consultant, james.wilson@example.org) 71 hours. 3) Register supplier cost of 57950 NOK from Greenfield Ltd (org no. 937578261). 4) Create a customer invoice for the project.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "iFSoJ9Llx8PCGj2yAdNO58x1LlH1r6XYdpJfvyqn7QM"
+        }
+    },
+    "ip": "34.34.240.82",
+    "logged_at": "2026-03-21T22:58:48.930493Z"
+}

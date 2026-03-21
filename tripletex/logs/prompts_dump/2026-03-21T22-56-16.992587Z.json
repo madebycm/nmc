@@ -1,0 +1,13 @@
+{
+    "prompt": "Erstellen Sie einen Auftrag f\u00fcr den Kunden Sonnental GmbH (Org.-Nr. 904562262) mit den Produkten Netzwerkdienst (5874) zu 9150 NOK und Wartung (8734) zu 22150 NOK. Wandeln Sie den Auftrag in eine Rechnung um und registrieren Sie die vollst\u00e4ndige Zahlung.",
+    "body": {
+        "prompt": "Erstellen Sie einen Auftrag f\u00fcr den Kunden Sonnental GmbH (Org.-Nr. 904562262) mit den Produkten Netzwerkdienst (5874) zu 9150 NOK und Wartung (8734) zu 22150 NOK. Wandeln Sie den Auftrag in eine Rechnung um und registrieren Sie die vollst\u00e4ndige Zahlung.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "S9NvhkogcYhRXt-7Ufe9mDGEiWCRHBy6EFLje8nyo8A"
+        }
+    },
+    "ip": "34.34.240.91",
+    "logged_at": "2026-03-21T22:56:16.992587Z"
+}

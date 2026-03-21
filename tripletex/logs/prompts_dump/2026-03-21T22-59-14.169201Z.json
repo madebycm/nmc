@@ -1,0 +1,13 @@
+{
+    "prompt": "Le client Montagne SARL (n\u00ba org. 893135979) a une facture impay\u00e9e de 19050 NOK hors TVA pour \"Service r\u00e9seau\". Enregistrez le paiement int\u00e9gral de cette facture.",
+    "body": {
+        "prompt": "Le client Montagne SARL (n\u00ba org. 893135979) a une facture impay\u00e9e de 19050 NOK hors TVA pour \"Service r\u00e9seau\". Enregistrez le paiement int\u00e9gral de cette facture.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "8n1ypjlWztDlnyvKxadKaSALjZNhKlYICs8xDua2pfM"
+        }
+    },
+    "ip": "34.34.240.70",
+    "logged_at": "2026-03-21T22:59:14.169201Z"
+}

@@ -1,0 +1,13 @@
+{
+    "prompt": "Os custos totais aumentaram significativamente de janeiro a fevereiro de 2026. Analise o livro raz\u00e3o e identifique as tr\u00eas contas de despesa com o maior aumento em valor. Crie um projeto interno para cada uma das tr\u00eas contas com o nome da conta. Tamb\u00e9m crie uma atividade para cada projeto.",
+    "body": {
+        "prompt": "Os custos totais aumentaram significativamente de janeiro a fevereiro de 2026. Analise o livro raz\u00e3o e identifique as tr\u00eas contas de despesa com o maior aumento em valor. Crie um projeto interno para cada uma das tr\u00eas contas com o nome da conta. Tamb\u00e9m crie uma atividade para cada projeto.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "xHdQ0qRyge-o0cubDWylOl1p-2Wiko2Vuz6I-JL4j8Q"
+        }
+    },
+    "ip": "34.34.240.82",
+    "logged_at": "2026-03-21T22:53:48.009814Z"
+}

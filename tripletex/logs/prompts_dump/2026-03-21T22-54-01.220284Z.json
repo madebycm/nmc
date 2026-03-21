@@ -1,0 +1,19 @@
+{
+    "prompt": "Sie haben einen Arbeitsvertrag erhalten (siehe beigefugte PDF). Erstellen Sie den Mitarbeiter in Tripletex mit allen Details aus dem Vertrag: Personalnummer, Geburtsdatum, Abteilung, Berufsschluessel, Gehalt, Beschaeftigungsprozentsatz und Startdatum.",
+    "body": {
+        "prompt": "Sie haben einen Arbeitsvertrag erhalten (siehe beigefugte PDF). Erstellen Sie den Mitarbeiter in Tripletex mit allen Details aus dem Vertrag: Personalnummer, Geburtsdatum, Abteilung, Berufsschluessel, Gehalt, Beschaeftigungsprozentsatz und Startdatum.",
+        "files": [
+            {
+                "filename": "files/arbeidskontrakt_de_05.pdf",
+                "content_base64": "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",
+                "mime_type": "application/pdf"
+            }
+        ],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "5DiVzt9kXrAnVfYPhhIjjSBhPieIV_AfdbsNBpdtv0A"
+        }
+    },
+    "ip": "34.34.240.83",
+    "logged_at": "2026-03-21T22:54:01.220284Z"
+}

@@ -1,0 +1,13 @@
+{
+    "prompt": "Erstellen Sie eine benutzerdefinierte Buchhaltungsdimension \"Kostsenter\" mit den Werten \"Kundeservice\" und \"Markedsf\u00f8ring\". Buchen Sie dann einen Beleg auf Konto 7100 \u00fcber 42400 NOK, verkn\u00fcpft mit dem Dimensionswert \"Markedsf\u00f8ring\".",
+    "body": {
+        "prompt": "Erstellen Sie eine benutzerdefinierte Buchhaltungsdimension \"Kostsenter\" mit den Werten \"Kundeservice\" und \"Markedsf\u00f8ring\". Buchen Sie dann einen Beleg auf Konto 7100 \u00fcber 42400 NOK, verkn\u00fcpft mit dem Dimensionswert \"Markedsf\u00f8ring\".",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "XU4F2ppmfB3B2cw6AhNm1RU1BDdtt8O1s3vN46UINfI"
+        }
+    },
+    "ip": "34.34.240.90",
+    "logged_at": "2026-03-21T22:46:29.096634Z"
+}

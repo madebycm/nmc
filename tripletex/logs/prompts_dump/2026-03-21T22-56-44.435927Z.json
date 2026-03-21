@@ -1,0 +1,13 @@
+{
+    "prompt": "We have a new employee named Edward Harris, born 9. November 1987. Please create them as an employee with email edward.harris@example.org and start date 6. July 2026.",
+    "body": {
+        "prompt": "We have a new employee named Edward Harris, born 9. November 1987. Please create them as an employee with email edward.harris@example.org and start date 6. July 2026.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "qqBoX8-glunhEOtW5UnUoPArv11Q7FXdT-XGThY7wn0"
+        }
+    },
+    "ip": "34.34.240.63",
+    "logged_at": "2026-03-21T22:56:44.435927Z"
+}

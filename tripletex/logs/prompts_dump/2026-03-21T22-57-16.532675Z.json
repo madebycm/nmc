@@ -1,0 +1,13 @@
+{
+    "prompt": "Einer Ihrer Kunden hat eine uberfallige Rechnung. Finden Sie die uberfallige Rechnung und buchen Sie eine Mahngebuhr von 70 NOK. Soll Forderungen (1500), Haben Mahngebuhren (3400). Erstellen Sie au\u00dferdem eine Rechnung \u00fcber die Mahngeb\u00fchr an den Kunden und senden Sie diese. Registrieren Sie zus\u00e4tzlich eine Teilzahlung von 5000 NOK auf der \u00fcberf\u00e4lligen Rechnung.",
+    "body": {
+        "prompt": "Einer Ihrer Kunden hat eine uberfallige Rechnung. Finden Sie die uberfallige Rechnung und buchen Sie eine Mahngebuhr von 70 NOK. Soll Forderungen (1500), Haben Mahngebuhren (3400). Erstellen Sie au\u00dferdem eine Rechnung \u00fcber die Mahngeb\u00fchr an den Kunden und senden Sie diese. Registrieren Sie zus\u00e4tzlich eine Teilzahlung von 5000 NOK auf der \u00fcberf\u00e4lligen Rechnung.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "T6VLujcT8AZAzgVMrQB0wRsnQq_TqjOtxH0BovtYsHU"
+        }
+    },
+    "ip": "34.34.240.63",
+    "logged_at": "2026-03-21T22:57:16.532675Z"
+}

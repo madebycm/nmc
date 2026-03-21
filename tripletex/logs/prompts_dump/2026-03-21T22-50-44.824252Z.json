@@ -1,0 +1,13 @@
+{
+    "prompt": "Cree una dimensi\u00f3n contable personalizada \"Kostsenter\" con los valores \"\u00d8konomi\" y \"Produktutvikling\". Luego registre un asiento en la cuenta 6340 por 45050 NOK, vinculado al valor de dimensi\u00f3n \"Produktutvikling\".",
+    "body": {
+        "prompt": "Cree una dimensi\u00f3n contable personalizada \"Kostsenter\" con los valores \"\u00d8konomi\" y \"Produktutvikling\". Luego registre un asiento en la cuenta 6340 por 45050 NOK, vinculado al valor de dimensi\u00f3n \"Produktutvikling\".",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "laEofJGn5lALMOyXvzM2NQvI80OkiWw8jBZT6bdoCQo"
+        }
+    },
+    "ip": "34.34.240.83",
+    "logged_at": "2026-03-21T22:50:44.824252Z"
+}

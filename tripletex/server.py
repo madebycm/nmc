@@ -40,7 +40,9 @@ async def solve(request: Request):
 
     body = await request.json()
     prompt = body.get("prompt", "")
-    log.info("Task received: %s", prompt[:120])
+    client_ip = request.client.host if request.client else "unknown"
+    body["_client_ip"] = client_ip
+    log.info("Task received [%s]: %s", client_ip, prompt[:120])
     t0 = time.time()
 
     try:
@@ -49,10 +51,10 @@ async def solve(request: Request):
         log.info("Task completed successfully")
     except Exception:
         log.error("Task failed:\n%s", traceback.format_exc())
-        # Log crashed tasks so they don't disappear
         try:
             crash_entry = {
                 "prompt": prompt,
+                "ip": client_ip,
                 "outcome": "crash",
                 "error": traceback.format_exc()[-500:],
                 "elapsed_s": round(time.time() - t0, 1),
@@ -64,6 +66,26 @@ async def solve(request: Request):
             pass
 
     # Always return completed — partial work still earns partial credit
+    return JSONResponse({"status": "completed"})
+
+
+@app.post("/solve2")
+async def solve2(request: Request):
+    """Dump-only endpoint: stores the incoming prompt and returns immediately."""
+    body = await request.json()
+    prompt = body.get("prompt", "")
+    client_ip = request.client.host if request.client else "unknown"
+    log.info("solve2 DUMP [%s]: %s", client_ip, prompt[:120])
+
+    entry = {
+        "prompt": prompt,
+        "body": body,
+        "ip": client_ip,
+        "logged_at": datetime.utcnow().isoformat() + "Z",
+    }
+    with open(TASK_LOG_FILE, "a") as f:
+        f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+
     return JSONResponse({"status": "completed"})
 
 

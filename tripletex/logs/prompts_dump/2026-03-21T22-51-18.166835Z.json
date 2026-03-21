@@ -1,0 +1,13 @@
+{
+    "prompt": "Betalingen fra Sn\u00f8hetta AS (org.nr 962427715) for fakturaen \"Systemutvikling\" (49600 kr ekskl. MVA) ble returnert av banken. Reverser betalingen slik at fakturaen igjen viser utest\u00e5ende bel\u00f8p.",
+    "body": {
+        "prompt": "Betalingen fra Sn\u00f8hetta AS (org.nr 962427715) for fakturaen \"Systemutvikling\" (49600 kr ekskl. MVA) ble returnert av banken. Reverser betalingen slik at fakturaen igjen viser utest\u00e5ende bel\u00f8p.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "Zp5VD8N33YxkTa1stOvSOwIuzWD-M96mhOzQU5dyOn4"
+        }
+    },
+    "ip": "34.34.240.82",
+    "logged_at": "2026-03-21T22:51:18.166835Z"
+}

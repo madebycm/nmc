@@ -1,0 +1,13 @@
+{
+    "prompt": "The customer Greenfield Ltd (org no. 853801941) has an outstanding invoice for 34450 NOK excluding VAT for \"Consulting Hours\". Register full payment on this invoice.",
+    "body": {
+        "prompt": "The customer Greenfield Ltd (org no. 853801941) has an outstanding invoice for 34450 NOK excluding VAT for \"Consulting Hours\". Register full payment on this invoice.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "z-8o68aEXPDUvcJpyqQJdc2kNcrxKhm5b9vRN-qCaO8"
+        }
+    },
+    "ip": "34.34.240.82",
+    "logged_at": "2026-03-21T22:56:36.884198Z"
+}

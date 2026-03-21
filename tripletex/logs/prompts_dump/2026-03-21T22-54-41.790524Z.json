@@ -1,0 +1,13 @@
+{
+    "prompt": "Realice el cierre mensual de marzo de 2026. Registre la periodificaci\u00f3n (11900 NOK por mes de la cuenta 1700 a gasto). Contabilice la depreciaci\u00f3n mensual de un activo fijo con costo de adquisici\u00f3n 107950 NOK y vida \u00fatil 6 a\u00f1os (depreciaci\u00f3n lineal a cuenta 6010). Verifique que el balance de saldos sea cero. Tambi\u00e9n registre una provisi\u00f3n salarial (d\u00e9bito cuenta de gastos salariales 5000, cr\u00e9dito cuenta de salarios acumulados 2900).",
+    "body": {
+        "prompt": "Realice el cierre mensual de marzo de 2026. Registre la periodificaci\u00f3n (11900 NOK por mes de la cuenta 1700 a gasto). Contabilice la depreciaci\u00f3n mensual de un activo fijo con costo de adquisici\u00f3n 107950 NOK y vida \u00fatil 6 a\u00f1os (depreciaci\u00f3n lineal a cuenta 6010). Verifique que el balance de saldos sea cero. Tambi\u00e9n registre una provisi\u00f3n salarial (d\u00e9bito cuenta de gastos salariales 5000, cr\u00e9dito cuenta de salarios acumulados 2900).",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "2k1l5A3BWBw6oA38qhMC-VpWgzl0AfHbxS0UAULf4qs"
+        }
+    },
+    "ip": "34.34.240.91",
+    "logged_at": "2026-03-21T22:54:41.790524Z"
+}

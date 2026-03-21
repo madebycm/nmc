@@ -1,0 +1,13 @@
+{
+    "prompt": "Execute o ciclo de vida completo do projeto 'Migra\u00e7\u00e3o Cloud Floresta' (Floresta Lda, org. n\u00ba 909990343): 1) O projeto tem um or\u00e7amento de 407800 NOK. 2) Registe horas: Lucas Martins (gestor de projeto, lucas.martins@example.org) 28 horas e Bruno Costa (consultor, bruno.costa@example.org) 135 horas. 3) Registe custo de fornecedor de 70700 NOK de Luz do Sol Lda (org. n\u00ba 920920012). 4) Crie uma fatura ao cliente para o projeto.",
+    "body": {
+        "prompt": "Execute o ciclo de vida completo do projeto 'Migra\u00e7\u00e3o Cloud Floresta' (Floresta Lda, org. n\u00ba 909990343): 1) O projeto tem um or\u00e7amento de 407800 NOK. 2) Registe horas: Lucas Martins (gestor de projeto, lucas.martins@example.org) 28 horas e Bruno Costa (consultor, bruno.costa@example.org) 135 horas. 3) Registe custo de fornecedor de 70700 NOK de Luz do Sol Lda (org. n\u00ba 920920012). 4) Crie uma fatura ao cliente para o projeto.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "jS4jFIMeKv9fUVLMt_jqEMUrVPGP08m0JB9q5KkaDBg"
+        }
+    },
+    "ip": "34.34.240.63",
+    "logged_at": "2026-03-21T22:51:28.429756Z"
+}

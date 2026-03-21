@@ -1,0 +1,13 @@
+{
+    "prompt": "Opprett en faktura til kunden Havbris AS (org.nr 977448239) med tre produktlinjer: Konsulenttimer (6390) til 2850 kr med 25 % MVA, Systemutvikling (1652) til 2650 kr med 15 % MVA (n\u00e6ringsmiddel), og Webdesign (3273) til 7400 kr med 0 % MVA (avgiftsfri).",
+    "body": {
+        "prompt": "Opprett en faktura til kunden Havbris AS (org.nr 977448239) med tre produktlinjer: Konsulenttimer (6390) til 2850 kr med 25 % MVA, Systemutvikling (1652) til 2650 kr med 15 % MVA (n\u00e6ringsmiddel), og Webdesign (3273) til 7400 kr med 0 % MVA (avgiftsfri).",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "nAAM9een6mPfuxVZ2BufvD5zNiks4wC3mxeT8tgvt-U"
+        }
+    },
+    "ip": "34.34.240.8",
+    "logged_at": "2026-03-21T22:57:45.341869Z"
+}

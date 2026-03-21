@@ -1,0 +1,13 @@
+{
+    "prompt": "Cr\u00e9ez une dimension comptable personnalis\u00e9e \"Produktlinje\" avec les valeurs \"Basis\" et \"Avansert\". Puis comptabilisez une pi\u00e8ce sur le compte 6300 pour 22550 NOK, li\u00e9e \u00e0 la valeur de dimension \"Avansert\".",
+    "body": {
+        "prompt": "Cr\u00e9ez une dimension comptable personnalis\u00e9e \"Produktlinje\" avec les valeurs \"Basis\" et \"Avansert\". Puis comptabilisez une pi\u00e8ce sur le compte 6300 pour 22550 NOK, li\u00e9e \u00e0 la valeur de dimension \"Avansert\".",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "4--htcPNaYDjg8M2Y7sshX36o45GaF3MAwZkEGgoTc0"
+        }
+    },
+    "ip": "34.34.240.68",
+    "logged_at": "2026-03-21T22:46:30.049489Z"
+}

@@ -1,0 +1,13 @@
+{
+    "prompt": "L'un de vos clients a une facture en retard. Trouvez la facture en retard et enregistrez des frais de rappel de 35 NOK. Debit creances clients (1500), credit revenus de rappel (3400). Cr\u00e9ez \u00e9galement une facture pour les frais de rappel au client et envoyez-la. De plus, enregistrez un paiement partiel de 5000 NOK sur la facture en retard.",
+    "body": {
+        "prompt": "L'un de vos clients a une facture en retard. Trouvez la facture en retard et enregistrez des frais de rappel de 35 NOK. Debit creances clients (1500), credit revenus de rappel (3400). Cr\u00e9ez \u00e9galement une facture pour les frais de rappel au client et envoyez-la. De plus, enregistrez un paiement partiel de 5000 NOK sur la facture en retard.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "A5JxeP9oQ7VoGVntS7v378CrPlf0TxGCIo59nWxQFRY"
+        }
+    },
+    "ip": "34.34.240.70",
+    "logged_at": "2026-03-21T23:02:13.730816Z"
+}

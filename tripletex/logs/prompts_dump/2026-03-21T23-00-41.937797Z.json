@@ -1,0 +1,13 @@
+{
+    "prompt": "Nous avons d\u00e9couvert des erreurs dans le grand livre de janvier et f\u00e9vrier 2026. V\u00e9rifiez toutes les pi\u00e8ces et trouvez les 4 erreurs : une \u00e9criture sur le mauvais compte (compte 6860 utilis\u00e9 au lieu de 6590, montant 7600 NOK), une pi\u00e8ce en double (compte 6500, montant 3600 NOK), une ligne de TVA manquante (compte 6500, montant HT 8050 NOK, TVA manquante sur compte 2710), et un montant incorrect (compte 6340, 23000 NOK comptabilis\u00e9 au lieu de 8000 NOK). Corrigez toutes les erreurs avec des \u00e9critures correctives.",
+    "body": {
+        "prompt": "Nous avons d\u00e9couvert des erreurs dans le grand livre de janvier et f\u00e9vrier 2026. V\u00e9rifiez toutes les pi\u00e8ces et trouvez les 4 erreurs : une \u00e9criture sur le mauvais compte (compte 6860 utilis\u00e9 au lieu de 6590, montant 7600 NOK), une pi\u00e8ce en double (compte 6500, montant 3600 NOK), une ligne de TVA manquante (compte 6500, montant HT 8050 NOK, TVA manquante sur compte 2710), et un montant incorrect (compte 6340, 23000 NOK comptabilis\u00e9 au lieu de 8000 NOK). Corrigez toutes les erreurs avec des \u00e9critures correctives.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "XAYiPc3Beo1WouBu5-r9qnzrmS1sNxlktm4Bxo3a9OU"
+        }
+    },
+    "ip": "34.34.240.8",
+    "logged_at": "2026-03-21T23:00:41.937797Z"
+}

@@ -1,0 +1,13 @@
+{
+    "prompt": "Opprett kunden Strandvik AS med organisasjonsnummer 808795132. Adressa er Parkveien 146, 7010 Trondheim. E-post: post@strandvik.no.",
+    "body": {
+        "prompt": "Opprett kunden Strandvik AS med organisasjonsnummer 808795132. Adressa er Parkveien 146, 7010 Trondheim. E-post: post@strandvik.no.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "tCkuGjtVlAlubjutwv6Co2ctJanjfQjlV-l9CWvjVXc"
+        }
+    },
+    "ip": "34.34.240.82",
+    "logged_at": "2026-03-21T23:00:56.188472Z"
+}

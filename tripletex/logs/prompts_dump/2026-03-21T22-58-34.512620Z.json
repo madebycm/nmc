@@ -1,0 +1,13 @@
+{
+    "prompt": "Wir haben die Rechnung INV-2026-7156 vom Lieferanten Windkraft GmbH (Org.-Nr. 961246954) \u00fcber 35350 NOK einschlie\u00dflich MwSt. erhalten. Der Betrag betrifft B\u00fcrodienstleistungen (Konto 6860). Erfassen Sie die Lieferantenrechnung mit der korrekten Vorsteuer (25 %).",
+    "body": {
+        "prompt": "Wir haben die Rechnung INV-2026-7156 vom Lieferanten Windkraft GmbH (Org.-Nr. 961246954) \u00fcber 35350 NOK einschlie\u00dflich MwSt. erhalten. Der Betrag betrifft B\u00fcrodienstleistungen (Konto 6860). Erfassen Sie die Lieferantenrechnung mit der korrekten Vorsteuer (25 %).",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "pLbEJhVwc61TZONGh7ONJ0pE3nO2w-d2CIDWUG6r1ak"
+        }
+    },
+    "ip": "34.34.240.91",
+    "logged_at": "2026-03-21T22:58:34.512620Z"
+}

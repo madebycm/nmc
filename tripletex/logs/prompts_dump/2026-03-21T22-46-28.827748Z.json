@@ -1,0 +1,13 @@
+{
+    "prompt": "Create a custom accounting dimension \"Produktlinje\" with the values \"Standard\" and \"Basis\". Then post a voucher on account 7140 for 8900 NOK, linked to the dimension value \"Basis\".",
+    "body": {
+        "prompt": "Create a custom accounting dimension \"Produktlinje\" with the values \"Standard\" and \"Basis\". Then post a voucher on account 7140 for 8900 NOK, linked to the dimension value \"Basis\".",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "qZ9sVwrWHnJ23f_BJLHrkYx9g9-38nnEn9LM19kP41I"
+        }
+    },
+    "ip": "34.34.240.91",
+    "logged_at": "2026-03-21T22:46:28.827748Z"
+}

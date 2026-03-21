@@ -1,0 +1,13 @@
+{
+    "prompt": "Nous avons re\u00e7u la facture INV-2026-8172 du fournisseur Montagne SARL (n\u00ba org. 937826192) de 71150 NOK TTC. Le montant concerne des services de bureau (compte 7100). Enregistrez la facture fournisseur avec la TVA d\u00e9ductible correcte (25 %).",
+    "body": {
+        "prompt": "Nous avons re\u00e7u la facture INV-2026-8172 du fournisseur Montagne SARL (n\u00ba org. 937826192) de 71150 NOK TTC. Le montant concerne des services de bureau (compte 7100). Enregistrez la facture fournisseur avec la TVA d\u00e9ductible correcte (25 %).",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "AzaiWlHfhgp6ZFwvxA5QEv6lkTNmrTlwkLUuqLsyffc"
+        }
+    },
+    "ip": "34.34.240.81",
+    "logged_at": "2026-03-21T22:51:39.137309Z"
+}

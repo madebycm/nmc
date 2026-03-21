@@ -1,0 +1,13 @@
+{
+    "prompt": "Registrer leverand\u00f8ren Brattli AS med organisasjonsnummer 950029978. E-post: faktura@brattli.no.",
+    "body": {
+        "prompt": "Registrer leverand\u00f8ren Brattli AS med organisasjonsnummer 950029978. E-post: faktura@brattli.no.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "pG3kxD_LeBwlfsYrsQRBWXQsGnKtCHaGLAB1unZmMqk"
+        }
+    },
+    "ip": "34.34.240.81",
+    "logged_at": "2026-03-21T22:50:03.696269Z"
+}

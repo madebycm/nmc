@@ -1,0 +1,13 @@
+{
+    "prompt": "Realize o encerramento mensal de mar\u00e7o de 2026. Registe a revers\u00e3o de acr\u00e9scimos (12200 NOK por m\u00eas da conta 1710 para despesa). Registe a deprecia\u00e7\u00e3o mensal de um ativo fixo com custo de aquisi\u00e7\u00e3o 116350 NOK e vida \u00fatil 7 anos (deprecia\u00e7\u00e3o linear para conta 6010). Verifique se o balancete est\u00e1 a zero. Registe tamb\u00e9m uma provis\u00e3o salarial (d\u00e9bito conta de despesas salariais 5000, cr\u00e9dito conta de sal\u00e1rios acumulados 2900).",
+    "body": {
+        "prompt": "Realize o encerramento mensal de mar\u00e7o de 2026. Registe a revers\u00e3o de acr\u00e9scimos (12200 NOK por m\u00eas da conta 1710 para despesa). Registe a deprecia\u00e7\u00e3o mensal de um ativo fixo com custo de aquisi\u00e7\u00e3o 116350 NOK e vida \u00fatil 7 anos (deprecia\u00e7\u00e3o linear para conta 6010). Verifique se o balancete est\u00e1 a zero. Registe tamb\u00e9m uma provis\u00e3o salarial (d\u00e9bito conta de despesas salariais 5000, cr\u00e9dito conta de sal\u00e1rios acumulados 2900).",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "g0C5MRNw_URQMwhNsa_UIp8SMgsJDds3nT1CWQqWQq0"
+        }
+    },
+    "ip": "34.34.240.91",
+    "logged_at": "2026-03-21T22:55:06.650808Z"
+}

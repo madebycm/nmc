@@ -1,0 +1,13 @@
+{
+    "prompt": "Kj\u00f8r l\u00f8nn for Jonas Hansen (jonas.hansen@example.org) for denne m\u00e5neden. Grunnl\u00f8nn er 40000 kr. Legg til en engangsbonus p\u00e5 10600 kr i tillegg til grunnl\u00f8nnen. Dersom l\u00f8nns-API-et ikke fungerer, kan du bruke manuelle bilag p\u00e5 l\u00f8nnskontoer (5000-serien) for \u00e5 registrere l\u00f8nnskostnaden.",
+    "body": {
+        "prompt": "Kj\u00f8r l\u00f8nn for Jonas Hansen (jonas.hansen@example.org) for denne m\u00e5neden. Grunnl\u00f8nn er 40000 kr. Legg til en engangsbonus p\u00e5 10600 kr i tillegg til grunnl\u00f8nnen. Dersom l\u00f8nns-API-et ikke fungerer, kan du bruke manuelle bilag p\u00e5 l\u00f8nnskontoer (5000-serien) for \u00e5 registrere l\u00f8nnskostnaden.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "Y2aGIRR_tsRXf5BxTLbCrw7cRRmrdaZMLmf9Ys8GwLo"
+        }
+    },
+    "ip": "34.34.240.91",
+    "logged_at": "2026-03-21T23:02:35.283494Z"
+}

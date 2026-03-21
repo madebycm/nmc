@@ -1,0 +1,13 @@
+{
+    "prompt": "Realice el cierre anual simplificado de 2025: 1) Calcule y contabilice la depreciaci\u00f3n anual de tres activos: Kj\u00f8ret\u00f8y (249600 NOK, 10 a\u00f1os lineales, cuenta 1230), IT-utstyr (292050 NOK, 9 a\u00f1os, cuenta 1210), Kontormaskiner (354500 NOK, 7 a\u00f1os, cuenta 1200). Use cuenta 6010 para gasto de depreciaci\u00f3n y 1209 para depreciaci\u00f3n acumulada. 2) Revierta gastos prepagados (total 45950 NOK en cuenta 1700). 3) Calcule y contabilice la provisi\u00f3n de impuestos (22 % del resultado imponible) en cuenta 8700/2920. Registre cada depreciaci\u00f3n como un comprobante separado.",
+    "body": {
+        "prompt": "Realice el cierre anual simplificado de 2025: 1) Calcule y contabilice la depreciaci\u00f3n anual de tres activos: Kj\u00f8ret\u00f8y (249600 NOK, 10 a\u00f1os lineales, cuenta 1230), IT-utstyr (292050 NOK, 9 a\u00f1os, cuenta 1210), Kontormaskiner (354500 NOK, 7 a\u00f1os, cuenta 1200). Use cuenta 6010 para gasto de depreciaci\u00f3n y 1209 para depreciaci\u00f3n acumulada. 2) Revierta gastos prepagados (total 45950 NOK en cuenta 1700). 3) Calcule y contabilice la provisi\u00f3n de impuestos (22 % del resultado imponible) en cuenta 8700/2920. Registre cada depreciaci\u00f3n como un comprobante separado.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "wEwaeW3_E8n37TWypUK-MEYEeJUqC0GW5hagw7pOtgs"
+        }
+    },
+    "ip": "34.34.240.63",
+    "logged_at": "2026-03-21T23:03:12.672147Z"
+}

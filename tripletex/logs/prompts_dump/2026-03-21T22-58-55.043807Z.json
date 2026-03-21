@@ -1,0 +1,13 @@
+{
+    "prompt": "Envi\u00e1mos uma fatura de 8676 EUR ao Cascata Lda (org. n\u00ba 967770892) quando a taxa de c\u00e2mbio era 11.62 NOK/EUR. O cliente pagou agora, mas a taxa \u00e9 10.89 NOK/EUR. Registe o pagamento e lance a diferen\u00e7a cambial (disagio) na conta correta.",
+    "body": {
+        "prompt": "Envi\u00e1mos uma fatura de 8676 EUR ao Cascata Lda (org. n\u00ba 967770892) quando a taxa de c\u00e2mbio era 11.62 NOK/EUR. O cliente pagou agora, mas a taxa \u00e9 10.89 NOK/EUR. Registe o pagamento e lance a diferen\u00e7a cambial (disagio) na conta correta.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "rD4egDZMtukcRi94_Or3TrINKgLeXZEi53dDy7WVuCM"
+        }
+    },
+    "ip": "34.34.240.81",
+    "logged_at": "2026-03-21T22:58:55.043807Z"
+}

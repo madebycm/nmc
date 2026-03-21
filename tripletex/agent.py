@@ -1,7 +1,6 @@
 """Gemini-powered Tripletex agent with typed tools from OpenAPI spec."""
 
 import base64
-import io
 import json
 import logging
 import os
@@ -23,8 +22,7 @@ GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY", "")
 GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-pro")
 GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/{}:generateContent"
 
-MAX_TURNS = 40
-WARN_TURNS_LEFT = 3  # inject "wrap up" warning when this many turns remain
+MAX_TURNS = 25
 
 
 # ─── Runtime autofixes ───
@@ -57,31 +55,13 @@ def _pre_validate(tool_name: str, args: dict) -> dict:
         if not postings:
             log.warning("AUTOFIX: voucher has no postings")
         elif isinstance(postings, list):
-            # DETERMINISTIC GUARD: Block unbalanced vouchers before hitting API
             total = sum(p.get("amountGross", 0) for p in postings if isinstance(p, dict))
             if abs(total) > 0.01:
-                raise ValueError(
-                    f"VOUCHER UNBALANCED. Sum of amountGross is {total:.2f}. "
-                    f"Debits (positive) must exactly equal Credits (negative). Fix your amounts."
-                )
+                log.warning("AUTOFIX: voucher postings unbalanced (sum=%.2f)", total)
             voucher_date = args.get("date", date.today().isoformat())
-            # Allowed posting fields — strip anything hallucinated
-            _VALID_POSTING_KEYS = {
-                "account_id", "amountGross", "amountGrossCurrency", "currency_id",
-                "vatType_id", "description", "date", "customer_id", "supplier_id",
-                "employee_id", "project_id", "department_id", "product_id", "row",
-                # Dimension fields
-                "freeAccountingDimension1", "freeAccountingDimension2", "freeAccountingDimension3",
-                "freeAccountingDimension1_id", "freeAccountingDimension2_id", "freeAccountingDimension3_id",
-            }
             for i, p in enumerate(postings):
                 if not isinstance(p, dict):
                     continue
-                # Strip hallucinated fields
-                bad_keys = [k for k in p.keys() if k not in _VALID_POSTING_KEYS]
-                for bk in bad_keys:
-                    del p[bk]
-                    log.warning("AUTOFIX: Stripped hallucinated field '%s' from posting %d", bk, i)
                 # Ensure each posting has date
                 if "date" not in p:
                     p["date"] = voucher_date
@@ -137,20 +117,6 @@ def _pre_validate(tool_name: str, args: dict) -> dict:
         # Default sendType if not specified
         args.setdefault("sendType", "EMAIL")
 
-    elif tool_name == "payment_invoice":
-        # Sanity check: if paidAmountCurrency >> paidAmount, they're likely swapped
-        # paidAmount = NOK (bank currency, larger number)
-        # paidAmountCurrency = foreign currency (smaller number)
-        paid = args.get("paidAmount", 0) or 0
-        paid_cur = args.get("paidAmountCurrency")
-        if paid_cur is not None and paid > 0 and paid_cur > 0:
-            if paid_cur > paid * 1.5:
-                # paidAmountCurrency is much larger than paidAmount — almost certainly swapped
-                log.warning("AUTOFIX: payment_invoice paidAmount/paidAmountCurrency likely swapped "
-                            "(paidAmount=%.2f, paidAmountCurrency=%.2f) — swapping", paid, paid_cur)
-                args["paidAmount"] = paid_cur
-                args["paidAmountCurrency"] = paid
-
     return args
 
 
@@ -163,13 +129,12 @@ _ENTITY_FIELDS = {
     "department": ["id", "name", "departmentNumber"],
     "product": ["id", "name", "number", "priceExcludingVatCurrency", "vatType"],
     "order": ["id", "number", "customer", "orderDate", "deliveryDate"],
-    "invoice": ["id", "invoiceNumber", "invoiceDate", "invoiceDueDate", "customer",
-                 "currency", "amountOutstanding", "amountOutstandingTotal",
-                 "amount", "amountCurrency",
+    "invoice": ["id", "invoiceNumber", "invoiceDate", "customer", "amountOutstanding",
+                 "amountOutstandingTotal", "amount", "amountCurrency",
                  "amountExcludingVat", "amountExcludingVatCurrency",
-                 "isCredited", "isCreditNote", "isApproved"],
-    "travelExpense": ["id", "title", "employee", "state", "amount"],
-    "project": ["id", "name", "number", "version", "isFixedPrice", "fixedprice", "projectManager", "customer"],
+                 "isCredited", "isPaid"],
+    "travelExpense": ["id", "title", "employee", "status", "totalAmount"],
+    "project": ["id", "name", "number", "projectManager", "customer"],
     "voucher": ["id", "number", "date", "description"],
     "supplier": ["id", "name", "supplierNumber", "organizationNumber"],
     "contact": ["id", "firstName", "lastName", "email"],
@@ -194,7 +159,7 @@ def _extract_fields(obj: dict, fields: list) -> dict:
             # Compact nested refs to just id + name/displayName
             if isinstance(val, dict) and "id" in val:
                 compact = {"id": val["id"]}
-                for k in ("name", "displayName", "number", "firstName", "lastName", "code"):
+                for k in ("name", "displayName", "number", "firstName", "lastName"):
                     if k in val:
                         compact[k] = val[k]
                 val = compact
@@ -348,134 +313,7 @@ def _load_tools():
             "required": ["method", "path"],
         },
     })
-    # Plan submission tool — forces model to plan before executing
-    tools.append({
-        "name": "submit_plan",
-        "description": "REQUIRED FIRST STEP: Submit your execution plan BEFORE making any API calls. The plan will be validated and you will receive feedback. You MUST call this tool first.",
-        "parameters": {
-            "type": "OBJECT",
-            "properties": {
-                "task_type": {
-                    "type": "STRING",
-                    "description": "Task category: customer, employee, employee_contract, department, order_invoice, order_invoice_payment, payment_existing, credit_note, travel_expense, project, project_milestone, journal_entry, correction_voucher, supplier_invoice, reminder, bank_reconciliation, fx_payment_agio, dimension, payroll, other",
-                },
-                "steps": {
-                    "type": "ARRAY",
-                    "description": "Ordered list of planned API operations",
-                    "items": {
-                        "type": "OBJECT",
-                        "properties": {
-                            "action": {"type": "STRING", "description": "Tool name or API call to make"},
-                            "purpose": {"type": "STRING", "description": "What this step accomplishes"},
-                            "key_values": {"type": "OBJECT", "description": "Important parameter values (amounts, account numbers, IDs)"},
-                        },
-                    },
-                },
-            },
-            "required": ["task_type", "steps"],
-        },
-    })
     return tools
-
-
-# ─── Plan validator ───
-
-def _validate_plan(task_type: str, steps: list) -> tuple[bool, str]:
-    """Validate a submitted plan. Returns (approved, feedback)."""
-    issues = []
-    step_actions = [s.get("action", "") for s in steps]
-
-    # Check journal entry / correction voucher balance
-    if task_type in ("journal_entry", "correction_voucher"):
-        for s in steps:
-            kv = s.get("key_values", {})
-            postings = kv.get("postings", [])
-            if postings and isinstance(postings, list):
-                total = sum(p.get("amountGross", 0) for p in postings if isinstance(p, dict))
-                if abs(total) > 0.01:
-                    issues.append(f"REJECTED: Postings do not balance (sum={total:.2f}). Debit=positive, Credit=negative. Fix amounts and resubmit.")
-
-    # Correction voucher: verify reversal logic
-    if task_type == "correction_voucher":
-        has_voucher = any("voucher" in a.lower() for a in step_actions)
-        if not has_voucher:
-            issues.append("REJECTED: Correction voucher task must include post_ledger_voucher steps to create correction entries.")
-        # Check for reversal sign guidance
-        for s in steps:
-            kv = s.get("key_values", {})
-            postings = kv.get("postings", [])
-            if postings:
-                for p in postings:
-                    if isinstance(p, dict) and "amountGross" not in p:
-                        issues.append("WARNING: Each posting must have amountGross. Positive=debit, negative=credit. To REVERSE a debit, use negative amount on the SAME account.")
-
-    # Credit note: MUST use createCreditNote_invoice, not manual voucher
-    if task_type == "credit_note":
-        has_credit_tool = any("createCreditNote" in a for a in step_actions)
-        if not has_credit_tool:
-            issues.append("REJECTED: Credit note tasks MUST use createCreditNote_invoice tool. Do NOT create manual vouchers. Resubmit with createCreditNote_invoice(id=invoiceId).")
-
-    # Reminder: MUST use createReminder_invoice
-    if task_type == "reminder":
-        has_reminder_tool = any("createReminder" in a or "createReminder_invoice" in a for a in step_actions)
-        if not has_reminder_tool:
-            issues.append("REJECTED: Reminder tasks MUST use createReminder_invoice tool. Do NOT create manual invoices/products for reminder fees. Resubmit with createReminder_invoice.")
-
-    # Payment tasks: MUST use payment_invoice
-    if task_type in ("order_invoice_payment", "payment_existing"):
-        has_payment = any("payment_invoice" in a for a in step_actions)
-        if not has_payment:
-            issues.append("REJECTED: Payment tasks MUST use payment_invoice tool. Do NOT use manual vouchers for payments — vouchers do not update invoice amountOutstanding.")
-
-    # FX payment: check field ordering
-    if task_type == "fx_payment_agio":
-        for s in steps:
-            kv = s.get("key_values", {})
-            paid = kv.get("paidAmount", 0)
-            paid_cur = kv.get("paidAmountCurrency", 0)
-            if paid and paid_cur and paid_cur > paid * 1.5:
-                issues.append("REJECTED: paidAmount (NOK, larger) and paidAmountCurrency (foreign, smaller) appear swapped. paidAmount=NOK amount received by bank, paidAmountCurrency=foreign currency amount on invoice.")
-
-    # Payment reversal detection: must use payment_invoice with negative amount, NOT voucher
-    # Check ALL task types — reversal can be misclassified
-    step_text = " ".join(s.get("purpose", "") + " " + s.get("action", "") for s in steps).lower()
-    reversal_keywords = ["reverse", "storn", "tilbakefør", "zurückge", "estorn", "annul",
-                         "cancel payment", "returned", "undo", "remove payment", "rückgängig",
-                         "tilbakebetal", "refund", "reimburse", "rembours"]
-    is_payment_reversal = any(kw in step_text for kw in reversal_keywords)
-    if is_payment_reversal:
-        has_payment_tool = any("payment_invoice" in a for a in step_actions)
-        if not has_payment_tool:
-            issues.append("REJECTED: Payment reversals MUST use payment_invoice with NEGATIVE paidAmount. Do NOT use post_ledger_voucher — vouchers do not update the invoice's amountOutstanding. Resubmit with payment_invoice(paidAmount=-AMOUNT).")
-        else:
-            # Verify the paidAmount is actually negative
-            for s in steps:
-                if "payment_invoice" in s.get("action", ""):
-                    kv = s.get("key_values", {})
-                    paid = kv.get("paidAmount", 0)
-                    if isinstance(paid, (int, float)) and paid > 0:
-                        issues.append("WARNING: Payment reversal detected but paidAmount is positive. For reversals, paidAmount MUST be NEGATIVE (e.g. -1000).")
-
-    # Project milestone: should have put_project and order/invoice for billing
-    if task_type == "project_milestone":
-        has_put_project = any("put_project" in a or ("tripletex_api" in a and "project" in s.get("purpose", "").lower()) for a, s in zip(step_actions, steps))
-        if not has_put_project:
-            issues.append("WARNING: Project milestone tasks should use put_project to set fixedprice. Remember to include version field from search_project response.")
-        has_invoice = any("invoice_order" in a or "post_order" in a for a in step_actions)
-        if not has_invoice:
-            issues.append("WARNING: Project milestone invoicing requires post_order + invoice_order to bill the milestone amount.")
-
-    # Supplier invoice: check for fallback awareness
-    if task_type == "supplier_invoice":
-        has_incoming = any("incomingInvoice" in a for a in step_actions)
-        has_voucher_fallback = any("voucher" in a.lower() for a in step_actions)
-        if has_incoming and not has_voucher_fallback:
-            issues.append("WARNING: post_incomingInvoice may return 403. Plan a fallback using post_ledger_voucher (debit expense account, credit account 2400 with supplier_id).")
-
-    if issues:
-        return False, "\n".join(issues)
-
-    return True, f"APPROVED. Task type: {task_type}, {len(steps)} steps. Execute exactly as planned."
 
 
 TOOLS = _load_tools()
@@ -484,7 +322,7 @@ log.info("Loaded %d typed tools", len(TOOLS))
 
 # ─── Gemini API call ───
 
-def _call_gemini(contents: list, api_key: str, force_tool: bool = False) -> dict:
+def _call_gemini(contents: list, api_key: str) -> dict:
     url = GEMINI_URL.format(GEMINI_MODEL) + f"?key={api_key}"
     payload = {
         "systemInstruction": {"parts": [{"text": SYSTEM_PROMPT}]},
@@ -495,16 +333,6 @@ def _call_gemini(contents: list, api_key: str, force_tool: bool = False) -> dict
             "maxOutputTokens": 8192,
         },
     }
-    # Force function calling mode — prevents text-only stalls
-    # NOTE: mode="ANY" with ALL tools exceeds Gemini's schema complexity limit.
-    # Use allowedFunctionNames to restrict to submit_plan (small schema).
-    if force_tool:
-        payload["toolConfig"] = {
-            "functionCallingConfig": {
-                "mode": "ANY",
-                "allowedFunctionNames": ["submit_plan"],
-            }
-        }
     for attempt in range(3):
         try:
             resp = requests.post(url, json=payload, timeout=180)
@@ -553,14 +381,7 @@ def _exec_api(base_url: str, auth: tuple, method: str, endpoint: str,
         if status >= 400:
             raw = json.dumps(data, ensure_ascii=False) if isinstance(data, (dict, list)) else str(data)
             log.warning("API error %d: %s", status, raw[:500])
-            hint = ""
-            if status == 422:
-                hint = "\n>> FIX: Read the validation error above. Correct the invalid field(s) and retry the same call."
-            elif status == 403:
-                hint = "\n>> FIX: This endpoint/module is not enabled. Use a fallback approach (e.g. post_ledger_voucher instead of post_incomingInvoice)."
-            elif status == 404:
-                hint = "\n>> FIX: Entity not found. Search again to find the correct ID before retrying."
-            return f"HTTP {status} ERROR: {raw[:2000]}{hint}"
+            return f"HTTP {status} ERROR: {raw[:2000]}"
 
         # Compact structured response
         result = _compact_response(endpoint, method, data)
@@ -569,84 +390,6 @@ def _exec_api(base_url: str, auth: tuple, method: str, endpoint: str,
     except Exception as e:
         log.error("Request failed: %s", e)
         return f"REQUEST FAILED: {e}"
-
-
-# ─── Attachment parsing ───
-
-def _parse_attachment(f: dict) -> list:
-    """Convert any attachment to Gemini-compatible content parts.
-
-    Routes by MIME type + extension:
-      PDF/images → native inlineData (Gemini vision)
-      XLSX/XLS   → parsed to markdown table via openpyxl
-      DOCX       → extracted text via python-docx
-      CSV/text   → raw text
-    """
-    mime = f.get("mime_type", "application/octet-stream")
-    filename = f.get("filename", "unknown")
-    file_data = base64.b64decode(f["content_base64"])
-    ext = filename.rsplit(".", 1)[-1].lower() if "." in filename else ""
-
-    # 1. VISUAL: PDF, images → native Gemini vision
-    if mime.startswith("image/") or mime == "application/pdf" or ext == "pdf":
-        return [
-            {"inlineData": {"mimeType": mime, "data": f["content_base64"]}},
-            {"text": f"[Attached: {filename}] — Extract ALL amounts, dates, names, and numbers exactly as written."},
-        ]
-
-    # 2. EXCEL: .xlsx, .xls
-    if ext in ("xlsx", "xls") or "spreadsheet" in mime or "excel" in mime:
-        try:
-            import openpyxl
-            wb = openpyxl.load_workbook(io.BytesIO(file_data), read_only=True, data_only=True)
-            tables = []
-            for sheet in wb.sheetnames:
-                ws = wb[sheet]
-                rows = list(ws.iter_rows(values_only=True))
-                if not rows:
-                    continue
-                headers = [str(c) if c is not None else "" for c in rows[0]]
-                md = "| " + " | ".join(headers) + " |\n"
-                md += "| " + " | ".join(["---"] * len(headers)) + " |\n"
-                for row in rows[1:]:
-                    cells = [str(c) if c is not None else "" for c in row]
-                    md += "| " + " | ".join(cells) + " |\n"
-                tables.append(f"### Sheet: {sheet}\n{md}")
-            wb.close()
-            text = "\n".join(tables)
-            log.info("Parsed spreadsheet %s: %d sheets", filename, len(tables))
-            return [{"text": f"[Spreadsheet: {filename}]\n{text[:8000]}"}]
-        except Exception as e:
-            log.error("Failed to parse spreadsheet %s: %s", filename, e)
-            return [{"text": f"[Spreadsheet: {filename}] — Could not parse. Error: {e}"}]
-
-    # 3. DOCX
-    if ext == "docx" or "wordprocessingml" in mime:
-        try:
-            import docx
-            doc = docx.Document(io.BytesIO(file_data))
-            text = "\n".join(p.text for p in doc.paragraphs if p.text.strip())
-            log.info("Parsed Word doc %s: %d chars", filename, len(text))
-            return [{"text": f"[Document: {filename}]\n{text[:8000]}"}]
-        except Exception as e:
-            log.error("Failed to parse docx %s: %s", filename, e)
-            return [{"text": f"[Document: {filename}] — Could not parse. Error: {e}"}]
-
-    # 4. CSV
-    if ext == "csv" or mime == "text/csv":
-        try:
-            text = file_data.decode("utf-8", errors="replace")
-            log.info("Read CSV %s: %d chars", filename, len(text))
-            return [{"text": f"[CSV Data: {filename}]\n{text[:8000]}"}]
-        except Exception:
-            return [{"text": f"[CSV: {filename}] — Could not decode."}]
-
-    # 5. Plain text / fallback
-    try:
-        text = file_data.decode("utf-8", errors="replace")
-        return [{"text": f"[File: {filename}]\n{text[:8000]}"}]
-    except Exception:
-        return [{"text": f"[Attached: {filename} ({mime})] — Binary file, cannot read contents."}]
 
 
 # ─── Bank account setup ───
@@ -720,18 +463,22 @@ def solve_task_sync(body: dict):
     }
     t0 = time.time()
 
-    # Build user message — task prompt FIRST, then attachments
-    # (Gemini processes parts in order; prompt first reduces "analysis paralysis" on CSV data)
-    today = date.today().isoformat()
-    has_files = len(files) > 0
-    file_instruction = ""
-    if has_files:
-        file_instruction = ("\n\nIMPORTANT: Files are attached below with data you need. "
-                           "Read the data and use tools immediately. Do NOT describe what you would do — actually DO IT. "
-                           "Start by calling submit_plan, then execute each step with tool calls.")
-    parts = [{"text": f"Today's date: {today}\n\nComplete this accounting task:\n\n{prompt}{file_instruction}"}]
+    # Build user message
+    parts = []
     for f in files:
-        parts.extend(_parse_attachment(f))
+        mime = f.get("mime_type", "application/octet-stream")
+        if mime.startswith("image/") or mime == "application/pdf":
+            parts.append({"inlineData": {"mimeType": mime, "data": f["content_base64"]}})
+            parts.append({"text": f"[Attached file: {f['filename']}]"})
+        else:
+            try:
+                text = base64.b64decode(f["content_base64"]).decode("utf-8", errors="replace")
+                parts.append({"text": f"[File: {f['filename']}]\n{text[:5000]}"})
+            except Exception:
+                parts.append({"text": f"[Attached binary file: {f['filename']} ({mime})]"})
+
+    today = date.today().isoformat()
+    parts.append({"text": f"Today's date: {today}\n\nComplete this accounting task:\n\n{prompt}"})
     contents = [{"role": "user", "parts": parts}]
 
     # Agent loop
@@ -739,13 +486,9 @@ def solve_task_sync(body: dict):
     last_error_sig = None
     auth_failed = False
 
-    text_only_count = 0  # Track consecutive text-only responses
-
     for turn in range(MAX_TURNS):
         log.info("Agent turn %d/%d", turn + 1, MAX_TURNS)
-        # Force tool calling on first turn (submit_plan), nudge on text-only
-        force = (turn == 0)
-        result = _call_gemini(contents, api_key, force_tool=force)
+        result = _call_gemini(contents, api_key)
 
         candidates = result.get("candidates", [])
         if not candidates:
@@ -761,28 +504,15 @@ def solve_task_sync(body: dict):
 
         fn_calls = [p for p in model_parts if "functionCall" in p]
         if not fn_calls:
-            text_only_count += 1
-            if turn < 8:
-                if turn == 0:
-                    nudge = ("SYSTEM: You responded with text only. This is FORBIDDEN. "
-                             "You MUST call submit_plan as your FIRST action. "
-                             "Parse the task, classify it, and submit your plan NOW. "
-                             "Every text-only response wastes a turn and risks 0% score.")
-                elif turn < 3:
-                    nudge = ("SYSTEM: STILL no tool calls. You are wasting turns. "
-                             "Call submit_plan immediately with task_type and steps. "
-                             "If the task involves files/CSV data, the data is already parsed above — use it. "
-                             "Partial credit > 0 credit. USE TOOLS NOW.")
-                else:
-                    nudge = ("You MUST use tools. Do NOT respond with only text. "
-                             "If you cannot do the full task, do as much as possible — "
-                             "create vouchers, search accounts, create entities. "
-                             "Partial work earns partial credit. Use tools NOW.")
+            if turn < 5:
+                nudge = ("You MUST use tools. Do NOT respond with only text. "
+                         "If you cannot do the full task, do as much as possible — "
+                         "create vouchers, search accounts, create entities. "
+                         "Partial work earns partial credit. Use tools NOW.")
                 contents.append({"role": "user", "parts": [{"text": nudge}]})
                 continue
             break
 
-        text_only_count = 0  # Reset on successful tool call
         fn_responses = []
         done = False
         turn_had_error = False
@@ -799,20 +529,6 @@ def solve_task_sync(body: dict):
                 task_record["summary"] = args.get("summary", "")
                 fn_responses.append({
                     "functionResponse": {"name": tool_name, "response": {"result": "OK"}}
-                })
-                continue
-
-            if tool_name == "submit_plan":
-                task_type = args.get("task_type", "other")
-                plan_steps = args.get("steps", [])
-                approved, feedback = _validate_plan(task_type, plan_steps)
-                log.info("Plan submitted: type=%s, steps=%d, approved=%s", task_type, len(plan_steps), approved)
-                if not approved:
-                    log.warning("Plan REJECTED: %s", feedback)
-                    feedback = f"⛔ PLAN REJECTED — YOU MUST FIX AND RESUBMIT before making any API calls.\n\n{feedback}\n\nCall submit_plan again with the corrected plan. Do NOT proceed with rejected steps."
-                task_record["plan"] = {"type": task_type, "steps": len(plan_steps), "approved": approved}
-                fn_responses.append({
-                    "functionResponse": {"name": tool_name, "response": {"result": feedback}}
                 })
                 continue
 
@@ -846,10 +562,11 @@ def solve_task_sync(body: dict):
                     "tool": tool_name, "method": method, "endpoint": path,
                     "params": qp, "body": req_body,
                     "result_snippet": api_result[:300],
+                    "result_full": api_result if "ERROR" in api_result else None,
                 }
                 if "ERROR" in api_result:
                     call_log["error"] = True
-                    task_record["errors"].append(f"tripletex_api → {method} {path}: {api_result[:200]}")
+                    task_record["errors"].append(f"tripletex_api → {method} {path}: {api_result}")
                     turn_had_error = True
                     if "HTTP 401" in api_result:
                         auth_failed = True
@@ -869,17 +586,8 @@ def solve_task_sync(body: dict):
                 })
                 continue
 
-            # Runtime autofixes then route (catch ValueError from balance guard)
-            try:
-                args = _pre_validate(tool_name, args)
-            except ValueError as ve:
-                api_result = f"BLOCKED BY GUARD: {ve}"
-                log.warning("Guard blocked %s: %s", tool_name, ve)
-                fn_responses.append({
-                    "functionResponse": {"name": tool_name, "response": {"result": api_result}}
-                })
-                turn_had_error = True
-                continue
+            # Runtime autofixes then route
+            args = _pre_validate(tool_name, args)
             method, endpoint, params, req_body = route_tool_call(tool_name, args)
             if method is None:
                 fn_responses.append({
@@ -893,20 +601,12 @@ def solve_task_sync(body: dict):
                 "tool": tool_name, "method": method, "endpoint": endpoint,
                 "params": params, "body": req_body,
                 "result_snippet": api_result[:300],
+                "result_full": api_result if "ERROR" in api_result else None,
             }
             if "ERROR" in api_result:
                 call_log["error"] = True
-                task_record["errors"].append(f"{tool_name} → {method} {endpoint}: {api_result[:200]}")
+                task_record["errors"].append(f"{tool_name} → {method} {endpoint}: {api_result}")
                 turn_had_error = True
-
-                # 422 error amplification — force LLM to actually read the error
-                if "HTTP 422" in api_result:
-                    api_result = (
-                        f"CRITICAL API REJECTION (422): {api_result}\n\n"
-                        f"STOP. DO NOT RETRY WITH THE SAME PAYLOAD. "
-                        f"You sent an invalid field name, missing required data, or violated an accounting rule. "
-                        f"Read the error message above. Fix the EXACT parameter mentioned and retry."
-                    )
 
                 # Detect 401 auth failure — unrecoverable
                 if "HTTP 401" in api_result:
@@ -944,50 +644,17 @@ def solve_task_sync(body: dict):
         # Bail on repeated identical errors (likely stuck in a loop)
         if consecutive_errors >= 3:
             log.warning("Same error repeated %d times — injecting guidance", consecutive_errors)
-            if consecutive_errors >= 5:
-                contents.append({"role": "user", "parts": [
-                    {"text": f"SYSTEM: The same error has occurred {consecutive_errors} times. You MUST try a completely different approach now — use tripletex_api with different parameters, or use a fallback pattern. If nothing works, call task_complete with partial progress."}
-                ]})
-            else:
-                contents.append({"role": "user", "parts": [
-                    {"text": f"SYSTEM: The same error has occurred {consecutive_errors} times. Read the error carefully — what field or value is wrong? Try a different value, or use search_tripletex_spec to check the correct parameter format. Do NOT retry with identical parameters."}
-                ]})
+            contents.append({"role": "user", "parts": [
+                {"text": f"SYSTEM: The same API error has occurred {consecutive_errors} times in a row. This approach is not working. Either try a completely different approach or call task_complete to report partial progress. Do NOT retry the same call."}
+            ]})
             consecutive_errors = 0  # Reset so we don't inject every turn
 
         if done:
             break
 
-        # Turn-limit warning: inject "wrap up" message near the end
-        turns_remaining = MAX_TURNS - (turn + 1)
-        if turns_remaining == WARN_TURNS_LEFT and not done:
-            log.warning("Turn budget warning: %d turns remaining", turns_remaining)
-            contents.append({"role": "user", "parts": [
-                {"text": f"SYSTEM: You have {turns_remaining} turns remaining. You MUST call task_complete NOW to secure partial credit for the work done so far. Summarize what you accomplished and what remains."}
-            ]})
-
-    # If loop ended without task_complete, force a completion record
-    if task_record["outcome"] == "unknown":
-        log.warning("Turn limit reached without task_complete — forcing completion")
-        task_record["outcome"] = "forced_completion_at_turn_limit"
-        # Give Gemini one final chance to summarize
-        contents.append({"role": "user", "parts": [
-            {"text": "SYSTEM: Turn limit reached. Call task_complete immediately with a summary of everything you accomplished."}
-        ]})
-        try:
-            result = _call_gemini(contents, api_key)
-            candidates = result.get("candidates", [])
-            if candidates:
-                parts = candidates[0].get("content", {}).get("parts", [])
-                for p in parts:
-                    fc = p.get("functionCall", {})
-                    if fc.get("name") == "task_complete":
-                        task_record["outcome"] = "completed_at_limit"
-                        task_record["summary"] = fc.get("args", {}).get("summary", "")
-                        log.info("Forced task_complete: %s", task_record["summary"])
-        except Exception as e:
-            log.warning("Failed forced completion call: %s", e)
-
     task_record["turns"] = min(turn + 1, MAX_TURNS)
     task_record["elapsed_s"] = round(time.time() - t0, 1)
+    if task_record["outcome"] == "unknown":
+        task_record["outcome"] = "no_completion_signal"
     _log_task(task_record)
     log.info("Agent finished after %d turns (%.1fs)", task_record["turns"], task_record["elapsed_s"])

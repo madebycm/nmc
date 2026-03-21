@@ -1,0 +1,19 @@
+{
+    "prompt": "Concilia el extracto bancario (CSV adjunto) con las facturas abiertas en Tripletex. Relaciona los pagos entrantes con las facturas de clientes y los pagos salientes con las facturas de proveedores. Maneja los pagos parciales correctamente.",
+    "body": {
+        "prompt": "Concilia el extracto bancario (CSV adjunto) con las facturas abiertas en Tripletex. Relaciona los pagos entrantes con las facturas de clientes y los pagos salientes con las facturas de proveedores. Maneja los pagos parciales correctamente.",
+        "files": [
+            {
+                "filename": "files/bankutskrift_es_01.csv",
+                "content_base64": "RGF0bztGb3JrbGFyaW5nO0lubjtVdDtTYWxkbw0KMjAyNi0wMS0xNztJbm5iZXRhbGluZyBmcmEgR29uesOhbGV6IFNMIC8gRmFrdHVyYSAxMDAxOzI1NTAuMDA7OzEwMjU1MC4wMA0KMjAyNi0wMS0xODtJbm5iZXRhbGluZyBmcmEgUm9kcsOtZ3VleiBTTCAvIEZha3R1cmEgMTAwMjs5NTAwLjAwOzsxMTIwNTAuMDANCjIwMjYtMDEtMTk7SW5uYmV0YWxpbmcgZnJhIFJvZHLDrWd1ZXogU0wgLyBGYWt0dXJhIDEwMDM7MTYwNjIuNTA7OzEyODExMi41MA0KMjAyNi0wMS0yMjtJbm5iZXRhbGluZyBmcmEgR29uesOhbGV6IFNMIC8gRmFrdHVyYSAxMDA0OzI3ODEyLjUwOzsxNTU5MjUuMDANCjIwMjYtMDEtMjQ7SW5uYmV0YWxpbmcgZnJhIFRvcnJlcyBTTCAvIEZha3R1cmEgMTAwNTsyNjAwMC4wMDs7MTgxOTI1LjAwDQoyMDI2LTAxLTI1O0JldGFsaW5nIFByb3ZlZWRvciBQw6lyZXogU0w7Oy0xMTEwMC4wMDsxNzA4MjUuMDANCjIwMjYtMDEtMjc7QmV0YWxpbmcgUHJvdmVlZG9yIEdvbnrDoWxleiBTTDs7LTE1ODUwLjAwOzE1NDk3NS4wMA0KMjAyNi0wMS0yODtCZXRhbGluZyBQcm92ZWVkb3IgTWFydMOtbmV6IFNMOzstNjAwMC4wMDsxNDg5NzUuMDANCjIwMjYtMDEtMjk7U2thdHRldHJla2s7MTE0Mi4zMzs7MTUwMTE3LjMzDQoyMDI2LTAxLTMwO1NrYXR0ZXRyZWtrOzkyNy40Mjs7MTUxMDQ0Ljc1DQo=",
+                "mime_type": "text/csv"
+            }
+        ],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "0bW3evsqOS72Y6Tu_1XQXSDXVTrJpHgukWiCcnzFDRc"
+        }
+    },
+    "ip": "34.34.240.82",
+    "logged_at": "2026-03-21T23:00:21.724711Z"
+}

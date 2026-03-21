@@ -1,0 +1,13 @@
+{
+    "prompt": "Registre una nota de gastos de viaje para Miguel P\u00e9rez (miguel.perez@example.org) por \"Visita cliente Troms\u00f8\". El viaje dur\u00f3 5 d\u00edas con dietas (tarifa diaria 800 NOK). Gastos: billete de avi\u00f3n 2600 NOK y taxi 800 NOK.",
+    "body": {
+        "prompt": "Registre una nota de gastos de viaje para Miguel P\u00e9rez (miguel.perez@example.org) por \"Visita cliente Troms\u00f8\". El viaje dur\u00f3 5 d\u00edas con dietas (tarifa diaria 800 NOK). Gastos: billete de avi\u00f3n 2600 NOK y taxi 800 NOK.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "D4hilGF1pZpgq8akSHGzscmAYixXAQbCirZZw6hdP5M"
+        }
+    },
+    "ip": "34.34.240.81",
+    "logged_at": "2026-03-21T23:01:35.781068Z"
+}

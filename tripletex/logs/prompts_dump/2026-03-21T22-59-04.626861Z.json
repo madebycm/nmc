@@ -1,0 +1,13 @@
+{
+    "prompt": "Erstellen Sie eine Rechnung f\u00fcr den Kunden Gr\u00fcnfeld GmbH (Org.-Nr. 913178823) mit drei Produktzeilen: Netzwerkdienst (6475) zu 6400 NOK mit 25 % MwSt., Softwarelizenz (3355) zu 2450 NOK mit 15 % MwSt. (Lebensmittel), und Webdesign (3067) zu 12300 NOK mit 0 % MwSt. (befreit).",
+    "body": {
+        "prompt": "Erstellen Sie eine Rechnung f\u00fcr den Kunden Gr\u00fcnfeld GmbH (Org.-Nr. 913178823) mit drei Produktzeilen: Netzwerkdienst (6475) zu 6400 NOK mit 25 % MwSt., Softwarelizenz (3355) zu 2450 NOK mit 15 % MwSt. (Lebensmittel), und Webdesign (3067) zu 12300 NOK mit 0 % MwSt. (befreit).",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "viV32dHXNw43jM-MI0rCltITgT1_D64bTz2fn2fLhro"
+        }
+    },
+    "ip": "34.34.240.91",
+    "logged_at": "2026-03-21T22:59:04.626861Z"
+}

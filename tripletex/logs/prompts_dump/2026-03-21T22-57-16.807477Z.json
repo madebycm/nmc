@@ -1,0 +1,19 @@
+{
+    "prompt": "Sie haben eine Lieferantenrechnung erhalten (siehe beigefugte PDF). Registrieren Sie die Rechnung in Tripletex. Erstellen Sie den Lieferanten, falls er nicht existiert. Verwenden Sie das richtige Aufwandskonto und die Vorsteuer.",
+    "body": {
+        "prompt": "Sie haben eine Lieferantenrechnung erhalten (siehe beigefugte PDF). Registrieren Sie die Rechnung in Tripletex. Erstellen Sie den Lieferanten, falls er nicht existiert. Verwenden Sie das richtige Aufwandskonto und die Vorsteuer.",
+        "files": [
+            {
+                "filename": "files/leverandorfaktura_de_08.pdf",
+                "content_base64": "JVBERi0xLjMKJenr8b8KMSAwIG9iago8PAovQ291bnQgMQovS2lkcyBbMyAwIFJdCi9NZWRpYUJveCBbMCAwIDU5NS4yOCA4NDEuODldCi9UeXBlIC9QYWdlcwo+PgplbmRvYmoKMiAwIG9iago8PAovT3BlbkFjdGlvbiBbMyAwIFIgL0ZpdEggbnVsbF0KL1BhZ2VMYXlvdXQgL09uZUNvbHVtbgovUGFnZXMgMSAwIFIKL1R5cGUgL0NhdGFsb2cKPj4KZW5kb2JqCjMgMCBvYmoKPDwKL0NvbnRlbnRzIDQgMCBSCi9QYXJlbnQgMSAwIFIKL1Jlc291cmNlcyA3IDAgUgovVHlwZSAvUGFnZQo+PgplbmRvYmoKNCAwIG9iago8PAovRmlsdGVyIC9GbGF0ZURlY29kZQovTGVuZ3RoIDQ0Ngo+PgpzdHJlYW0KeJyVk0uP0zAUhffzK+4GCSTmjn39THatmMJQARKTmb2haSckcZCTgvj3OE1Lk85DZWnrfufYxz4EHy8YKgO/L+YZXC04cI2MQbaG66zfEhy5BZPIfihbwevr4vtD7h+aNbyvv314A9mP/eTVgoCzp2AjUCc7+EvYoA8pJCzhRlhtR/x+WOnD8I1fbdsuFL/yIvcg7VuQmnNYhqLtCudb51cTew40tSeZoCDQSYJW7CQXs2V293V2gnH+xKm1MsiHKy9c2W2D89u6zkN6euUpzJVFI8f0zef7S2KkL8kQP8tZxLDZ2HnluuZM3yPLLDKJvfNZpnHX0mDahLWrqvY/XI9w76rOdlXGoB2OmxVVCu+KroN1EWp3oMmiUKBIouRQRyw68cO6gls4aglCqXZa87wt+39TtflBZwrWoLTGRJwIKSFQyalS1fx8OYO9O0vQDA9+W/6p3CYUfjMCFXEUbDxGUsaXKsPLFZKWoREgY1By4D7dz4DUq7RPnU75mDNNeRP7bEAqhZoPQTedq7oUBFP6Ef9MhWVUJbvDl42P36L/aOxReUUSgxuaNne+LIdRZZiykpiW/+r+FyTwDEgKZW5kc3RyZWFtCmVuZG9iago1IDAgb2JqCjw8Ci9CYXNlRm9udCAvSGVsdmV0aWNhLUJvbGQKL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcKL1N1YnR5cGUgL1R5cGUxCi9UeXBlIC9Gb250Cj4+CmVuZG9iago2IDAgb2JqCjw8Ci9CYXNlRm9udCAvSGVsdmV0aWNhCi9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nCi9TdWJ0eXBlIC9UeXBlMQovVHlwZSAvRm9udAo+PgplbmRvYmoKNyAwIG9iago8PAovRm9udCA8PC9GMSA1IDAgUgovRjIgNiAwIFI+PgovUHJvY1NldCBbL1BERiAvVGV4dCAvSW1hZ2VCIC9JbWFnZUMgL0ltYWdlSV0KPj4KZW5kb2JqCjggMCBvYmoKPDwKL0NyZWF0aW9uRGF0ZSAoRDoyMDI2MDMwNDE5MTgwNVopCj4+CmVuZG9iagp4cmVmCjAgOQowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAwMTUgMDAwMDAgbiAKMDAwMDAwMDEwMiAwMDAwMCBuIAowMDAwMDAwMjA1IDAwMDAwIG4gCjAwMDAwMDAyODUgMDAwMDAgbiAKMDAwMDAwMDgwMyAwMDAwMCBuIAowMDAwMDAwOTA1IDAwMDAwIG4gCjAwMDAwMDEwMDIgMDAwMDAgbiAKMDAwMDAwMTA5OSAwMDAwMCBuIAp0cmFpbGVyCjw8Ci9TaXplIDkKL1Jvb3QgMiAwIFIKL0luZm8gOCAwIFIKL0lEIFs8RjQ3MEU3RDNFNjhCRDFCNUZBRTQwQTMwN0EyNkJBOTk+PEY0NzBFN0QzRTY4QkQxQjVGQUU0MEEzMDdBMjZCQTk5Pl0KPj4Kc3RhcnR4cmVmCjExNTQKJSVFT0YK",
+                "mime_type": "application/pdf"
+            }
+        ],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "ktkerMlUbCvvUmwOKGnj5YIeN86UaYCTWkmSW6m4Zv8"
+        }
+    },
+    "ip": "34.34.240.91",
+    "logged_at": "2026-03-21T22:57:16.807477Z"
+}

@@ -1,0 +1,19 @@
+{
+    "prompt": "Sie haben ein Angebotsschreiben erhalten (siehe beigefugte PDF) fuer einen neuen Mitarbeiter. Fuehren Sie das vollstaendige Onboarding durch: erstellen Sie den Mitarbeiter, weisen Sie die richtige Abteilung zu, richten Sie die Beschaeftigungsdetails mit Prozentsatz und Jahresgehalt ein, und konfigurieren Sie die Standardarbeitszeit.",
+    "body": {
+        "prompt": "Sie haben ein Angebotsschreiben erhalten (siehe beigefugte PDF) fuer einen neuen Mitarbeiter. Fuehren Sie das vollstaendige Onboarding durch: erstellen Sie den Mitarbeiter, weisen Sie die richtige Abteilung zu, richten Sie die Beschaeftigungsdetails mit Prozentsatz und Jahresgehalt ein, und konfigurieren Sie die Standardarbeitszeit.",
+        "files": [
+            {
+                "filename": "files/tilbudsbrev_de_02.pdf",
+                "content_base64": "JVBERi0xLjMKJenr8b8KMSAwIG9iago8PAovQ291bnQgMQovS2lkcyBbMyAwIFJdCi9NZWRpYUJveCBbMCAwIDU5NS4yOCA4NDEuODldCi9UeXBlIC9QYWdlcwo+PgplbmRvYmoKMiAwIG9iago8PAovT3BlbkFjdGlvbiBbMyAwIFIgL0ZpdEggbnVsbF0KL1BhZ2VMYXlvdXQgL09uZUNvbHVtbgovUGFnZXMgMSAwIFIKL1R5cGUgL0NhdGFsb2cKPj4KZW5kb2JqCjMgMCBvYmoKPDwKL0NvbnRlbnRzIDQgMCBSCi9QYXJlbnQgMSAwIFIKL1Jlc291cmNlcyA3IDAgUgovVHlwZSAvUGFnZQo+PgplbmRvYmoKNCAwIG9iago8PAovRmlsdGVyIC9GbGF0ZURlY29kZQovTGVuZ3RoIDYwMwo+PgpzdHJlYW0KeJyNVF9v0zAQf9+nuBckkJjn/E/2xrSVDTYQNPCKXHxN3Dp2scOmfVM+DpekbdptoESpkjr3+3O+O4fw4YSzJIOHk4sSzmYBBDnjHMolXJXdUshjFsSQFUH3KCW8Lm9uL75dwuc7mNPr7c2n92+gXG3Dz2YhBMERQ0TIHLIoY0XaE3xcCXQI18IYUcP8Z90o2b49INkieMqyvEd8V1ALB5VGiQbEPQholV48gsQKPL1qZSr64m0DN+Xp2hr/W6NpQVGwxO4r/KFV2yh2ZJbSjV4wm6YJ44P0JbZCr9A9hb2UYxrFLOE9bGalR+2laO35/7cnyEJWBIfYkMjoLopskiit5uFQGaVbR1ukPU4UHbGcyp6wkIfpFNEkL3bt8M54bNtO0y+ta6YJH+Bnwrf7Gk7STlMWD50038L8xllP9Z4oPhLknPFXk0TjiGXFkLDz2hozUWvEpRmnC9aTWinpm2Crt0AlaYfkRMkRmjJOg9Kggw39pKieEvCR4BfsxeMsZ3lvmrM4pICHbgT1WrhzOC53bbXEFhxWNG8OfT+bg99G6ZXV9p7G0lawQOnUskXjOyveGqFrYeTCrhnQiEG1QmJyQNFUy3ukbGEjYNeM8OXIX0pt249nxJI87v01wmBH0KAE6izKlWQ6WuOVVBXYzcaravDtlG8ZXFEabq9GwvTvaRStRrClZjBDp5CyGU2NluKY5Vm/6csuaoN0IDlYWt0/uqV+L9izYy6ik5UPM3hH3inGaPJbKzJhnp+KURKwKOrDf/z7eg6jRzz04fXX092hiGYX+BclC583CmVuZHN0cmVhbQplbmRvYmoKNSAwIG9iago8PAovQmFzZUZvbnQgL0hlbHZldGljYS1Cb2xkCi9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nCi9TdWJ0eXBlIC9UeXBlMQovVHlwZSAvRm9udAo+PgplbmRvYmoKNiAwIG9iago8PAovQmFzZUZvbnQgL0hlbHZldGljYQovRW5jb2RpbmcgL1dpbkFuc2lFbmNvZGluZwovU3VidHlwZSAvVHlwZTEKL1R5cGUgL0ZvbnQKPj4KZW5kb2JqCjcgMCBvYmoKPDwKL0ZvbnQgPDwvRjEgNSAwIFIKL0YyIDYgMCBSPj4KL1Byb2NTZXQgWy9QREYgL1RleHQgL0ltYWdlQiAvSW1hZ2VDIC9JbWFnZUldCj4+CmVuZG9iago4IDAgb2JqCjw8Ci9DcmVhdGlvbkRhdGUgKEQ6MjAyNjAzMDQxOTE4MDZaKQo+PgplbmRvYmoKeHJlZgowIDkKMDAwMDAwMDAwMCA2NTUzNSBmIAowMDAwMDAwMDE1IDAwMDAwIG4gCjAwMDAwMDAxMDIgMDAwMDAgbiAKMDAwMDAwMDIwNSAwMDAwMCBuIAowMDAwMDAwMjg1IDAwMDAwIG4gCjAwMDAwMDA5NjAgMDAwMDAgbiAKMDAwMDAwMTA2MiAwMDAwMCBuIAowMDAwMDAxMTU5IDAwMDAwIG4gCjAwMDAwMDEyNTYgMDAwMDAgbiAKdHJhaWxlcgo8PAovU2l6ZSA5Ci9Sb290IDIgMCBSCi9JbmZvIDggMCBSCi9JRCBbPDZCNUQ5MkJEMDA2NjM1RTRCOEMwOTNCMEQ0MDJFOEIyPjw2QjVEOTJCRDAwNjYzNUU0QjhDMDkzQjBENDAyRThCMj5dCj4+CnN0YXJ0eHJlZgoxMzExCiUlRU9GCg==",
+                "mime_type": "application/pdf"
+            }
+        ],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "N9xXWOevblLZrA6xOp_pSOd7VWLbhALtxhlxOBt_glc"
+        }
+    },
+    "ip": "34.34.240.81",
+    "logged_at": "2026-03-21T22:54:07.974067Z"
+}

@@ -1,0 +1,13 @@
+{
+    "prompt": "K\u00f8yr l\u00f8n for Sigrid Brekke (sigrid.brekke@example.org) for denne m\u00e5naden. Grunnl\u00f8n er 34950 kr. Legg til ein eingongsbonus p\u00e5 15350 kr i tillegg til grunnl\u00f8na.",
+    "body": {
+        "prompt": "K\u00f8yr l\u00f8n for Sigrid Brekke (sigrid.brekke@example.org) for denne m\u00e5naden. Grunnl\u00f8n er 34950 kr. Legg til ein eingongsbonus p\u00e5 15350 kr i tillegg til grunnl\u00f8na.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "tn6k6MjV76OINwHwKaRPVqCv3AS7YOFK-ZpLa3sxSOc"
+        }
+    },
+    "ip": "34.34.240.8",
+    "logged_at": "2026-03-21T23:02:26.776574Z"
+}

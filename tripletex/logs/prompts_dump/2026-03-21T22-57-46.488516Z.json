@@ -1,0 +1,13 @@
+{
+    "prompt": "Cr\u00e9ez trois d\u00e9partements dans Tripletex : \"Administrasjon\", \"IT\" et \"Utvikling\".",
+    "body": {
+        "prompt": "Cr\u00e9ez trois d\u00e9partements dans Tripletex : \"Administrasjon\", \"IT\" et \"Utvikling\".",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "aVw0xx6Uh3KGOQVJXSgaeu3XB5LGChGFNY3HbcIcLgw"
+        }
+    },
+    "ip": "34.34.240.90",
+    "logged_at": "2026-03-21T22:57:46.488516Z"
+}

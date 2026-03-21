@@ -1,0 +1,13 @@
+{
+    "prompt": "Create the customer Windmill Ltd with organization number 884659876. The address is Parkveien 124, 7010 Trondheim. Email: post@windmill.no.",
+    "body": {
+        "prompt": "Create the customer Windmill Ltd with organization number 884659876. The address is Parkveien 124, 7010 Trondheim. Email: post@windmill.no.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "J1tPeCHbb5yuqPYec5wawS2fOWHf46XYJ7X3NCyWSTA"
+        }
+    },
+    "ip": "34.34.240.82",
+    "logged_at": "2026-03-21T22:59:08.878927Z"
+}

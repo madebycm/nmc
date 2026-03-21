@@ -1,0 +1,13 @@
+{
+    "prompt": "Crie uma dimens\u00e3o contabil\u00edstica personalizada \"Region\" com os valores \"Vestlandet\" e \"Midt-Norge\". Em seguida, lance um documento na conta 6860 por 47500 NOK, vinculado ao valor de dimens\u00e3o \"Midt-Norge\".",
+    "body": {
+        "prompt": "Crie uma dimens\u00e3o contabil\u00edstica personalizada \"Region\" com os valores \"Vestlandet\" e \"Midt-Norge\". Em seguida, lance um documento na conta 6860 por 47500 NOK, vinculado ao valor de dimens\u00e3o \"Midt-Norge\".",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "DME2KOgvis_FpkdibHSpIW6YAJ0kamLuctzWsHfhCDI"
+        }
+    },
+    "ip": "34.34.240.70",
+    "logged_at": "2026-03-21T22:53:55.618703Z"
+}

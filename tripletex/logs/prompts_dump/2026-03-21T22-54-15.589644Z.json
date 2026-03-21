@@ -1,0 +1,13 @@
+{
+    "prompt": "Crea el cliente R\u00edo Verde SL con n\u00famero de organizaci\u00f3n 919234830. La direcci\u00f3n es Solveien 5, 4006 Stavanger. Correo: post@rio.no.",
+    "body": {
+        "prompt": "Crea el cliente R\u00edo Verde SL con n\u00famero de organizaci\u00f3n 919234830. La direcci\u00f3n es Solveien 5, 4006 Stavanger. Correo: post@rio.no.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "XEndby7nFrT9jTjSMFPBB_49_XLTeQlVEvlsIuu5ChE"
+        }
+    },
+    "ip": "34.34.240.91",
+    "logged_at": "2026-03-21T22:54:15.589644Z"
+}

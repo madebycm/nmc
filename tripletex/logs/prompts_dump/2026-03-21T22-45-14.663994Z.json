@@ -1,0 +1,13 @@
+{
+    "prompt": "Der Kunde Nordlicht GmbH (Org.-Nr. 912435113) hat die Rechnung f\u00fcr \"Webdesign\" (40550 NOK ohne MwSt.) reklamiert. Erstellen Sie eine vollst\u00e4ndige Gutschrift, die die gesamte Rechnung storniert.",
+    "body": {
+        "prompt": "Der Kunde Nordlicht GmbH (Org.-Nr. 912435113) hat die Rechnung f\u00fcr \"Webdesign\" (40550 NOK ohne MwSt.) reklamiert. Erstellen Sie eine vollst\u00e4ndige Gutschrift, die die gesamte Rechnung storniert.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "HTmUu9NhVocCMk3HMB-UuvnrkL0-TA2cI7Z-v2weqV8"
+        }
+    },
+    "ip": "34.34.240.83",
+    "logged_at": "2026-03-21T22:45:14.663994Z"
+}

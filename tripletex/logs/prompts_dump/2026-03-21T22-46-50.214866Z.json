@@ -1,0 +1,13 @@
+{
+    "prompt": "Set a fixed price of 471400 NOK on the project \"Infrastructure Upgrade\" for Brightstone Ltd (org no. 918888020). The project manager is Alice Taylor (alice.taylor@example.org). Invoice the customer for 25% of the fixed price as a milestone payment.",
+    "body": {
+        "prompt": "Set a fixed price of 471400 NOK on the project \"Infrastructure Upgrade\" for Brightstone Ltd (org no. 918888020). The project manager is Alice Taylor (alice.taylor@example.org). Invoice the customer for 25% of the fixed price as a milestone payment.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "1YVoK2OFGzMjfyUyrVGG6mDujjr_fpqIgfHDnQ0jrkY"
+        }
+    },
+    "ip": "34.34.240.81",
+    "logged_at": "2026-03-21T22:46:50.214866Z"
+}

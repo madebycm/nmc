@@ -1,0 +1,13 @@
+{
+    "prompt": "Me sende ein faktura p\u00e5 12301 EUR til B\u00f8lgekraft AS (org.nr 830993940) d\u00e5 kursen var 10.83 NOK/EUR. Kunden har no betalt, men kursen er 11.83 NOK/EUR. Registrer betalinga og bokf\u00f8r valutadifferansen (agio) p\u00e5 rett konto.",
+    "body": {
+        "prompt": "Me sende ein faktura p\u00e5 12301 EUR til B\u00f8lgekraft AS (org.nr 830993940) d\u00e5 kursen var 10.83 NOK/EUR. Kunden har no betalt, men kursen er 11.83 NOK/EUR. Registrer betalinga og bokf\u00f8r valutadifferansen (agio) p\u00e5 rett konto.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "CiscTPCeeQbc-2-q9K-AjaAvFNkc9IHbqFzvS_USecU"
+        }
+    },
+    "ip": "34.34.240.83",
+    "logged_at": "2026-03-21T23:03:41.247186Z"
+}

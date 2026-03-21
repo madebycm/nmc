@@ -1,0 +1,13 @@
+{
+    "prompt": "Opprett en ordre for kunden Sn\u00f8hetta AS (org.nr 914443806) med produktene Datar\u00e5dgivning (7906) til 34450 kr og Systemutvikling (9594) til 17800 kr. Konverter ordren til faktura og registrer full betaling.",
+    "body": {
+        "prompt": "Opprett en ordre for kunden Sn\u00f8hetta AS (org.nr 914443806) med produktene Datar\u00e5dgivning (7906) til 34450 kr og Systemutvikling (9594) til 17800 kr. Konverter ordren til faktura og registrer full betaling.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "oGEaqT147hbEhe634rAVaUMieLYQ9SQpJ_SPHBu445w"
+        }
+    },
+    "ip": "34.34.240.83",
+    "logged_at": "2026-03-21T23:01:55.427006Z"
+}

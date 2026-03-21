@@ -1,0 +1,13 @@
+{
+    "prompt": "Effectuez la cl\u00f4ture annuelle simplifi\u00e9e pour 2025 : 1) Calculez et comptabilisez l'amortissement annuel de trois immobilisations : Programvare (132650 NOK, 10 ans lin\u00e9aire, compte 1250), Kontormaskiner (406350 NOK, 9 ans, compte 1200), IT-utstyr (151550 NOK, 8 ans, compte 1210). Utilisez le compte 6010 pour les charges d'amortissement et 1209 pour les amortissements cumul\u00e9s. 2) Extournez les charges constat\u00e9es d'avance (total 47200 NOK au compte 1700). 3) Calculez et comptabilisez la provision d'imp\u00f4t (22 % du b\u00e9n\u00e9fice imposable) sur compte 8700/2920. Comptabilisez chaque amortissement comme une pi\u00e8ce comptable s\u00e9par\u00e9e.",
+    "body": {
+        "prompt": "Effectuez la cl\u00f4ture annuelle simplifi\u00e9e pour 2025 : 1) Calculez et comptabilisez l'amortissement annuel de trois immobilisations : Programvare (132650 NOK, 10 ans lin\u00e9aire, compte 1250), Kontormaskiner (406350 NOK, 9 ans, compte 1200), IT-utstyr (151550 NOK, 8 ans, compte 1210). Utilisez le compte 6010 pour les charges d'amortissement et 1209 pour les amortissements cumul\u00e9s. 2) Extournez les charges constat\u00e9es d'avance (total 47200 NOK au compte 1700). 3) Calculez et comptabilisez la provision d'imp\u00f4t (22 % du b\u00e9n\u00e9fice imposable) sur compte 8700/2920. Comptabilisez chaque amortissement comme une pi\u00e8ce comptable s\u00e9par\u00e9e.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "aJJR0hhFYX9X_GjWO5N4_WGl9r8m2DhfZTmIFCc6AUk"
+        }
+    },
+    "ip": "34.34.240.91",
+    "logged_at": "2026-03-21T23:03:20.440992Z"
+}

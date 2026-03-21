@@ -1,0 +1,13 @@
+{
+    "prompt": "Tenemos un nuevo empleado llamado Luc\u00eda Garc\u00eda, nacido el 18. March 1997. Cr\u00e9elo como empleado con el correo lucia.garcia@example.org y fecha de inicio 30. August 2026.",
+    "body": {
+        "prompt": "Tenemos un nuevo empleado llamado Luc\u00eda Garc\u00eda, nacido el 18. March 1997. Cr\u00e9elo como empleado con el correo lucia.garcia@example.org y fecha de inicio 30. August 2026.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "huqB6BThJQJakIW8JvfiuEVkt60NArMmAxaLwDFqCtA"
+        }
+    },
+    "ip": "34.34.240.70",
+    "logged_at": "2026-03-21T22:58:21.761932Z"
+}

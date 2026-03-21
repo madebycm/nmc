@@ -1,0 +1,19 @@
+{
+    "prompt": "Rapprochez le releve bancaire (CSV ci-joint) avec les factures ouvertes dans Tripletex. Associez les paiements entrants aux factures clients et les paiements sortants aux factures fournisseurs. Gerez correctement les paiements partiels.",
+    "body": {
+        "prompt": "Rapprochez le releve bancaire (CSV ci-joint) avec les factures ouvertes dans Tripletex. Associez les paiements entrants aux factures clients et les paiements sortants aux factures fournisseurs. Gerez correctement les paiements partiels.",
+        "files": [
+            {
+                "filename": "files/bankutskrift_fr_06.csv",
+                "content_base64": "RGF0bztGb3JrbGFyaW5nO0lubjtVdDtTYWxkbw0KMjAyNi0wMS0xODtJbm5iZXRhbGluZyBmcmEgQmVybmFyZCBTQVJMIC8gRmFrdHVyYSAxMDAxOzY2ODcuNTA7OzEwNjY4Ny41MA0KMjAyNi0wMS0xOTtJbm5iZXRhbGluZyBmcmEgUmljaGFyZCBTQVJMIC8gRmFrdHVyYSAxMDAyOzIyMTg3LjUwOzsxMjg4NzUuMDANCjIwMjYtMDEtMjE7SW5uYmV0YWxpbmcgZnJhIER1cmFuZCBTQVJMIC8gRmFrdHVyYSAxMDAzOzU4NzUuMDA7OzEzNDc1MC4wMA0KMjAyNi0wMS0yNDtJbm5iZXRhbGluZyBmcmEgUmljaGFyZCBTQVJMIC8gRmFrdHVyYSAxMDA0OzI4MzEyLjUwOzsxNjMwNjIuNTANCjIwMjYtMDEtMjU7SW5uYmV0YWxpbmcgZnJhIExlcm95IFNBUkwgLyBGYWt0dXJhIDEwMDU7MjU3NTAuMDA7OzE4ODgxMi41MA0KMjAyNi0wMS0yODtCZXRhbGluZyBGb3Vybmlzc2V1ciBSb2JlcnQgU0FSTDs7LTExNTAwLjAwOzE3NzMxMi41MA0KMjAyNi0wMS0zMTtCZXRhbGluZyBGb3Vybmlzc2V1ciBEdWJvaXMgU0FSTDs7LTc3NTAuMDA7MTY5NTYyLjUwDQoyMDI2LTAyLTAzO0JldGFsaW5nIEZvdXJuaXNzZXVyIER1Ym9pcyBTQVJMOzstMTIyMDAuMDA7MTU3MzYyLjUwDQoyMDI2LTAyLTA1O1JlbnRlaW5udGVrdGVyOzstMTYxMS40MjsxNTU3NTEuMDgNCjIwMjYtMDItMDc7QmFua2dlYnlyOzQ3MC40MDs7MTU2MjIxLjQ4DQoyMDI2LTAyLTA5O1NrYXR0ZXRyZWtrOzstMTc4NC4yMjsxNTQ0MzcuMjYNCg==",
+                "mime_type": "text/csv"
+            }
+        ],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "q1-stT6DucxVKkzHny-nDSv-SKKL9UyPjT3Ncu_3cdU"
+        }
+    },
+    "ip": "34.34.240.68",
+    "logged_at": "2026-03-21T22:49:30.380597Z"
+}

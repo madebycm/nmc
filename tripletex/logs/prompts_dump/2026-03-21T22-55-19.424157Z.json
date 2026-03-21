@@ -1,0 +1,19 @@
+{
+    "prompt": "Vous avez recu un contrat de travail (voir PDF ci-joint). Creez l'employe dans Tripletex avec tous les details du contrat : numero d'identite nationale, date de naissance, departement, code de profession, salaire, pourcentage d'emploi et date de debut.",
+    "body": {
+        "prompt": "Vous avez recu un contrat de travail (voir PDF ci-joint). Creez l'employe dans Tripletex avec tous les details du contrat : numero d'identite nationale, date de naissance, departement, code de profession, salaire, pourcentage d'emploi et date de debut.",
+        "files": [
+            {
+                "filename": "files/arbeidskontrakt_fr_03.pdf",
+                "content_base64": "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",
+                "mime_type": "application/pdf"
+            }
+        ],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "UcxHIiMoDqFLe_NdFjD5G9iTLBCPkXR47TFLKnTbOw0"
+        }
+    },
+    "ip": "34.34.240.90",
+    "logged_at": "2026-03-21T22:55:19.424157Z"
+}

@@ -1,0 +1,13 @@
+{
+    "prompt": "Ex\u00e9cutez la paie de Chlo\u00e9 Dubois (chloe.dubois@example.org) pour ce mois. Le salaire de base est de 58350 NOK. Ajoutez une prime unique de 9300 NOK en plus du salaire de base.",
+    "body": {
+        "prompt": "Ex\u00e9cutez la paie de Chlo\u00e9 Dubois (chloe.dubois@example.org) pour ce mois. Le salaire de base est de 58350 NOK. Ajoutez une prime unique de 9300 NOK en plus du salaire de base.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "mR6FxH7M665stQ3P7w8Y-QVDJzJMWoRM8M329s0clwQ"
+        }
+    },
+    "ip": "34.34.240.68",
+    "logged_at": "2026-03-21T22:57:49.253647Z"
+}

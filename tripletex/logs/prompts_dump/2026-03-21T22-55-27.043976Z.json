@@ -1,0 +1,13 @@
+{
+    "prompt": "Fixez un prix forfaitaire de 365350 NOK sur le projet \"Int\u00e9gration CRM\" pour Colline SARL (n\u00ba org. 894562234). Le chef de projet est Adam Thomas (adam.thomas@example.org). Facturez au client 75 % du prix fixe comme paiement d'\u00e9tape.",
+    "body": {
+        "prompt": "Fixez un prix forfaitaire de 365350 NOK sur le projet \"Int\u00e9gration CRM\" pour Colline SARL (n\u00ba org. 894562234). Le chef de projet est Adam Thomas (adam.thomas@example.org). Facturez au client 75 % du prix fixe comme paiement d'\u00e9tape.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "ZY-gXvjGyssS6ArxP3rRDsVznu9h_XBdyTxoCramL_Q"
+        }
+    },
+    "ip": "34.34.240.8",
+    "logged_at": "2026-03-21T22:55:27.043976Z"
+}

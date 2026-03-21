@@ -1,0 +1,13 @@
+{
+    "prompt": "Enregistrez une note de frais de d\u00e9placement pour Arthur Robert (arthur.robert@example.org) pour \"Visite client Kristiansand\". Le voyage a dur\u00e9 5 jours avec indemnit\u00e9s journali\u00e8res (taux journalier 800 NOK). D\u00e9penses : billet d'avion 3850 NOK et taxi 650 NOK.",
+    "body": {
+        "prompt": "Enregistrez une note de frais de d\u00e9placement pour Arthur Robert (arthur.robert@example.org) pour \"Visite client Kristiansand\". Le voyage a dur\u00e9 5 jours avec indemnit\u00e9s journali\u00e8res (taux journalier 800 NOK). D\u00e9penses : billet d'avion 3850 NOK et taxi 650 NOK.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "6EEwfmRi3_8Ejvkee4Tdke17APqRgWMYwEpClg8qemU"
+        }
+    },
+    "ip": "34.34.240.63",
+    "logged_at": "2026-03-21T22:56:10.919622Z"
+}

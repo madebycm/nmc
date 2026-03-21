@@ -1,0 +1,13 @@
+{
+    "prompt": "Erstellen Sie drei Abteilungen in Tripletex: \"HR\", \"\u00d8konomi\" und \"Kundeservice\".",
+    "body": {
+        "prompt": "Erstellen Sie drei Abteilungen in Tripletex: \"HR\", \"\u00d8konomi\" und \"Kundeservice\".",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "Qzjf5E55bLNhHwQLEOIy9FBObjkSbRxquAAW9M_9XNI"
+        }
+    },
+    "ip": "34.34.240.83",
+    "logged_at": "2026-03-21T22:56:37.519668Z"
+}

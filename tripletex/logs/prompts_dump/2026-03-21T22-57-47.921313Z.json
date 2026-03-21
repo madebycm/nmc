@@ -1,0 +1,13 @@
+{
+    "prompt": "Opprett og send ein faktura til kunden Sj\u00f8bris AS (org.nr 847830840) p\u00e5 7350 kr eksklusiv MVA. Fakturaen gjeld Nettverksteneste.",
+    "body": {
+        "prompt": "Opprett og send ein faktura til kunden Sj\u00f8bris AS (org.nr 847830840) p\u00e5 7350 kr eksklusiv MVA. Fakturaen gjeld Nettverksteneste.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "pictyL7Bh28-zNE-gT7dVPSdojZRyfVf2gOTtwXl1dw"
+        }
+    },
+    "ip": "34.34.240.91",
+    "logged_at": "2026-03-21T22:57:47.921313Z"
+}

@@ -1,0 +1,13 @@
+{
+    "prompt": "Registe 15 horas para Leonor Silva (leonor.silva@example.org) na atividade \"Analyse\" do projeto \"Auditoria de seguran\u00e7a\" para Porto Alegre Lda (org. n\u00ba 976689283). Taxa hor\u00e1ria: 1650 NOK/h. Gere uma fatura de projeto ao cliente com base nas horas registadas.",
+    "body": {
+        "prompt": "Registe 15 horas para Leonor Silva (leonor.silva@example.org) na atividade \"Analyse\" do projeto \"Auditoria de seguran\u00e7a\" para Porto Alegre Lda (org. n\u00ba 976689283). Taxa hor\u00e1ria: 1650 NOK/h. Gere uma fatura de projeto ao cliente com base nas horas registadas.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "AN4JYMYGXVvWryUhzUV2OfCI0OKUekHVLrtT5gbUl_Y"
+        }
+    },
+    "ip": "34.34.240.91",
+    "logged_at": "2026-03-21T23:03:32.318016Z"
+}

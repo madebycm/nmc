@@ -1,0 +1,13 @@
+{
+    "prompt": "Ex\u00e9cutez le cycle de vie complet du projet 'Mise \u00e0 Niveau Syst\u00e8me Soleil' (Soleil SARL, n\u00ba org. 869871079) : 1) Le projet a un budget de 475350 NOK. 2) Enregistrez le temps : Gabriel Richard (chef de projet, gabriel.richard@example.org) 25 heures et Chlo\u00e9 Richard (consultant, chloe.richard@example.org) 96 heures. 3) Enregistrez un co\u00fbt fournisseur de 93950 NOK de For\u00eat SARL (n\u00ba org. 967857920). 4) Cr\u00e9ez une facture client pour le projet.",
+    "body": {
+        "prompt": "Ex\u00e9cutez le cycle de vie complet du projet 'Mise \u00e0 Niveau Syst\u00e8me Soleil' (Soleil SARL, n\u00ba org. 869871079) : 1) Le projet a un budget de 475350 NOK. 2) Enregistrez le temps : Gabriel Richard (chef de projet, gabriel.richard@example.org) 25 heures et Chlo\u00e9 Richard (consultant, chloe.richard@example.org) 96 heures. 3) Enregistrez un co\u00fbt fournisseur de 93950 NOK de For\u00eat SARL (n\u00ba org. 967857920). 4) Cr\u00e9ez une facture client pour le projet.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "FfZX2qEDP_D7ZtNQlhB9DbXxt3eQ6rRdV06HvM-KT_M"
+        }
+    },
+    "ip": "34.34.240.82",
+    "logged_at": "2026-03-21T22:59:28.082168Z"
+}

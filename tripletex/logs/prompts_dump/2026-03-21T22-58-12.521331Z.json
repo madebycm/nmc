@@ -1,0 +1,13 @@
+{
+    "prompt": "Log 14 hours for Thomas Smith (thomas.smith@example.org) on the activity \"Design\" in the project \"App Development\" for Brightstone Ltd (org no. 982658691). Hourly rate: 1950 NOK/h. Generate a project invoice to the customer based on the logged hours.",
+    "body": {
+        "prompt": "Log 14 hours for Thomas Smith (thomas.smith@example.org) on the activity \"Design\" in the project \"App Development\" for Brightstone Ltd (org no. 982658691). Hourly rate: 1950 NOK/h. Generate a project invoice to the customer based on the logged hours.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "oR5p_bfxuMKT85BjZMf3WDkdOzAo7waei5J8R5x1-pk"
+        }
+    },
+    "ip": "34.34.240.90",
+    "logged_at": "2026-03-21T22:58:12.521331Z"
+}

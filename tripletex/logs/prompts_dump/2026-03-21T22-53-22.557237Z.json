@@ -1,0 +1,13 @@
+{
+    "prompt": "Betalinga fr\u00e5 Strandvik AS (org.nr 891362560) for fakturaen \"Konsulenttimar\" (11450 kr ekskl. MVA) vart returnert av banken. Reverser betalinga slik at fakturaen igjen viser utest\u00e5ande bel\u00f8p.",
+    "body": {
+        "prompt": "Betalinga fr\u00e5 Strandvik AS (org.nr 891362560) for fakturaen \"Konsulenttimar\" (11450 kr ekskl. MVA) vart returnert av banken. Reverser betalinga slik at fakturaen igjen viser utest\u00e5ande bel\u00f8p.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "FfNOeaRshHl6cpzpg_evtsd0PotTJpmZJwA6tgcuWcc"
+        }
+    },
+    "ip": "34.34.240.63",
+    "logged_at": "2026-03-21T22:53:22.557237Z"
+}

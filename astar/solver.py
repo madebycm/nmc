@@ -226,7 +226,53 @@ def solve_round(api: AstarAPI, round_info: dict, dry_run: bool = False):
     log.info(f"Map: {map_w}x{map_h}, seeds: {seeds_count}, budget: {queries_left}/{budget['queries_max']}")
 
     if queries_left <= 0:
-        log.warning("No queries left!")
+        log.info("No queries left — attempting resubmit from cached observations...")
+        round_dir = OBS_DIR / f"round_{round_num}"
+        if not round_dir.exists():
+            log.warning("No cached observations found, cannot resubmit!")
+            return
+        # Load cached observations
+        initial_grids = [initial_states[i]["grid"] for i in range(seeds_count)]
+        all_observations = {}
+        base_observations = {}
+        for seed_idx in range(seeds_count):
+            obs_file = round_dir / f"observations_seed_{seed_idx}.json"
+            if obs_file.exists():
+                all_observations[seed_idx] = json.loads(obs_file.read_text())
+            else:
+                all_observations[seed_idx] = []
+            # Split base from precision using base_counts
+            base_counts_file = round_dir / "base_counts.json"
+            if base_counts_file.exists():
+                bc = json.loads(base_counts_file.read_text())
+                n_base = bc.get(str(seed_idx), len(all_observations[seed_idx]))
+            else:
+                n_base = len(all_observations[seed_idx])
+            base_observations[seed_idx] = all_observations[seed_idx][:n_base]
+        context = compute_context_vector(base_observations, initial_grids)
+        z_est = estimate_z_from_context(context)
+        log.info(f"Resubmit z estimate: {z_est:.3f} (from cached observations)")
+        # Submit with current models
+        seeds_submitted = 0
+        for seed_idx in range(seeds_count):
+            pred = predict_for_seed(
+                initial_states[seed_idx]["grid"],
+                all_observations.get(seed_idx, []),
+                context=context,
+                observations_by_seed=base_observations,
+                initial_grids=initial_grids,
+                seed_idx=seed_idx,
+            )
+            if submit_prediction(api, round_id, seed_idx, pred, dry_run):
+                seeds_submitted += 1
+        log.info(f"  Resubmitted: {seeds_submitted}/5 seeds (NN models active)")
+        st.mark_round_solved(persistence, round_id, {
+            "round_number": round_num,
+            "queries_used": 50,
+            "seeds_submitted": seeds_submitted,
+            "strategy": "resubmit_nn",
+            "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        })
         return
 
     initial_grids = [initial_states[i]["grid"] for i in range(seeds_count)]

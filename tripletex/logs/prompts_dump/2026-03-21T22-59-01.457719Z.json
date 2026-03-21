@@ -1,0 +1,13 @@
+{
+    "prompt": "F\u00fchren Sie den vereinfachten Jahresabschluss f\u00fcr 2025 durch: 1) Berechnen und buchen Sie die j\u00e4hrliche Abschreibung f\u00fcr drei Anlagen: Inventar (148150 NOK, 9 Jahre linear, Konto 1240), Programvare (316600 NOK, 3 Jahre, Konto 1250), Kontormaskiner (126850 NOK, 4 Jahre, Konto 1200). Verwenden Sie Konto 6010 f\u00fcr Abschreibungsaufwand und 1209 f\u00fcr kumulierte Abschreibungen. 2) L\u00f6sen Sie vorausbezahlte Aufwendungen auf (insgesamt 63850 NOK auf Konto 1700). 3) Berechnen und buchen Sie die Steuerr\u00fcckstellung (22 % des steuerpflichtigen Gewinns) auf Konto 8700/2920. Buchen Sie jede Abschreibung als separaten Beleg.",
+    "body": {
+        "prompt": "F\u00fchren Sie den vereinfachten Jahresabschluss f\u00fcr 2025 durch: 1) Berechnen und buchen Sie die j\u00e4hrliche Abschreibung f\u00fcr drei Anlagen: Inventar (148150 NOK, 9 Jahre linear, Konto 1240), Programvare (316600 NOK, 3 Jahre, Konto 1250), Kontormaskiner (126850 NOK, 4 Jahre, Konto 1200). Verwenden Sie Konto 6010 f\u00fcr Abschreibungsaufwand und 1209 f\u00fcr kumulierte Abschreibungen. 2) L\u00f6sen Sie vorausbezahlte Aufwendungen auf (insgesamt 63850 NOK auf Konto 1700). 3) Berechnen und buchen Sie die Steuerr\u00fcckstellung (22 % des steuerpflichtigen Gewinns) auf Konto 8700/2920. Buchen Sie jede Abschreibung als separaten Beleg.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "W9yeQN3EHNHHQBv-ZLWKCPfnjRh8dE63_gSF7JEDY0A"
+        }
+    },
+    "ip": "34.34.240.8",
+    "logged_at": "2026-03-21T22:59:01.457719Z"
+}

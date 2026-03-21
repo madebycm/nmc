@@ -1,0 +1,13 @@
+{
+    "prompt": "Cr\u00e9ez une facture pour le client Cascade SARL (n\u00ba org. 875483811) avec trois lignes de produit : Heures de conseil (5679) \u00e0 10950 NOK avec 25 % TVA, Maintenance (9191) \u00e0 13750 NOK avec 15 % TVA (alimentaire), et Rapport d'analyse (5577) \u00e0 16400 NOK avec 0 % TVA (exon\u00e9r\u00e9).",
+    "body": {
+        "prompt": "Cr\u00e9ez une facture pour le client Cascade SARL (n\u00ba org. 875483811) avec trois lignes de produit : Heures de conseil (5679) \u00e0 10950 NOK avec 25 % TVA, Maintenance (9191) \u00e0 13750 NOK avec 15 % TVA (alimentaire), et Rapport d'analyse (5577) \u00e0 16400 NOK avec 0 % TVA (exon\u00e9r\u00e9).",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "DN6y5N_eGUwYyfon79WlcRa_o35E0bISy38exICjkVo"
+        }
+    },
+    "ip": "34.34.240.91",
+    "logged_at": "2026-03-21T22:52:23.358172Z"
+}

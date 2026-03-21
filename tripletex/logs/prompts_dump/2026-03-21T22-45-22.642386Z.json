@@ -1,0 +1,13 @@
+{
+    "prompt": "Effectuez la cl\u00f4ture mensuelle de mars 2026. Comptabilisez la r\u00e9gularisation (2100 NOK par mois du compte 1700 vers charges). Enregistrez l'amortissement mensuel d'une immobilisation avec un co\u00fbt d'acquisition de 76250 NOK et une dur\u00e9e de vie utile de 9 ans (amortissement lin\u00e9aire sur compte 6010). V\u00e9rifiez que la balance est \u00e0 z\u00e9ro. Comptabilisez \u00e9galement une provision pour salaires (d\u00e9bit compte de charges salariales 5000, cr\u00e9dit compte de salaires \u00e0 payer 2900).",
+    "body": {
+        "prompt": "Effectuez la cl\u00f4ture mensuelle de mars 2026. Comptabilisez la r\u00e9gularisation (2100 NOK par mois du compte 1700 vers charges). Enregistrez l'amortissement mensuel d'une immobilisation avec un co\u00fbt d'acquisition de 76250 NOK et une dur\u00e9e de vie utile de 9 ans (amortissement lin\u00e9aire sur compte 6010). V\u00e9rifiez que la balance est \u00e0 z\u00e9ro. Comptabilisez \u00e9galement une provision pour salaires (d\u00e9bit compte de charges salariales 5000, cr\u00e9dit compte de salaires \u00e0 payer 2900).",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "0LlGjzWEFI9h-_egQmRirOaSyv2QKpv1OUcV1d_ms3o"
+        }
+    },
+    "ip": "34.34.240.91",
+    "logged_at": "2026-03-21T22:45:22.642386Z"
+}

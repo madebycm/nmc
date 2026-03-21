@@ -139,6 +139,56 @@ class AstarNetV3(nn.Module):
         return self.head(merged).permute(0, 2, 3, 1)
 
 
+class ResBlockNF(nn.Module):
+    """Nightforce ResBlock (GELU, no dilation, no dropout)."""
+    def __init__(self, ch):
+        super().__init__()
+        self.conv1 = nn.Conv2d(ch, ch, 3, padding=1)
+        self.bn1 = nn.BatchNorm2d(ch)
+        self.conv2 = nn.Conv2d(ch, ch, 3, padding=1)
+        self.bn2 = nn.BatchNorm2d(ch)
+
+    def forward(self, x):
+        residual = x
+        out = F.gelu(self.bn1(self.conv1(x)))
+        out = self.bn2(self.conv2(out))
+        return F.gelu(out + residual)
+
+
+class AstarNetNF(nn.Module):
+    """Nightforce v2 architecture: 192 hidden, 8 ResBlocks, GELU, multi-scale."""
+    def __init__(self, in_ch=IN_CHANNELS_V2V3, hidden=192, num_classes=NUM_CLASSES):
+        super().__init__()
+        self.stem = nn.Sequential(
+            nn.Conv2d(in_ch, hidden, 3, padding=1),
+            nn.BatchNorm2d(hidden),
+            nn.GELU(),
+        )
+        self.blocks = nn.Sequential(*[ResBlockNF(hidden) for _ in range(8)])
+        self.down = nn.Sequential(
+            nn.Conv2d(hidden, hidden, 3, stride=2, padding=1),
+            nn.BatchNorm2d(hidden),
+            nn.GELU(),
+            ResBlockNF(hidden),
+            nn.Upsample(scale_factor=2, mode='bilinear', align_corners=False),
+        )
+        self.merge = nn.Sequential(
+            nn.Conv2d(hidden * 2, hidden, 1),
+            nn.BatchNorm2d(hidden),
+            nn.GELU(),
+        )
+        self.head = nn.Conv2d(hidden, num_classes, 1)
+
+    def forward(self, x):
+        h = self.stem(x)
+        h1 = self.blocks(h)
+        h2 = self.down(h1)
+        if h2.shape != h1.shape:
+            h2 = F.interpolate(h2, size=h1.shape[2:], mode='bilinear', align_corners=False)
+        merged = self.merge(torch.cat([h1, h2], dim=1))
+        return self.head(merged).permute(0, 2, 3, 1)
+
+
 class ConditionalUNet(nn.Module):
     """V4: U-Net conditioned on 8-dim global context vector."""
     def __init__(self, in_ch=IN_CHANNELS_V4, hidden=160, num_classes=NUM_CLASSES):
@@ -293,9 +343,35 @@ def encode_grid_v4(grid: np.ndarray, context: np.ndarray) -> np.ndarray:
 MODEL_SPECS = {
     "v2": ("astar_nn.pt", AstarNet),
     "v3": ("astar_nn_v3.pt", AstarNetV3),
+    "nf": ("nf2_healthy_all.pt", AstarNetNF),  # Nightforce healthy specialist
     "v4": ("astar_nn_v4.pt", ConditionalUNet),
     "replay": ("astar_nn_replay.pt", AstarNet),  # Phase 4: replay-augmented, same arch as v2
 }
+
+# Multi-seed NF ensemble for healthy rounds (5 models trained with different seeds)
+NF_ENSEMBLE_FILES = [f"nf_ensemble_{i}.pt" for i in range(5)]
+_nf_ensemble = None
+
+def _load_nf_ensemble():
+    global _nf_ensemble
+    if _nf_ensemble is not None:
+        return _nf_ensemble
+    models = []
+    for fname in NF_ENSEMBLE_FILES:
+        path = MODEL_DIR / fname
+        if not path.exists():
+            log.warning(f"NF ensemble file {path} not found")
+            continue
+        m = AstarNetNF()
+        state = torch.load(path, map_location="cpu", weights_only=True)
+        m.load_state_dict(state)
+        m.to(DEVICE)
+        m.eval()
+        models.append(m)
+    if models:
+        log.info(f"Loaded NF ensemble: {len(models)} models")
+        _nf_ensemble = models
+    return _nf_ensemble
 
 
 def _load_model(name: str):
@@ -428,6 +504,18 @@ def predict(
             v3_preds.append(p)
         preds.append(np.mean(v3_preds, axis=0))
         weights.append(v3_w)
+
+    # NF: Nightforce healthy specialist (same input as v2/v3)
+    # Tested 5-model ensemble: HURTS by -2.02 on R12. Single is better in full pipeline.
+    model_nf = _load_model("nf")
+    if model_nf is not None:
+        nf_preds = []
+        for zz in z_band:
+            p = _predict_with_tta_v2v3(model_nf, grid, zz) if tta else _predict_single_v2v3(model_nf, grid, zz)
+            nf_preds.append(p)
+        preds.append(np.mean(nf_preds, axis=0))
+        weights.append(0.50)
+        log.info("NF model loaded and contributing to ensemble")
 
     if not preds:
         return None

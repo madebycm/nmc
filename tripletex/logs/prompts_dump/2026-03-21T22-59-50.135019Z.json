@@ -1,0 +1,13 @@
+{
+    "prompt": "Der Kunde Waldstein GmbH (Org.-Nr. 908048199) hat die Rechnung f\u00fcr \"Webdesign\" (8750 NOK ohne MwSt.) reklamiert. Erstellen Sie eine vollst\u00e4ndige Gutschrift, die die gesamte Rechnung storniert.",
+    "body": {
+        "prompt": "Der Kunde Waldstein GmbH (Org.-Nr. 908048199) hat die Rechnung f\u00fcr \"Webdesign\" (8750 NOK ohne MwSt.) reklamiert. Erstellen Sie eine vollst\u00e4ndige Gutschrift, die die gesamte Rechnung storniert.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "cjyBbFub7fS3boekVUwk13lIQ81-V4o6NiXcD_Oh-KY"
+        }
+    },
+    "ip": "34.34.240.68",
+    "logged_at": "2026-03-21T22:59:50.135019Z"
+}

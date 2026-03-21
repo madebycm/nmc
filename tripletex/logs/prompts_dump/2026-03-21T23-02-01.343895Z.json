@@ -1,0 +1,13 @@
+{
+    "prompt": "Vi sendte en faktura p\u00e5 4644 EUR til Stormberg AS (org.nr 917157812) da kursen var 11.51 NOK/EUR. Kunden har n\u00e5 betalt, men kursen er 10.84 NOK/EUR. Registrer betalingen og bokf\u00f8r valutadifferansen (disagio) p\u00e5 korrekt konto.",
+    "body": {
+        "prompt": "Vi sendte en faktura p\u00e5 4644 EUR til Stormberg AS (org.nr 917157812) da kursen var 11.51 NOK/EUR. Kunden har n\u00e5 betalt, men kursen er 10.84 NOK/EUR. Registrer betalingen og bokf\u00f8r valutadifferansen (disagio) p\u00e5 korrekt konto.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "3NU8pkOkx66YhU4vFFgjUoBUDUWjC9r3s_0-62FtblI"
+        }
+    },
+    "ip": "34.34.240.63",
+    "logged_at": "2026-03-21T23:02:01.343895Z"
+}

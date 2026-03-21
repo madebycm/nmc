@@ -1,0 +1,13 @@
+{
+    "prompt": "Le client Montagne SARL (n\u00ba org. 882988155) a r\u00e9clam\u00e9 concernant la facture pour \"Heures de conseil\" (40900 NOK HT). \u00c9mettez un avoir complet qui annule l'int\u00e9gralit\u00e9 de la facture.",
+    "body": {
+        "prompt": "Le client Montagne SARL (n\u00ba org. 882988155) a r\u00e9clam\u00e9 concernant la facture pour \"Heures de conseil\" (40900 NOK HT). \u00c9mettez un avoir complet qui annule l'int\u00e9gralit\u00e9 de la facture.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "mDvkTPmHmRkJjcYF2MiQnnoViE800gQ1VL6EUAalcKE"
+        }
+    },
+    "ip": "34.34.240.70",
+    "logged_at": "2026-03-21T22:52:47.103690Z"
+}

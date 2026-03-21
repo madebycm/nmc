@@ -1,0 +1,13 @@
+{
+    "prompt": "Create the customer Clearwater Ltd with organization number 898695476. The address is Torggata 146, 4006 Stavanger. Email: post@clearwater.no.",
+    "body": {
+        "prompt": "Create the customer Clearwater Ltd with organization number 898695476. The address is Torggata 146, 4006 Stavanger. Email: post@clearwater.no.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "JoUz02FE2iRyzrfC8Ii3whAXnUxdzkkJjWOkNNNUSxY"
+        }
+    },
+    "ip": "34.34.240.91",
+    "logged_at": "2026-03-21T22:45:28.648925Z"
+}

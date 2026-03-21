@@ -1,0 +1,13 @@
+{
+    "prompt": "Crea y env\u00eda una factura al cliente Viento SL (org. n\u00ba 844876831) por 35350 NOK sin IVA. La factura es por Licencia de software.",
+    "body": {
+        "prompt": "Crea y env\u00eda una factura al cliente Viento SL (org. n\u00ba 844876831) por 35350 NOK sin IVA. La factura es por Licencia de software.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "a9riT49RMk7wcr2Q4Dh0naLtEF2pxcbyfKeRUYpNNwU"
+        }
+    },
+    "ip": "34.34.240.90",
+    "logged_at": "2026-03-21T22:49:35.392921Z"
+}

@@ -1,0 +1,13 @@
+{
+    "prompt": "Totalkostnadene auka monaleg fr\u00e5 januar til februar 2026. Analyser hovudboka og finn dei tre kostnadskontoane med st\u00f8rst auke i bel\u00f8p. Opprett eit internt prosjekt for kvar av dei tre kontoane med kontoens namn. Opprett ogs\u00e5 ein aktivitet for kvart prosjekt.",
+    "body": {
+        "prompt": "Totalkostnadene auka monaleg fr\u00e5 januar til februar 2026. Analyser hovudboka og finn dei tre kostnadskontoane med st\u00f8rst auke i bel\u00f8p. Opprett eit internt prosjekt for kvar av dei tre kontoane med kontoens namn. Opprett ogs\u00e5 ein aktivitet for kvart prosjekt.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "pm79SIeWHGiNn69nJTDH7KP_L_rDZ10ZeY2H-frG7xM"
+        }
+    },
+    "ip": "34.34.240.8",
+    "logged_at": "2026-03-21T22:51:11.516788Z"
+}

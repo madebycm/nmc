@@ -1,0 +1,13 @@
+{
+    "prompt": "Legen Sie einen Festpreis von 201450 NOK f\u00fcr das Projekt \"Automatisierungsprojekt\" f\u00fcr Gr\u00fcnfeld GmbH (Org.-Nr. 950208589) fest. Projektleiter ist Maximilian Schneider (maximilian.schneider@example.org). Stellen Sie dem Kunden 25 % des Festpreises als Meilensteinzahlung in Rechnung.",
+    "body": {
+        "prompt": "Legen Sie einen Festpreis von 201450 NOK f\u00fcr das Projekt \"Automatisierungsprojekt\" f\u00fcr Gr\u00fcnfeld GmbH (Org.-Nr. 950208589) fest. Projektleiter ist Maximilian Schneider (maximilian.schneider@example.org). Stellen Sie dem Kunden 25 % des Festpreises als Meilensteinzahlung in Rechnung.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "N4nsrHjkdaDicqsjYQ73tTT1shnz_dYzq4ynV21RdRo"
+        }
+    },
+    "ip": "34.34.240.8",
+    "logged_at": "2026-03-21T22:57:05.402799Z"
+}

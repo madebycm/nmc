@@ -1,0 +1,19 @@
+{
+    "prompt": "Nous avons besoin de la depense Tastatur de ce recu enregistree au departement Utvikling. Utilisez le bon compte de charges et assurez le traitement correct de la TVA.",
+    "body": {
+        "prompt": "Nous avons besoin de la depense Tastatur de ce recu enregistree au departement Utvikling. Utilisez le bon compte de charges et assurez le traitement correct de la TVA.",
+        "files": [
+            {
+                "filename": "files/kvittering_fr_03.pdf",
+                "content_base64": "JVBERi0xLjMKJenr8b8KMSAwIG9iago8PAovQ291bnQgMQovS2lkcyBbMyAwIFJdCi9NZWRpYUJveCBbMCAwIDU5NS4yOCA4NDEuODldCi9UeXBlIC9QYWdlcwo+PgplbmRvYmoKMiAwIG9iago8PAovT3BlbkFjdGlvbiBbMyAwIFIgL0ZpdEggbnVsbF0KL1BhZ2VMYXlvdXQgL09uZUNvbHVtbgovUGFnZXMgMSAwIFIKL1R5cGUgL0NhdGFsb2cKPj4KZW5kb2JqCjMgMCBvYmoKPDwKL0NvbnRlbnRzIDQgMCBSCi9QYXJlbnQgMSAwIFIKL1Jlc291cmNlcyA3IDAgUgovVHlwZSAvUGFnZQo+PgplbmRvYmoKNCAwIG9iago8PAovRmlsdGVyIC9GbGF0ZURlY29kZQovTGVuZ3RoIDQwNgo+PgpzdHJlYW0KeJx1kk1P40AMhu/8Cl+QFgnMeL4809tWahGgBQRR71kldNumDZoE+Oscd5qmdPrB0aP3fex5bQl3ZwINw+fZMIPrMQFpFAKyVxhl6yfJFq0C9gaJISvg16hazL/eLiCb95LrsQS/b9IOnQVmhd53pqwO02ne5iD9JTghLAzr4iuBSOPRMbCxW8tjmOIqDMAL9kzsaa/l8aCbmkkgqQ5wP7nNstHz7cMNXAHFCQ1KIe0hRuww0qEyYK1CRbAEpSPLbusKXiB6FCE5sCxQbtpM8lBumfuOJRgbv6MOCEavB0kRT2HWHASajrXragSqPtC8afP2PSQ2QxadSUXWiw6zSGU9SsW16041rkMo29VsNW2q91UzT5FSoqZUrNWPxDgyi070sgizj/JvHYoqX76VJ4A7rTYHwM0SjHdISYR9HSP8XhydSMiwRs/9ybV51Q72AhLofKphdsff+TF+Y+KJUWcE+FeG/AP+TH7H0z0fHK8hEZOPGz8d2joPtzmCYbmeF5ZlMYBhWYTZa9ss6tBuPf8B96rb0wplbmRzdHJlYW0KZW5kb2JqCjUgMCBvYmoKPDwKL0Jhc2VGb250IC9IZWx2ZXRpY2EtQm9sZAovRW5jb2RpbmcgL1dpbkFuc2lFbmNvZGluZwovU3VidHlwZSAvVHlwZTEKL1R5cGUgL0ZvbnQKPj4KZW5kb2JqCjYgMCBvYmoKPDwKL0Jhc2VGb250IC9IZWx2ZXRpY2EKL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcKL1N1YnR5cGUgL1R5cGUxCi9UeXBlIC9Gb250Cj4+CmVuZG9iago3IDAgb2JqCjw8Ci9Gb250IDw8L0YxIDUgMCBSCi9GMiA2IDAgUj4+Ci9Qcm9jU2V0IFsvUERGIC9UZXh0IC9JbWFnZUIgL0ltYWdlQyAvSW1hZ2VJXQo+PgplbmRvYmoKOCAwIG9iago8PAovQ3JlYXRpb25EYXRlIChEOjIwMjYwMzE4MDk0MDUwWikKPj4KZW5kb2JqCnhyZWYKMCA5CjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDAxNSAwMDAwMCBuIAowMDAwMDAwMTAyIDAwMDAwIG4gCjAwMDAwMDAyMDUgMDAwMDAgbiAKMDAwMDAwMDI4NSAwMDAwMCBuIAowMDAwMDAwNzYzIDAwMDAwIG4gCjAwMDAwMDA4NjUgMDAwMDAgbiAKMDAwMDAwMDk2MiAwMDAwMCBuIAowMDAwMDAxMDU5IDAwMDAwIG4gCnRyYWlsZXIKPDwKL1NpemUgOQovUm9vdCAyIDAgUgovSW5mbyA4IDAgUgovSUQgWzxBNTIwNTkzRUEwNzFFRTY2NUUzQjU5RTM1QjI0RDc3Nj48QTUyMDU5M0VBMDcxRUU2NjVFM0I1OUUzNUIyNEQ3NzY+XQo+PgpzdGFydHhyZWYKMTExNAolJUVPRgo=",
+                "mime_type": "application/pdf"
+            }
+        ],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "wuJE0disyy7KQCeshA4oT0TeYppS97KZk-iRUJCFgzk"
+        }
+    },
+    "ip": "34.34.240.91",
+    "logged_at": "2026-03-21T22:46:31.100674Z"
+}

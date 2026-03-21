@@ -1,0 +1,13 @@
+{
+    "prompt": "Vi har oppdaget feil i hovedboken for januar og februar 2026. G\u00e5 gjennom alle bilag og finn de 4 feilene: en postering p\u00e5 feil konto (konto 6540 brukt i stedet for 6860, bel\u00f8p 4350 kr), et duplisert bilag (konto 6590, bel\u00f8p 2500 kr), en manglende MVA-linje (konto 6590, bel\u00f8p ekskl. 8200 kr mangler MVA p\u00e5 konto 2710), og et feil bel\u00f8p (konto 6500, 16900 kr bokf\u00f8rt i stedet for 10300 kr). Korriger alle feil med riktige bilag.",
+    "body": {
+        "prompt": "Vi har oppdaget feil i hovedboken for januar og februar 2026. G\u00e5 gjennom alle bilag og finn de 4 feilene: en postering p\u00e5 feil konto (konto 6540 brukt i stedet for 6860, bel\u00f8p 4350 kr), et duplisert bilag (konto 6590, bel\u00f8p 2500 kr), en manglende MVA-linje (konto 6590, bel\u00f8p ekskl. 8200 kr mangler MVA p\u00e5 konto 2710), og et feil bel\u00f8p (konto 6500, 16900 kr bokf\u00f8rt i stedet for 10300 kr). Korriger alle feil med riktige bilag.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "Xo_4vM-k-djDD4jXB29J-fKYuqsWr-JEoO15uLOe68s"
+        }
+    },
+    "ip": "34.34.240.70",
+    "logged_at": "2026-03-21T22:54:59.097834Z"
+}

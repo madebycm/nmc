@@ -1,0 +1,13 @@
+{
+    "prompt": "Enviamos una factura por 13512 EUR a R\u00edo Verde SL (org. n\u00ba 821140854) cuando el tipo de cambio era 11.11 NOK/EUR. El cliente ha pagado ahora, pero el tipo es 10.30 NOK/EUR. Registre el pago y contabilice la diferencia de tipo de cambio (disagio) en la cuenta correcta.",
+    "body": {
+        "prompt": "Enviamos una factura por 13512 EUR a R\u00edo Verde SL (org. n\u00ba 821140854) cuando el tipo de cambio era 11.11 NOK/EUR. El cliente ha pagado ahora, pero el tipo es 10.30 NOK/EUR. Registre el pago y contabilice la diferencia de tipo de cambio (disagio) en la cuenta correcta.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "QDkBQhZ5eqeC8b48YKikUHp4XiFUwoyryGHQjuQQdX8"
+        }
+    },
+    "ip": "34.34.240.91",
+    "logged_at": "2026-03-21T22:58:09.442458Z"
+}

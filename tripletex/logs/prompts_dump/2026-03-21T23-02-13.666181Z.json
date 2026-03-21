@@ -1,0 +1,13 @@
+{
+    "prompt": "Enregistrez 15 heures pour Nathan Bernard (nathan.bernard@example.org) sur l'activit\u00e9 \"Utvikling\" du projet \"D\u00e9veloppement d'app\" pour Colline SARL (n\u00ba org. 815345991). Taux horaire : 1000 NOK/h. G\u00e9n\u00e9rez une facture de projet au client bas\u00e9e sur les heures enregistr\u00e9es.",
+    "body": {
+        "prompt": "Enregistrez 15 heures pour Nathan Bernard (nathan.bernard@example.org) sur l'activit\u00e9 \"Utvikling\" du projet \"D\u00e9veloppement d'app\" pour Colline SARL (n\u00ba org. 815345991). Taux horaire : 1000 NOK/h. G\u00e9n\u00e9rez une facture de projet au client bas\u00e9e sur les heures enregistr\u00e9es.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "01pNG_XzvLiCVGN4N7MVDvklWJu3xOc7hJsTkuxnUyE"
+        }
+    },
+    "ip": "34.34.240.83",
+    "logged_at": "2026-03-21T23:02:13.666181Z"
+}

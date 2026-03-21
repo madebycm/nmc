@@ -1,0 +1,13 @@
+{
+    "prompt": "Create the project \"Analysis Ridgepoint\" linked to the customer Ridgepoint Ltd (org no. 987409339). The project manager is Alice Harris (alice.harris@example.org).",
+    "body": {
+        "prompt": "Create the project \"Analysis Ridgepoint\" linked to the customer Ridgepoint Ltd (org no. 987409339). The project manager is Alice Harris (alice.harris@example.org).",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "jWS4AEUeAatBYHJI5DPrG1UTRBjo_gg6LWGYMnK9df0"
+        }
+    },
+    "ip": "34.34.240.91",
+    "logged_at": "2026-03-21T22:52:17.833647Z"
+}

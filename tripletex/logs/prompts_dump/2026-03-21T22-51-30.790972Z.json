@@ -1,0 +1,13 @@
+{
+    "prompt": "Me har motteke faktura INV-2026-7779 fr\u00e5 leverand\u00f8ren Vestfjord AS (org.nr 838316573) p\u00e5 18000 kr inklusiv MVA. Bel\u00f8pet gjeld kontortenester (konto 7100). Registrer leverand\u00f8rfakturaen med korrekt inng\u00e5ande MVA (25 %).",
+    "body": {
+        "prompt": "Me har motteke faktura INV-2026-7779 fr\u00e5 leverand\u00f8ren Vestfjord AS (org.nr 838316573) p\u00e5 18000 kr inklusiv MVA. Bel\u00f8pet gjeld kontortenester (konto 7100). Registrer leverand\u00f8rfakturaen med korrekt inng\u00e5ande MVA (25 %).",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "ZI1MdUTdMs3Rg_H1l0Ph7dZkgO17tuJxqiJlpc5N7AQ"
+        }
+    },
+    "ip": "34.34.240.81",
+    "logged_at": "2026-03-21T22:51:30.790972Z"
+}

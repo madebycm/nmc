@@ -1,0 +1,13 @@
+{
+    "prompt": "Erstellen und senden Sie eine Rechnung an den Kunden Gr\u00fcnfeld GmbH (Org.-Nr. 974406322) \u00fcber 6650 NOK ohne MwSt. Die Rechnung betrifft Beratungsstunden.",
+    "body": {
+        "prompt": "Erstellen und senden Sie eine Rechnung an den Kunden Gr\u00fcnfeld GmbH (Org.-Nr. 974406322) \u00fcber 6650 NOK ohne MwSt. Die Rechnung betrifft Beratungsstunden.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "AzS63wL-C73FfF7XfQZqqdXJg1anhh2uvTGSZfudpsE"
+        }
+    },
+    "ip": "34.34.240.70",
+    "logged_at": "2026-03-21T22:52:25.402692Z"
+}

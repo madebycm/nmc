@@ -1,0 +1,13 @@
+{
+    "prompt": "Los costos totales aumentaron significativamente de enero a febrero de 2026. Analice el libro mayor e identifique las tres cuentas de gastos con el mayor incremento en monto. Cree un proyecto interno para cada una de las tres cuentas con el nombre de la cuenta. Tambi\u00e9n cree una actividad para cada proyecto.",
+    "body": {
+        "prompt": "Los costos totales aumentaron significativamente de enero a febrero de 2026. Analice el libro mayor e identifique las tres cuentas de gastos con el mayor incremento en monto. Cree un proyecto interno para cada una de las tres cuentas con el nombre de la cuenta. Tambi\u00e9n cree una actividad para cada proyecto.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "g-aQXwFXzSPSkrVGygEoKcEQcVKYSCg17r4azpDS3Gk"
+        }
+    },
+    "ip": "34.34.240.63",
+    "logged_at": "2026-03-21T22:47:37.625968Z"
+}

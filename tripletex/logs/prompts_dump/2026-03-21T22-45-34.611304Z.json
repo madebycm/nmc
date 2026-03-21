@@ -1,0 +1,13 @@
+{
+    "prompt": "Opprett og send ein faktura til kunden Fjelltopp AS (org.nr 863788722) p\u00e5 14900 kr eksklusiv MVA. Fakturaen gjeld Oppl\u00e6ring.",
+    "body": {
+        "prompt": "Opprett og send ein faktura til kunden Fjelltopp AS (org.nr 863788722) p\u00e5 14900 kr eksklusiv MVA. Fakturaen gjeld Oppl\u00e6ring.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "CKrBwBfS4_Ldi4QVaYxC95Ay08NKo9dh0IiVmAyW2a0"
+        }
+    },
+    "ip": "34.34.240.91",
+    "logged_at": "2026-03-21T22:45:34.611304Z"
+}

@@ -1,0 +1,13 @@
+{
+    "prompt": "Crea un pedido para el cliente Dorada SL (org. n\u00ba 984411359) con los productos Desarrollo de sistemas (5240) a 21950 NOK y Sesi\u00f3n de formaci\u00f3n (5871) a 6350 NOK. Convierte el pedido en factura y registra el pago completo.",
+    "body": {
+        "prompt": "Crea un pedido para el cliente Dorada SL (org. n\u00ba 984411359) con los productos Desarrollo de sistemas (5240) a 21950 NOK y Sesi\u00f3n de formaci\u00f3n (5871) a 6350 NOK. Convierte el pedido en factura y registra el pago completo.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "AFNLNkqzgvFNhcJsFaYGquDOCjVOSq5QWJvVlcFiAog"
+        }
+    },
+    "ip": "34.34.240.83",
+    "logged_at": "2026-03-21T23:00:44.221166Z"
+}

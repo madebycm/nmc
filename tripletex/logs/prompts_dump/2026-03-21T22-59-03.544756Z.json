@@ -1,0 +1,13 @@
+{
+    "prompt": "Cr\u00e9ez et envoyez une facture au client Colline SARL (n\u00ba org. 841462734) de 15950 NOK hors TVA. La facture concerne Design web.",
+    "body": {
+        "prompt": "Cr\u00e9ez et envoyez une facture au client Colline SARL (n\u00ba org. 841462734) de 15950 NOK hors TVA. La facture concerne Design web.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "goy8AX1u_lsMZf1q2GtSlehIAtU6p1NAVC0wOEFrLQQ"
+        }
+    },
+    "ip": "34.34.240.8",
+    "logged_at": "2026-03-21T22:59:03.544756Z"
+}

@@ -1,0 +1,13 @@
+{
+    "prompt": "Crea el producto \"Informe de an\u00e1lisis\" con n\u00famero de producto 6859. El precio es 34700 NOK sin IVA, utilizando la tasa est\u00e1ndar del 25 %.",
+    "body": {
+        "prompt": "Crea el producto \"Informe de an\u00e1lisis\" con n\u00famero de producto 6859. El precio es 34700 NOK sin IVA, utilizando la tasa est\u00e1ndar del 25 %.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "0KnwtOlUHuzeb1hDoh_ZyJtr-LzpjAXdjV8Cya5jVy8"
+        }
+    },
+    "ip": "34.34.240.82",
+    "logged_at": "2026-03-21T22:59:03.128189Z"
+}

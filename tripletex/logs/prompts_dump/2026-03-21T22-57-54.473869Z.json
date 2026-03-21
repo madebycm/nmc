@@ -1,0 +1,13 @@
+{
+    "prompt": "Registe uma despesa de viagem para Sofia Ferreira (sofia.ferreira@example.org) referente a \"Confer\u00eancia Drammen\". A viagem durou 4 dias com ajudas de custo (taxa di\u00e1ria 800 NOK). Despesas: bilhete de avi\u00e3o 7050 NOK e t\u00e1xi 450 NOK.",
+    "body": {
+        "prompt": "Registe uma despesa de viagem para Sofia Ferreira (sofia.ferreira@example.org) referente a \"Confer\u00eancia Drammen\". A viagem durou 4 dias com ajudas de custo (taxa di\u00e1ria 800 NOK). Despesas: bilhete de avi\u00e3o 7050 NOK e t\u00e1xi 450 NOK.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "Dn_hfPsma5yx4tN3qjLv5vZQs2kM8TJ6f1AYBsSZRgw"
+        }
+    },
+    "ip": "34.34.240.90",
+    "logged_at": "2026-03-21T22:57:54.473869Z"
+}

@@ -1,0 +1,13 @@
+{
+    "prompt": "Kunden Fjelltopp AS (org.nr 950710241) har reklamert p\u00e5 fakturaen for \"Nettverksteneste\" (28100 kr ekskl. MVA). Opprett ei fullstendig kreditnota som reverserer heile fakturaen.",
+    "body": {
+        "prompt": "Kunden Fjelltopp AS (org.nr 950710241) har reklamert p\u00e5 fakturaen for \"Nettverksteneste\" (28100 kr ekskl. MVA). Opprett ei fullstendig kreditnota som reverserer heile fakturaen.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "HEv0qWKYYdY8ysURM9CuV0hb36iqqkLyFMtrY5qXGyE"
+        }
+    },
+    "ip": "34.34.240.91",
+    "logged_at": "2026-03-21T22:46:43.550742Z"
+}

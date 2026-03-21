@@ -1,0 +1,13 @@
+{
+    "prompt": "Create an invoice for the customer Oakwood Ltd (org no. 909722500) with three product lines: Analysis Report (9796) at 27700 NOK with 25% VAT, Maintenance (2145) at 12700 NOK with 15% VAT (food), and System Development (5995) at 7050 NOK with 0% VAT (exempt).",
+    "body": {
+        "prompt": "Create an invoice for the customer Oakwood Ltd (org no. 909722500) with three product lines: Analysis Report (9796) at 27700 NOK with 25% VAT, Maintenance (2145) at 12700 NOK with 15% VAT (food), and System Development (5995) at 7050 NOK with 0% VAT (exempt).",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "7rP2Cp3ZedlrxL3nJDwKbmt8s48be11MGhz-A8_ozwg"
+        }
+    },
+    "ip": "34.34.240.63",
+    "logged_at": "2026-03-21T22:45:01.554509Z"
+}

@@ -1,0 +1,13 @@
+{
+    "prompt": "Crie o produto \"Sess\u00e3o de forma\u00e7\u00e3o\" com n\u00famero de produto 6378. O pre\u00e7o \u00e9 37050 NOK sem IVA, utilizando a taxa padr\u00e3o de 25 %.",
+    "body": {
+        "prompt": "Crie o produto \"Sess\u00e3o de forma\u00e7\u00e3o\" com n\u00famero de produto 6378. O pre\u00e7o \u00e9 37050 NOK sem IVA, utilizando a taxa padr\u00e3o de 25 %.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "k2qKcDuIzWCacRCMYi02_Su1twIONJoPHJx4Wo9FFd4"
+        }
+    },
+    "ip": "34.34.240.83",
+    "logged_at": "2026-03-21T22:56:59.577694Z"
+}

@@ -1,0 +1,13 @@
+{
+    "prompt": "Ex\u00e9cutez le cycle de vie complet du projet 'Migration Cloud Rivi\u00e8re' (Rivi\u00e8re SARL, n\u00ba org. 855961962) : 1) Le projet a un budget de 480500 NOK. 2) Enregistrez le temps : Camille Dubois (chef de projet, camille.dubois@example.org) 62 heures et Lucas Leroy (consultant, lucas.leroy@example.org) 108 heures. 3) Enregistrez un co\u00fbt fournisseur de 33250 NOK de For\u00eat SARL (n\u00ba org. 808859025). 4) Cr\u00e9ez une facture client pour le projet.",
+    "body": {
+        "prompt": "Ex\u00e9cutez le cycle de vie complet du projet 'Migration Cloud Rivi\u00e8re' (Rivi\u00e8re SARL, n\u00ba org. 855961962) : 1) Le projet a un budget de 480500 NOK. 2) Enregistrez le temps : Camille Dubois (chef de projet, camille.dubois@example.org) 62 heures et Lucas Leroy (consultant, lucas.leroy@example.org) 108 heures. 3) Enregistrez un co\u00fbt fournisseur de 33250 NOK de For\u00eat SARL (n\u00ba org. 808859025). 4) Cr\u00e9ez une facture client pour le projet.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "bhA232oJjNrkVIYOWsxI8hdDzioJuEnsGC_3WlNgyak"
+        }
+    },
+    "ip": "34.34.240.90",
+    "logged_at": "2026-03-21T22:50:36.114608Z"
+}

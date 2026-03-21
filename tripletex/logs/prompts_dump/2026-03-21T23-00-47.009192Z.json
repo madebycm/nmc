@@ -1,0 +1,13 @@
+{
+    "prompt": "Crie o cliente Oceano Lda com n\u00famero de organiza\u00e7\u00e3o 945727098. O endere\u00e7o \u00e9 Industriveien 56, 4611 Kristiansand. E-mail: post@oceano.no.",
+    "body": {
+        "prompt": "Crie o cliente Oceano Lda com n\u00famero de organiza\u00e7\u00e3o 945727098. O endere\u00e7o \u00e9 Industriveien 56, 4611 Kristiansand. E-mail: post@oceano.no.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "70O-1dGQZ5G_44oebElkuM1AsIMQmB2WGlhhEynfZdc"
+        }
+    },
+    "ip": "34.34.240.91",
+    "logged_at": "2026-03-21T23:00:47.009192Z"
+}

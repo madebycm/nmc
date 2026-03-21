@@ -1,0 +1,13 @@
+{
+    "prompt": "Me har motteke faktura INV-2026-3752 fr\u00e5 leverand\u00f8ren Elvdal AS (org.nr 957733883) p\u00e5 50000 kr inklusiv MVA. Bel\u00f8pet gjeld kontortenester (konto 6590). Registrer leverand\u00f8rfakturaen med korrekt inng\u00e5ande MVA (25 %).",
+    "body": {
+        "prompt": "Me har motteke faktura INV-2026-3752 fr\u00e5 leverand\u00f8ren Elvdal AS (org.nr 957733883) p\u00e5 50000 kr inklusiv MVA. Bel\u00f8pet gjeld kontortenester (konto 6590). Registrer leverand\u00f8rfakturaen med korrekt inng\u00e5ande MVA (25 %).",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "C56ZPu56vZFVHBwEVrJC0Inu_yd6TMuA0pAwQMToSNY"
+        }
+    },
+    "ip": "34.34.240.63",
+    "logged_at": "2026-03-21T23:02:27.208647Z"
+}

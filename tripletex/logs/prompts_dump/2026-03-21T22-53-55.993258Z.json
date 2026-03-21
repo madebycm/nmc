@@ -1,0 +1,13 @@
+{
+    "prompt": "El cliente Solmar SL (org. n\u00ba 939332235) tiene una factura pendiente de 46700 NOK sin IVA por \"Dise\u00f1o web\". Registre el pago completo de esta factura.",
+    "body": {
+        "prompt": "El cliente Solmar SL (org. n\u00ba 939332235) tiene una factura pendiente de 46700 NOK sin IVA por \"Dise\u00f1o web\". Registre el pago completo de esta factura.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "NbfgWV10W2dFnzXJViF6yv25VN_g2p1Zc0a3yh9ZgO8"
+        }
+    },
+    "ip": "34.34.240.90",
+    "logged_at": "2026-03-21T22:53:55.993258Z"
+}

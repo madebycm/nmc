@@ -1,0 +1,19 @@
+{
+    "prompt": "Necesitamos el gasto de Middag representasjon de este recibo registrado en el departamento Innkj\u00f8p. Usa la cuenta de gastos correcta y asegura el tratamiento correcto del IVA.",
+    "body": {
+        "prompt": "Necesitamos el gasto de Middag representasjon de este recibo registrado en el departamento Innkj\u00f8p. Usa la cuenta de gastos correcta y asegura el tratamiento correcto del IVA.",
+        "files": [
+            {
+                "filename": "files/kvittering_es_06.pdf",
+                "content_base64": "JVBERi0xLjMKJenr8b8KMSAwIG9iago8PAovQ291bnQgMQovS2lkcyBbMyAwIFJdCi9NZWRpYUJveCBbMCAwIDU5NS4yOCA4NDEuODldCi9UeXBlIC9QYWdlcwo+PgplbmRvYmoKMiAwIG9iago8PAovT3BlbkFjdGlvbiBbMyAwIFIgL0ZpdEggbnVsbF0KL1BhZ2VMYXlvdXQgL09uZUNvbHVtbgovUGFnZXMgMSAwIFIKL1R5cGUgL0NhdGFsb2cKPj4KZW5kb2JqCjMgMCBvYmoKPDwKL0NvbnRlbnRzIDQgMCBSCi9QYXJlbnQgMSAwIFIKL1Jlc291cmNlcyA3IDAgUgovVHlwZSAvUGFnZQo+PgplbmRvYmoKNCAwIG9iago8PAovRmlsdGVyIC9GbGF0ZURlY29kZQovTGVuZ3RoIDQwNAo+PgpzdHJlYW0KeJx9ks1P20AQxe/8FXOpRKV22K/Zj9waKVBaUVCxcl/Ji0lIbLRe0X+9x27ihKwN5bjWe795fjMCfpwxJAN/zuYVXFxy4AoZg+oBFtXuk7AMuQLjCLmBqobzRdO1n6FaHwQXlwLc2KIsagHGSHRub7lf/2188mDFFxAyc777rY8FRJBDa8CQPlpuY4NtnIFzWpIlqUYj38Yc3obntHIP+Lm8rqrF7+tfV/AVRE6oUTChpxh2wgiLkkBriZLDFqTKLH18b+Aeskdy5Ba0YSiGMUsfw5E5dmyBdP4dOSGQohykRNzFVT8ptIx1mkoM5dDOzaqufQMxPMfQhzb5fj1aCnGNlkqHkbRnPpW1H7gyX4AaSuva1MU+dZtQ6kgIVLwUfkDL2Q0bdvgSYutTWrXNO7CTTokJbNgEOYu86PHwzj2+bo+/UxMZhW441apLfpNmo2IYWldqLJ9O/2gHRPnO+N4I8Biif4Gb5bd8v59mb+svxILJ/xW268MOlzAPu7ywDfUM5qGOq4fUP3UxHT3/AKVB2/wKZW5kc3RyZWFtCmVuZG9iago1IDAgb2JqCjw8Ci9CYXNlRm9udCAvSGVsdmV0aWNhLUJvbGQKL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcKL1N1YnR5cGUgL1R5cGUxCi9UeXBlIC9Gb250Cj4+CmVuZG9iago2IDAgb2JqCjw8Ci9CYXNlRm9udCAvSGVsdmV0aWNhCi9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nCi9TdWJ0eXBlIC9UeXBlMQovVHlwZSAvRm9udAo+PgplbmRvYmoKNyAwIG9iago8PAovRm9udCA8PC9GMSA1IDAgUgovRjIgNiAwIFI+PgovUHJvY1NldCBbL1BERiAvVGV4dCAvSW1hZ2VCIC9JbWFnZUMgL0ltYWdlSV0KPj4KZW5kb2JqCjggMCBvYmoKPDwKL0NyZWF0aW9uRGF0ZSAoRDoyMDI2MDMxODA5NDA1MFopCj4+CmVuZG9iagp4cmVmCjAgOQowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAwMTUgMDAwMDAgbiAKMDAwMDAwMDEwMiAwMDAwMCBuIAowMDAwMDAwMjA1IDAwMDAwIG4gCjAwMDAwMDAyODUgMDAwMDAgbiAKMDAwMDAwMDc2MSAwMDAwMCBuIAowMDAwMDAwODYzIDAwMDAwIG4gCjAwMDAwMDA5NjAgMDAwMDAgbiAKMDAwMDAwMTA1NyAwMDAwMCBuIAp0cmFpbGVyCjw8Ci9TaXplIDkKL1Jvb3QgMiAwIFIKL0luZm8gOCAwIFIKL0lEIFs8ODIwRUFFN0Q1RkE3NDZFQUQ2OUU3QkZDQTA0MjZEM0E+PDgyMEVBRTdENUZBNzQ2RUFENjlFN0JGQ0EwNDI2RDNBPl0KPj4Kc3RhcnR4cmVmCjExMTIKJSVFT0YK",
+                "mime_type": "application/pdf"
+            }
+        ],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "HrGgrjOEorS2b6b4hsHsiS0Pkfu1hqY3i-2ow0VgR88"
+        }
+    },
+    "ip": "34.34.240.83",
+    "logged_at": "2026-03-21T22:51:02.261591Z"
+}

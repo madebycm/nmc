@@ -1,0 +1,13 @@
+{
+    "prompt": "Create the product \"Mineral Water\" with product number 8640. The price is 27900 NOK excluding VAT, using the 15% food and beverage VAT rate.",
+    "body": {
+        "prompt": "Create the product \"Mineral Water\" with product number 8640. The price is 27900 NOK excluding VAT, using the 15% food and beverage VAT rate.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "7fLvpYSL1w26qBQ9csmVOxSnGtcSk3E1hW6avEborZk"
+        }
+    },
+    "ip": "34.34.240.90",
+    "logged_at": "2026-03-21T22:59:42.655976Z"
+}

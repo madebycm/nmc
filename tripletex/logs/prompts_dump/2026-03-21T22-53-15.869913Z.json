@@ -1,0 +1,19 @@
+{
+    "prompt": "Avstem bankutskriften (vedlagt CSV) mot apne fakturaer i Tripletex. Match innbetalinger til kundefakturaer og utbetalinger til leverandorfakturaer. Handter delbetalinger korrekt.",
+    "body": {
+        "prompt": "Avstem bankutskriften (vedlagt CSV) mot apne fakturaer i Tripletex. Match innbetalinger til kundefakturaer og utbetalinger til leverandorfakturaer. Handter delbetalinger korrekt.",
+        "files": [
+            {
+                "filename": "files/bankutskrift_nb_08.csv",
+                "content_base64": "RGF0bztGb3JrbGFyaW5nO0lubjtVdDtTYWxkbw0KMjAyNi0wMS0xNztJbm5iZXRhbGluZyBmcmEgSGF1Z2VuIEFTIC8gRmFrdHVyYSAxMDAxOzQ4NzUuMDA7OzEwNDg3NS4wMA0KMjAyNi0wMS0xODtJbm5iZXRhbGluZyBmcmEgSGFuc2VuIEFTIC8gRmFrdHVyYSAxMDAyOzIxMDYyLjUwOzsxMjU5MzcuNTANCjIwMjYtMDEtMjA7SW5uYmV0YWxpbmcgZnJhIEJha2tlbiBBUyAvIEZha3R1cmEgMTAwMzsyMjc1LjAwOzsxMjgyMTIuNTANCjIwMjYtMDEtMjI7SW5uYmV0YWxpbmcgZnJhIEJlcmcgQVMgLyBGYWt0dXJhIDEwMDQ7MTYwMDAuMDA7OzE0NDIxMi41MA0KMjAyNi0wMS0yMztJbm5iZXRhbGluZyBmcmEgTW9lIEFTIC8gRmFrdHVyYSAxMDA1OzE5NDM3LjUwOzsxNjM2NTAuMDANCjIwMjYtMDEtMjQ7QmV0YWxpbmcgTGV2ZXJhbmRvciBIYXVnZW4gQVM7Oy02NTUwLjAwOzE1NzEwMC4wMA0KMjAyNi0wMS0yNTtCZXRhbGluZyBMZXZlcmFuZG9yIFN0cmFuZCBBUzs7LTE2MzUwLjAwOzE0MDc1MC4wMA0KMjAyNi0wMS0yNztCZXRhbGluZyBMZXZlcmFuZG9yIExhcnNlbiBBUzs7LTEzOTAwLjAwOzEyNjg1MC4wMA0KMjAyNi0wMS0yOTtSZW50ZWlubnRla3Rlcjs1NDAuODY7OzEyNzM5MC44Ng0KMjAyNi0wMS0zMDtTa2F0dGV0cmVrazsxMTIyLjI0OzsxMjg1MTMuMTANCg==",
+                "mime_type": "text/csv"
+            }
+        ],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "-yhJDcyRKkoVtb-YMJC7dl2RIuj7iiLyh7z7BNk1BpE"
+        }
+    },
+    "ip": "34.34.240.8",
+    "logged_at": "2026-03-21T22:53:15.869913Z"
+}

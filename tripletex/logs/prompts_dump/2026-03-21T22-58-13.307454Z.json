@@ -1,0 +1,13 @@
+{
+    "prompt": "The customer Blueshore Ltd (org no. 937709293) has an outstanding invoice for 5900 NOK excluding VAT for \"Consulting Hours\". Register full payment on this invoice.",
+    "body": {
+        "prompt": "The customer Blueshore Ltd (org no. 937709293) has an outstanding invoice for 5900 NOK excluding VAT for \"Consulting Hours\". Register full payment on this invoice.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "kyPFR2ZC9M3WS1aBQMyPQ2m8mWivgUHFFXk3ezm6jI0"
+        }
+    },
+    "ip": "34.34.240.68",
+    "logged_at": "2026-03-21T22:58:13.307454Z"
+}

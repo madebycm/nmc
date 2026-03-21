@@ -1,0 +1,13 @@
+{
+    "prompt": "Legen Sie einen Festpreis von 473250 NOK f\u00fcr das Projekt \"Datensicherheit\" f\u00fcr Windkraft GmbH (Org.-Nr. 886395582) fest. Projektleiter ist Maximilian Wagner (maximilian.wagner@example.org). Stellen Sie dem Kunden 25 % des Festpreises als Meilensteinzahlung in Rechnung.",
+    "body": {
+        "prompt": "Legen Sie einen Festpreis von 473250 NOK f\u00fcr das Projekt \"Datensicherheit\" f\u00fcr Windkraft GmbH (Org.-Nr. 886395582) fest. Projektleiter ist Maximilian Wagner (maximilian.wagner@example.org). Stellen Sie dem Kunden 25 % des Festpreises als Meilensteinzahlung in Rechnung.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "EKZdP-VN9vcW2vZoIDBsxE8RaeNg7RYG7St5f6TNQgU"
+        }
+    },
+    "ip": "34.34.240.8",
+    "logged_at": "2026-03-21T22:52:26.134861Z"
+}

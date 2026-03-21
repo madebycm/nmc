@@ -1,0 +1,13 @@
+{
+    "prompt": "Gjer forenkla \u00e5rsoppgjer for 2025: 1) Rekn ut og bokf\u00f8r \u00e5rlege avskrivingar for tre eigedelar: Kontormaskiner (193500 kr, 8 \u00e5r line\u00e6rt, konto 1200), Programvare (61650 kr, 4 \u00e5r, konto 1250), IT-utstyr (87000 kr, 6 \u00e5r, konto 1210). Bruk konto 6010 for avskrivingskostnad og 1209 for akkumulerte avskrivingar. 2) Reverser forskotsbetalt kostnad (totalt 55250 kr p\u00e5 konto 1700). 3) Rekn ut og bokf\u00f8r skattekostnad (22 % av skattbart resultat) p\u00e5 konto 8700/2920. Bokf\u00f8r kvar avskriving som eit eige bilag.",
+    "body": {
+        "prompt": "Gjer forenkla \u00e5rsoppgjer for 2025: 1) Rekn ut og bokf\u00f8r \u00e5rlege avskrivingar for tre eigedelar: Kontormaskiner (193500 kr, 8 \u00e5r line\u00e6rt, konto 1200), Programvare (61650 kr, 4 \u00e5r, konto 1250), IT-utstyr (87000 kr, 6 \u00e5r, konto 1210). Bruk konto 6010 for avskrivingskostnad og 1209 for akkumulerte avskrivingar. 2) Reverser forskotsbetalt kostnad (totalt 55250 kr p\u00e5 konto 1700). 3) Rekn ut og bokf\u00f8r skattekostnad (22 % av skattbart resultat) p\u00e5 konto 8700/2920. Bokf\u00f8r kvar avskriving som eit eige bilag.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "EK3k1NloNyK_ZbpwmthInBSVEqDutTUMXGVrW7nb9NI"
+        }
+    },
+    "ip": "34.34.240.70",
+    "logged_at": "2026-03-21T23:03:09.799968Z"
+}

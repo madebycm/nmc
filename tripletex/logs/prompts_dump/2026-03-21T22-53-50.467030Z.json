@@ -1,0 +1,13 @@
+{
+    "prompt": "F\u00fchren Sie den vollst\u00e4ndigen Projektzyklus f\u00fcr 'Systemupgrade Gr\u00fcnfeld' (Gr\u00fcnfeld GmbH, Org.-Nr. 897772868) durch: 1) Das Projekt hat ein Budget von 492100 NOK. 2) Erfassen Sie Stunden: Elias Hoffmann (Projektleiter, elias.hoffmann@example.org) 28 Stunden und Jonas Becker (Berater, jonas.becker@example.org) 102 Stunden. 3) Erfassen Sie Lieferantenkosten von 34400 NOK von Flussgold GmbH (Org.-Nr. 868497521). 4) Erstellen Sie eine Kundenrechnung f\u00fcr das Projekt.",
+    "body": {
+        "prompt": "F\u00fchren Sie den vollst\u00e4ndigen Projektzyklus f\u00fcr 'Systemupgrade Gr\u00fcnfeld' (Gr\u00fcnfeld GmbH, Org.-Nr. 897772868) durch: 1) Das Projekt hat ein Budget von 492100 NOK. 2) Erfassen Sie Stunden: Elias Hoffmann (Projektleiter, elias.hoffmann@example.org) 28 Stunden und Jonas Becker (Berater, jonas.becker@example.org) 102 Stunden. 3) Erfassen Sie Lieferantenkosten von 34400 NOK von Flussgold GmbH (Org.-Nr. 868497521). 4) Erstellen Sie eine Kundenrechnung f\u00fcr das Projekt.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "WtxmODWgHAjvsrbYr4r0YBx_y8H7O0SnNEJFSjtnpq4"
+        }
+    },
+    "ip": "34.34.240.91",
+    "logged_at": "2026-03-21T22:53:50.467030Z"
+}

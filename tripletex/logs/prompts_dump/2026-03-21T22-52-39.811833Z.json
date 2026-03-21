@@ -1,0 +1,13 @@
+{
+    "prompt": "Opprett og send en faktura til kunden Sn\u00f8hetta AS (org.nr 871844062) p\u00e5 20100 kr eksklusiv MVA. Fakturaen gjelder Webdesign.",
+    "body": {
+        "prompt": "Opprett og send en faktura til kunden Sn\u00f8hetta AS (org.nr 871844062) p\u00e5 20100 kr eksklusiv MVA. Fakturaen gjelder Webdesign.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "yn_GpfsKGUuUKHJXqKr44s0lTQ_HbvGu7iQvCX_3zO4"
+        }
+    },
+    "ip": "34.34.240.90",
+    "logged_at": "2026-03-21T22:52:39.811833Z"
+}

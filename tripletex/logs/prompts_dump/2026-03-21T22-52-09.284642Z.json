@@ -1,0 +1,13 @@
+{
+    "prompt": "Erstellen Sie drei Abteilungen in Tripletex: \"Utvikling\", \"Innkj\u00f8p\" und \"\u00d8konomi\".",
+    "body": {
+        "prompt": "Erstellen Sie drei Abteilungen in Tripletex: \"Utvikling\", \"Innkj\u00f8p\" und \"\u00d8konomi\".",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "oZKu2IG07HH-c3oNVKU2lKyb1QyU4LZbSxy4G4rpPP0"
+        }
+    },
+    "ip": "34.34.240.91",
+    "logged_at": "2026-03-21T22:52:09.284642Z"
+}

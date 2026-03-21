@@ -1,0 +1,13 @@
+{
+    "prompt": "Die Zahlung von Silberberg GmbH (Org.-Nr. 857736672) f\u00fcr die Rechnung \"Systementwicklung\" (22350 NOK ohne MwSt.) wurde von der Bank zur\u00fcckgebucht. Stornieren Sie die Zahlung, damit die Rechnung wieder den offenen Betrag anzeigt.",
+    "body": {
+        "prompt": "Die Zahlung von Silberberg GmbH (Org.-Nr. 857736672) f\u00fcr die Rechnung \"Systementwicklung\" (22350 NOK ohne MwSt.) wurde von der Bank zur\u00fcckgebucht. Stornieren Sie die Zahlung, damit die Rechnung wieder den offenen Betrag anzeigt.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "_XNHyXF5Xub2Y7QNT1E_Rjx78-hu9Bq8LdyolBcr1Po"
+        }
+    },
+    "ip": "34.34.240.91",
+    "logged_at": "2026-03-21T22:55:35.837194Z"
+}

@@ -1,0 +1,13 @@
+{
+    "prompt": "Les co\u00fbts totaux ont augment\u00e9 de mani\u00e8re significative de janvier \u00e0 f\u00e9vrier 2026. Analysez le grand livre et identifiez les trois comptes de charges avec la plus forte augmentation. Cr\u00e9ez un projet interne pour chacun des trois comptes avec le nom du compte. Cr\u00e9ez \u00e9galement une activit\u00e9 pour chaque projet.",
+    "body": {
+        "prompt": "Les co\u00fbts totaux ont augment\u00e9 de mani\u00e8re significative de janvier \u00e0 f\u00e9vrier 2026. Analysez le grand livre et identifiez les trois comptes de charges avec la plus forte augmentation. Cr\u00e9ez un projet interne pour chacun des trois comptes avec le nom du compte. Cr\u00e9ez \u00e9galement une activit\u00e9 pour chaque projet.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "eRau75ukrYPMkb6Aqvkip-vvpNZvcW_EtjcNdgjdQ4Y"
+        }
+    },
+    "ip": "34.34.240.8",
+    "logged_at": "2026-03-21T23:02:05.299705Z"
+}

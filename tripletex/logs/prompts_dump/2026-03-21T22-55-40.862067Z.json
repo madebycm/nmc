@@ -1,0 +1,13 @@
+{
+    "prompt": "Cr\u00e9ez le produit \"Stockage cloud\" avec le num\u00e9ro de produit 8912. Le prix est de 26850 NOK hors TVA, avec le taux standard de 25 %.",
+    "body": {
+        "prompt": "Cr\u00e9ez le produit \"Stockage cloud\" avec le num\u00e9ro de produit 8912. Le prix est de 26850 NOK hors TVA, avec le taux standard de 25 %.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "08WFisMBG4mz0LpUlplOiTxi8iPdsvdICc-lMvSFKzA"
+        }
+    },
+    "ip": "34.34.240.63",
+    "logged_at": "2026-03-21T22:55:40.862067Z"
+}

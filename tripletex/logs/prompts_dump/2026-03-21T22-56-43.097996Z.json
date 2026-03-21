@@ -1,0 +1,13 @@
+{
+    "prompt": "F\u00fchren Sie den Monatsabschluss f\u00fcr M\u00e4rz 2026 durch. Buchen Sie die Rechnungsabgrenzung (2200 NOK pro Monat von Konto 1720 auf Aufwand). Erfassen Sie die monatliche Abschreibung f\u00fcr eine Anlage mit Anschaffungskosten 291700 NOK und Nutzungsdauer 5 Jahre (lineare Abschreibung auf Konto 6020). \u00dcberpr\u00fcfen Sie, ob die Saldenbilanz null ergibt. Buchen Sie au\u00dferdem eine Gehaltsr\u00fcckstellung (Soll Gehaltsaufwand Konto 5000, Haben aufgelaufene Geh\u00e4lter Konto 2900).",
+    "body": {
+        "prompt": "F\u00fchren Sie den Monatsabschluss f\u00fcr M\u00e4rz 2026 durch. Buchen Sie die Rechnungsabgrenzung (2200 NOK pro Monat von Konto 1720 auf Aufwand). Erfassen Sie die monatliche Abschreibung f\u00fcr eine Anlage mit Anschaffungskosten 291700 NOK und Nutzungsdauer 5 Jahre (lineare Abschreibung auf Konto 6020). \u00dcberpr\u00fcfen Sie, ob die Saldenbilanz null ergibt. Buchen Sie au\u00dferdem eine Gehaltsr\u00fcckstellung (Soll Gehaltsaufwand Konto 5000, Haben aufgelaufene Geh\u00e4lter Konto 2900).",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "3yixF8IwNCpn4R4xAkIvuO86GccjhqdjcSgCRhr72hs"
+        }
+    },
+    "ip": "34.34.240.68",
+    "logged_at": "2026-03-21T22:56:43.097996Z"
+}

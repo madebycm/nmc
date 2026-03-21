@@ -1,0 +1,13 @@
+{
+    "prompt": "Kunden Strandvik AS (org.nr 840390055) har ein utest\u00e5ande faktura p\u00e5 27050 kr eksklusiv MVA for \"Datar\u00e5dgjeving\". Registrer full betaling p\u00e5 denne fakturaen.",
+    "body": {
+        "prompt": "Kunden Strandvik AS (org.nr 840390055) har ein utest\u00e5ande faktura p\u00e5 27050 kr eksklusiv MVA for \"Datar\u00e5dgjeving\". Registrer full betaling p\u00e5 denne fakturaen.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "OkmlidraT51ImNLZyBeDCHc7N5r86yqRWz0oLzsDx_E"
+        }
+    },
+    "ip": "34.34.240.68",
+    "logged_at": "2026-03-21T23:02:01.773479Z"
+}

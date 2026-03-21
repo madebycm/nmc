@@ -1,0 +1,13 @@
+{
+    "prompt": "Opprett prosjektet \"Integrasjon Vestfjord\" knytt til kunden Vestfjord AS (org.nr 954285405). Prosjektleiar er H\u00e5kon Eide (hakon.eide@example.org).",
+    "body": {
+        "prompt": "Opprett prosjektet \"Integrasjon Vestfjord\" knytt til kunden Vestfjord AS (org.nr 954285405). Prosjektleiar er H\u00e5kon Eide (hakon.eide@example.org).",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "UNK300mwzTcNON0ClO5fH-qasSLFcNmc4uz6ztfe-pY"
+        }
+    },
+    "ip": "34.34.240.91",
+    "logged_at": "2026-03-21T22:54:06.238719Z"
+}

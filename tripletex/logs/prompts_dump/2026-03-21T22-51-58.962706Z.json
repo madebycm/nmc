@@ -1,0 +1,13 @@
+{
+    "prompt": "One of your customers has an overdue invoice. Find the overdue invoice and post a reminder fee of 70 NOK. Debit accounts receivable (1500), credit reminder fees (3400). Also create an invoice for the reminder fee to the customer and send it. Additionally, register a partial payment of 5000 NOK on the overdue invoice.",
+    "body": {
+        "prompt": "One of your customers has an overdue invoice. Find the overdue invoice and post a reminder fee of 70 NOK. Debit accounts receivable (1500), credit reminder fees (3400). Also create an invoice for the reminder fee to the customer and send it. Additionally, register a partial payment of 5000 NOK on the overdue invoice.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "QzXbGXj5ut46zETjRpXdEYcN9vsGfWDMHwS5JKmhMfQ"
+        }
+    },
+    "ip": "34.34.240.8",
+    "logged_at": "2026-03-21T22:51:58.962706Z"
+}

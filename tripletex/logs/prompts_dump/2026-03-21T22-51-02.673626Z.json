@@ -1,0 +1,13 @@
+{
+    "prompt": "Gjer m\u00e5navslutninga for mars 2026. Periodiser forskotsbetalt kostnad (14400 kr per m\u00e5nad fr\u00e5 konto 1710 til kostnadskonto). Bokf\u00f8r m\u00e5nadleg avskriving for eit driftsmiddel med innkj\u00f8pskost 109500 kr og levetid 10 \u00e5r (line\u00e6r avskriving til konto 6030). Kontroller at saldobalansen g\u00e5r i null. Bokf\u00f8r ogs\u00e5 ei l\u00f8nnsavsetjing (debet l\u00f8nnskostnad konto 5000, kredit p\u00e5l\u00f8pt l\u00f8nn konto 2900).",
+    "body": {
+        "prompt": "Gjer m\u00e5navslutninga for mars 2026. Periodiser forskotsbetalt kostnad (14400 kr per m\u00e5nad fr\u00e5 konto 1710 til kostnadskonto). Bokf\u00f8r m\u00e5nadleg avskriving for eit driftsmiddel med innkj\u00f8pskost 109500 kr og levetid 10 \u00e5r (line\u00e6r avskriving til konto 6030). Kontroller at saldobalansen g\u00e5r i null. Bokf\u00f8r ogs\u00e5 ei l\u00f8nnsavsetjing (debet l\u00f8nnskostnad konto 5000, kredit p\u00e5l\u00f8pt l\u00f8nn konto 2900).",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "XRD5y5uWupzQDaoLLUUGxLSJom9aZYFRBdCX5sviRDI"
+        }
+    },
+    "ip": "34.34.240.70",
+    "logged_at": "2026-03-21T22:51:02.673626Z"
+}

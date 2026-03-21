@@ -1,0 +1,13 @@
+{
+    "prompt": "Opprett produktet \"Frokostblanding\" med produktnummer 1391. Prisen er 37450 kr eksklusiv MVA, og MVA-sats for n\u00e6ringsmidler p\u00e5 15 % skal brukes.",
+    "body": {
+        "prompt": "Opprett produktet \"Frokostblanding\" med produktnummer 1391. Prisen er 37450 kr eksklusiv MVA, og MVA-sats for n\u00e6ringsmidler p\u00e5 15 % skal brukes.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "meWLGSPsuy7K524T426nqb596qqM03bNwylBGWZrFIc"
+        }
+    },
+    "ip": "34.34.240.70",
+    "logged_at": "2026-03-21T22:53:57.596631Z"
+}

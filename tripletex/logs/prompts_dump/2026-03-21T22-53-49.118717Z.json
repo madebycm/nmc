@@ -1,0 +1,13 @@
+{
+    "prompt": "Vi har mottatt faktura INV-2026-8584 fra leverand\u00f8ren Sn\u00f8hetta AS (org.nr 852796316) p\u00e5 11950 kr inklusiv MVA. Bel\u00f8pet gjelder kontortjenester (konto 7000). Registrer leverand\u00f8rfakturaen med korrekt inng\u00e5ende MVA (25 %).",
+    "body": {
+        "prompt": "Vi har mottatt faktura INV-2026-8584 fra leverand\u00f8ren Sn\u00f8hetta AS (org.nr 852796316) p\u00e5 11950 kr inklusiv MVA. Bel\u00f8pet gjelder kontortjenester (konto 7000). Registrer leverand\u00f8rfakturaen med korrekt inng\u00e5ende MVA (25 %).",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "rAh67whsGYDYJXWERMjp6EfPLHNyDzSigJ_Layyipm8"
+        }
+    },
+    "ip": "34.34.240.91",
+    "logged_at": "2026-03-21T22:53:49.118717Z"
+}

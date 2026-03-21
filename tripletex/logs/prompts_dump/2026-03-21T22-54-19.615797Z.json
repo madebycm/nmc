@@ -1,0 +1,13 @@
+{
+    "prompt": "We have a new employee named Charles Walker, born 21. January 1999. Please create them as an employee with email charles.walker@example.org and start date 23. December 2026.",
+    "body": {
+        "prompt": "We have a new employee named Charles Walker, born 21. January 1999. Please create them as an employee with email charles.walker@example.org and start date 23. December 2026.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "4jbjXwg6NVR8Gt_y_ZkuTtkjqe34y-Djh0q_mnXc3hU"
+        }
+    },
+    "ip": "34.34.240.91",
+    "logged_at": "2026-03-21T22:54:19.615797Z"
+}

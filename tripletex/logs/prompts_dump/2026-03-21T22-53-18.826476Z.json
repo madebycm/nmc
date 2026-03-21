@@ -1,0 +1,13 @@
+{
+    "prompt": "Temos um novo funcion\u00e1rio chamado Maria Costa, nascido em 21. July 1990. Crie-o como funcion\u00e1rio com o e-mail maria.costa@example.org e data de in\u00edcio 6. January 2026.",
+    "body": {
+        "prompt": "Temos um novo funcion\u00e1rio chamado Maria Costa, nascido em 21. July 1990. Crie-o como funcion\u00e1rio com o e-mail maria.costa@example.org e data de in\u00edcio 6. January 2026.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "00xVk2P9xhaqN9YNRkS3fNKLm2I1yeY68_qrqeFDuYs"
+        }
+    },
+    "ip": "34.34.240.8",
+    "logged_at": "2026-03-21T22:53:18.826476Z"
+}

@@ -1,0 +1,19 @@
+{
+    "prompt": "You received an offer letter (see attached PDF) for a new employee. Complete the onboarding: create the employee, assign the correct department, set up employment details with percentage and annual salary, and configure standard working hours.",
+    "body": {
+        "prompt": "You received an offer letter (see attached PDF) for a new employee. Complete the onboarding: create the employee, assign the correct department, set up employment details with percentage and annual salary, and configure standard working hours.",
+        "files": [
+            {
+                "filename": "files/tilbudsbrev_en_07.pdf",
+                "content_base64": "JVBERi0xLjMKJenr8b8KMSAwIG9iago8PAovQ291bnQgMQovS2lkcyBbMyAwIFJdCi9NZWRpYUJveCBbMCAwIDU5NS4yOCA4NDEuODldCi9UeXBlIC9QYWdlcwo+PgplbmRvYmoKMiAwIG9iago8PAovT3BlbkFjdGlvbiBbMyAwIFIgL0ZpdEggbnVsbF0KL1BhZ2VMYXlvdXQgL09uZUNvbHVtbgovUGFnZXMgMSAwIFIKL1R5cGUgL0NhdGFsb2cKPj4KZW5kb2JqCjMgMCBvYmoKPDwKL0NvbnRlbnRzIDQgMCBSCi9QYXJlbnQgMSAwIFIKL1Jlc291cmNlcyA3IDAgUgovVHlwZSAvUGFnZQo+PgplbmRvYmoKNCAwIG9iago8PAovRmlsdGVyIC9GbGF0ZURlY29kZQovTGVuZ3RoIDYwNwo+PgpzdHJlYW0KeJyNVMtu2zAQvOcr9lKgBVqGkqhXbg0ct2mSvuL2WtDlWqZNkS6pOMjfdyXZURynhQQYlKnZnVlyZ2P4dMJZmsP9yfkMTqcRRAXjHGYLuJi1WzEXLBKQl1G7zBS8nl1en/+YwJcbuKXX68vPH97AbLWDn05jiKKDDAlFFpAnOSuzLsHVSqJHmEir0cBtrZvl2ycpdniesbzo8D81LKWHyqBCC3ILEhpt5g+gsIJAr0bbir4EV8NX78IK102L9aAJrbD9DFd3VmFAv9W/kR0IppKTFwRnWcp4L2CCjTQr9M/DXqozSwRLeRc2dSqgCUo27uz/RxTlMSujp7ExZ1HMorIUo0hpt4j729Gm8VS8CTiSdIiNqWLBYh5nY0jToty3xHsbsGlazrBwvh5H/CR+KkPzeJOjuLOMib6bbndhYUNXj7YZST4kiDhn/NUoVpGwvOwr9sE4a0eSDXG54PTAelQvpTEt0Y5vjlrREamRlENozlLyS0122NBPyep5Aj4k+AOP5CIvWNGJ5kzEBLhvnWjW0p/B4X0vnVHYgMfqzpCxQ2fRXm+tzcoZtyV3ugrmqLxeNGhDKyU4K81SWjV3awbkMahWaFrbEpouc4tULWwk7LsRvh3oy6hvO38mLC1Ep6+WtvN9jQqotahWomnT2qCVrsBtNkFXvW6vQ8Pggsrwj2xETP+eo2g3gV1qBlP0GqmaQdQgSQhW5N2hL1rUBmkueVg40y3tVncW7GjaJTReeW/CG9JOGGtI71KTCHs8HJM0YknSwX/9+zkOo0X0ffjx+7v9aES7B/4Fm4WgywplbmRzdHJlYW0KZW5kb2JqCjUgMCBvYmoKPDwKL0Jhc2VGb250IC9IZWx2ZXRpY2EtQm9sZAovRW5jb2RpbmcgL1dpbkFuc2lFbmNvZGluZwovU3VidHlwZSAvVHlwZTEKL1R5cGUgL0ZvbnQKPj4KZW5kb2JqCjYgMCBvYmoKPDwKL0Jhc2VGb250IC9IZWx2ZXRpY2EKL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcKL1N1YnR5cGUgL1R5cGUxCi9UeXBlIC9Gb250Cj4+CmVuZG9iago3IDAgb2JqCjw8Ci9Gb250IDw8L0YxIDUgMCBSCi9GMiA2IDAgUj4+Ci9Qcm9jU2V0IFsvUERGIC9UZXh0IC9JbWFnZUIgL0ltYWdlQyAvSW1hZ2VJXQo+PgplbmRvYmoKOCAwIG9iago8PAovQ3JlYXRpb25EYXRlIChEOjIwMjYwMzA0MTkxODA1WikKPj4KZW5kb2JqCnhyZWYKMCA5CjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDAxNSAwMDAwMCBuIAowMDAwMDAwMTAyIDAwMDAwIG4gCjAwMDAwMDAyMDUgMDAwMDAgbiAKMDAwMDAwMDI4NSAwMDAwMCBuIAowMDAwMDAwOTY0IDAwMDAwIG4gCjAwMDAwMDEwNjYgMDAwMDAgbiAKMDAwMDAwMTE2MyAwMDAwMCBuIAowMDAwMDAxMjYwIDAwMDAwIG4gCnRyYWlsZXIKPDwKL1NpemUgOQovUm9vdCAyIDAgUgovSW5mbyA4IDAgUgovSUQgWzw0REM0RDVEQTI3NDdBRTk5MDY2QkI4REQ0QUM1RkNGOT48NERDNEQ1REEyNzQ3QUU5OTA2NkJCOERENEFDNUZDRjk+XQo+PgpzdGFydHhyZWYKMTMxNQolJUVPRgo=",
+                "mime_type": "application/pdf"
+            }
+        ],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "ztiMKUdboNEdHdNg6SiEXnANheNwCSO7JPfhNkKibh0"
+        }
+    },
+    "ip": "34.34.240.83",
+    "logged_at": "2026-03-21T22:54:15.119133Z"
+}

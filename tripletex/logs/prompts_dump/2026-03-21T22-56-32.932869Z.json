@@ -1,0 +1,13 @@
+{
+    "prompt": "F\u00fchren Sie die Gehaltsabrechnung f\u00fcr Laura Schneider (laura.schneider@example.org) f\u00fcr diesen Monat durch. Das Grundgehalt betr\u00e4gt 33000 NOK. F\u00fcgen Sie einen einmaligen Bonus von 17850 NOK zum Grundgehalt hinzu.",
+    "body": {
+        "prompt": "F\u00fchren Sie die Gehaltsabrechnung f\u00fcr Laura Schneider (laura.schneider@example.org) f\u00fcr diesen Monat durch. Das Grundgehalt betr\u00e4gt 33000 NOK. F\u00fcgen Sie einen einmaligen Bonus von 17850 NOK zum Grundgehalt hinzu.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "UeXoYuuJpT-sbz4ZsGXvm9jIP1yxxPjya9Pla6gWV1M"
+        }
+    },
+    "ip": "34.34.240.63",
+    "logged_at": "2026-03-21T22:56:32.932869Z"
+}

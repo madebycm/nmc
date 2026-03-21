@@ -1,0 +1,13 @@
+{
+    "prompt": "Defina um pre\u00e7o fixo de 228150 NOK no projeto \"Melhoria de infraestrutura\" para Horizonte Lda (org. n\u00ba 804639764). O gestor de projeto \u00e9 Sofia Ferreira (sofia.ferreira@example.org). Fature ao cliente 50 % do pre\u00e7o fixo como pagamento por etapa.",
+    "body": {
+        "prompt": "Defina um pre\u00e7o fixo de 228150 NOK no projeto \"Melhoria de infraestrutura\" para Horizonte Lda (org. n\u00ba 804639764). O gestor de projeto \u00e9 Sofia Ferreira (sofia.ferreira@example.org). Fature ao cliente 50 % do pre\u00e7o fixo como pagamento por etapa.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "5W5MnOFO5_DXaDXMPf3irNV_FlVJLskUo2nt_P9Py8U"
+        }
+    },
+    "ip": "34.34.240.68",
+    "logged_at": "2026-03-21T22:56:57.101334Z"
+}

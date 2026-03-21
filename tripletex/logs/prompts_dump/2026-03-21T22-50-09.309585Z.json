@@ -1,0 +1,13 @@
+{
+    "prompt": "Crie o projeto \"An\u00e1lise Rio\" vinculado ao cliente Rio Azul Lda (org. n\u00ba 912018431). O gerente de projeto \u00e9 In\u00eas Rodrigues (ines.rodrigues@example.org).",
+    "body": {
+        "prompt": "Crie o projeto \"An\u00e1lise Rio\" vinculado ao cliente Rio Azul Lda (org. n\u00ba 912018431). O gerente de projeto \u00e9 In\u00eas Rodrigues (ines.rodrigues@example.org).",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "Z1_VM9oedEj3WuBMcLT0UuEZgo3UJHKwp1uyfdaVnrg"
+        }
+    },
+    "ip": "34.34.240.63",
+    "logged_at": "2026-03-21T22:50:09.309585Z"
+}

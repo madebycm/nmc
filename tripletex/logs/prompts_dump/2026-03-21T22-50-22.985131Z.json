@@ -1,0 +1,13 @@
+{
+    "prompt": "Registrer 24 timer for Solveig Hansen (solveig.hansen@example.org) p\u00e5 aktiviteten \"Analyse\" i prosjektet \"Apputvikling\" for Tindra AS (org.nr 945097523). Timesats: 1850 kr/t. Generer en prosjektfaktura til kunden basert p\u00e5 de registrerte timene.",
+    "body": {
+        "prompt": "Registrer 24 timer for Solveig Hansen (solveig.hansen@example.org) p\u00e5 aktiviteten \"Analyse\" i prosjektet \"Apputvikling\" for Tindra AS (org.nr 945097523). Timesats: 1850 kr/t. Generer en prosjektfaktura til kunden basert p\u00e5 de registrerte timene.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "g9wKmXVC11lV6PggpjKkHYPltI9jCY78pUPK0T_SaMk"
+        }
+    },
+    "ip": "34.34.240.91",
+    "logged_at": "2026-03-21T22:50:22.985131Z"
+}

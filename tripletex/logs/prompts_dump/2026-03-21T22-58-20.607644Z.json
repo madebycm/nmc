@@ -1,0 +1,13 @@
+{
+    "prompt": "Cr\u00e9ez une facture pour le client Oc\u00e9an SARL (n\u00ba org. 974909103) avec trois lignes de produit : D\u00e9veloppement syst\u00e8me (9068) \u00e0 11000 NOK avec 25 % TVA, Licence logicielle (3111) \u00e0 7350 NOK avec 15 % TVA (alimentaire), et Session de formation (9564) \u00e0 13150 NOK avec 0 % TVA (exon\u00e9r\u00e9).",
+    "body": {
+        "prompt": "Cr\u00e9ez une facture pour le client Oc\u00e9an SARL (n\u00ba org. 974909103) avec trois lignes de produit : D\u00e9veloppement syst\u00e8me (9068) \u00e0 11000 NOK avec 25 % TVA, Licence logicielle (3111) \u00e0 7350 NOK avec 15 % TVA (alimentaire), et Session de formation (9564) \u00e0 13150 NOK avec 0 % TVA (exon\u00e9r\u00e9).",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "nvRkaEz-e2X3aFEsUKhqfmAPPT599pWgR_FjoGiY01o"
+        }
+    },
+    "ip": "34.34.240.90",
+    "logged_at": "2026-03-21T22:58:20.607644Z"
+}

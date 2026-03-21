@@ -1,0 +1,13 @@
+{
+    "prompt": "Cree una dimensi\u00f3n contable personalizada \"Produktlinje\" con los valores \"Basis\" y \"Standard\". Luego registre un asiento en la cuenta 7100 por 36400 NOK, vinculado al valor de dimensi\u00f3n \"Standard\".",
+    "body": {
+        "prompt": "Cree una dimensi\u00f3n contable personalizada \"Produktlinje\" con los valores \"Basis\" y \"Standard\". Luego registre un asiento en la cuenta 7100 por 36400 NOK, vinculado al valor de dimensi\u00f3n \"Standard\".",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "j1G8k_be8rh_3Mp2aA6KSvL55toPXuT7b-9SgtCm3gg"
+        }
+    },
+    "ip": "34.34.240.90",
+    "logged_at": "2026-03-21T22:50:19.474638Z"
+}

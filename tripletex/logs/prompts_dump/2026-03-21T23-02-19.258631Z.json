@@ -1,0 +1,13 @@
+{
+    "prompt": "Run payroll for Daniel Smith (daniel.smith@example.org) for this month. The base salary is 54850 NOK. Add a one-time bonus of 6800 NOK on top of the base salary. If the salary API is unavailable, you can use manual vouchers on salary accounts (5000-series) to record the payroll expense.",
+    "body": {
+        "prompt": "Run payroll for Daniel Smith (daniel.smith@example.org) for this month. The base salary is 54850 NOK. Add a one-time bonus of 6800 NOK on top of the base salary. If the salary API is unavailable, you can use manual vouchers on salary accounts (5000-series) to record the payroll expense.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "9PFYKRSFeA-1mausiQHqKL8ylcpvalJDl4ZhFr2zGF0"
+        }
+    },
+    "ip": "34.34.240.63",
+    "logged_at": "2026-03-21T23:02:19.258631Z"
+}

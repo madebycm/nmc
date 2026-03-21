@@ -1,0 +1,13 @@
+{
+    "prompt": "Kunden Elvdal AS (org.nr 812449982) har reklamert p\u00e5 fakturaen for \"Datar\u00e5dgjeving\" (45300 kr ekskl. MVA). Opprett ei fullstendig kreditnota som reverserer heile fakturaen.",
+    "body": {
+        "prompt": "Kunden Elvdal AS (org.nr 812449982) har reklamert p\u00e5 fakturaen for \"Datar\u00e5dgjeving\" (45300 kr ekskl. MVA). Opprett ei fullstendig kreditnota som reverserer heile fakturaen.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "_k4u4Ef6A96yEqQ_Ov5ugVRMwWiseJmijhULVMeyx5g"
+        }
+    },
+    "ip": "34.34.240.70",
+    "logged_at": "2026-03-21T22:46:12.950511Z"
+}

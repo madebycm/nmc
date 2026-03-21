@@ -1,0 +1,19 @@
+{
+    "prompt": "Vous avez recu une facture fournisseur (voir PDF ci-joint). Enregistrez la facture dans Tripletex. Creez le fournisseur s'il n'existe pas. Utilisez le bon compte de charges et la TVA deductible.",
+    "body": {
+        "prompt": "Vous avez recu une facture fournisseur (voir PDF ci-joint). Enregistrez la facture dans Tripletex. Creez le fournisseur s'il n'existe pas. Utilisez le bon compte de charges et la TVA deductible.",
+        "files": [
+            {
+                "filename": "files/leverandorfaktura_fr_02.pdf",
+                "content_base64": "JVBERi0xLjMKJenr8b8KMSAwIG9iago8PAovQ291bnQgMQovS2lkcyBbMyAwIFJdCi9NZWRpYUJveCBbMCAwIDU5NS4yOCA4NDEuODldCi9UeXBlIC9QYWdlcwo+PgplbmRvYmoKMiAwIG9iago8PAovT3BlbkFjdGlvbiBbMyAwIFIgL0ZpdEggbnVsbF0KL1BhZ2VMYXlvdXQgL09uZUNvbHVtbgovUGFnZXMgMSAwIFIKL1R5cGUgL0NhdGFsb2cKPj4KZW5kb2JqCjMgMCBvYmoKPDwKL0NvbnRlbnRzIDQgMCBSCi9QYXJlbnQgMSAwIFIKL1Jlc291cmNlcyA3IDAgUgovVHlwZSAvUGFnZQo+PgplbmRvYmoKNCAwIG9iago8PAovRmlsdGVyIC9GbGF0ZURlY29kZQovTGVuZ3RoIDQ0MAo+PgpzdHJlYW0KeJyVk91O20AQhe95irmpRKUy7N/sj+8S0UgUKBJxuV8JBxnbMVo7rfrGfQQu2cSxYhuKwuWu5jtn98yMgB8nDMnAn5N5CucLDlwjY5Cu4Hu6vZIcuQXj1LYofYDT602V/wsZLGd3118hfdrXnS8EcPYeaiRqt0NvwyOuQwKOWbKGCTHg98Wk++Ll08ujbz0I9y0CzEIa6qp5GVlyEGNLoRxKAdo5tHIns5hdpb/uZhOM83deqskg7z658EW7CX69qaosJNNvjmFOFo0a0pc/788EE/rMaMOPcpYxXjZ0fvBtfaTvgY1ijHDrfJRpvLWiM63Dypdl8wnXAyxjC/TRrmQM2u65aV4mcJG3LazyUPmeFhYlAQmFikMVsejE+3MJSzhoSYGKdlrzrClC/jsrm6zXGYMVkNbo5ESIpERSY6Wyfv44g707c2i6hl/EQd20Tfs3DEASHCUblpE2sVNF+HhtlKHtIKkYlOq4m/sZCPqSAFfcmqlADFpMBOIKRwEi1LxLum592SZgmJNv+P/srYqqwu7wq3od5yJOuGJvNla6mFy3anO/Lop9qdHkNLNWqZ54BcQkCGkKZW5kc3RyZWFtCmVuZG9iago1IDAgb2JqCjw8Ci9CYXNlRm9udCAvSGVsdmV0aWNhLUJvbGQKL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcKL1N1YnR5cGUgL1R5cGUxCi9UeXBlIC9Gb250Cj4+CmVuZG9iago2IDAgb2JqCjw8Ci9CYXNlRm9udCAvSGVsdmV0aWNhCi9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nCi9TdWJ0eXBlIC9UeXBlMQovVHlwZSAvRm9udAo+PgplbmRvYmoKNyAwIG9iago8PAovRm9udCA8PC9GMSA1IDAgUgovRjIgNiAwIFI+PgovUHJvY1NldCBbL1BERiAvVGV4dCAvSW1hZ2VCIC9JbWFnZUMgL0ltYWdlSV0KPj4KZW5kb2JqCjggMCBvYmoKPDwKL0NyZWF0aW9uRGF0ZSAoRDoyMDI2MDMwNDE5MTgwNVopCj4+CmVuZG9iagp4cmVmCjAgOQowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAwMTUgMDAwMDAgbiAKMDAwMDAwMDEwMiAwMDAwMCBuIAowMDAwMDAwMjA1IDAwMDAwIG4gCjAwMDAwMDAyODUgMDAwMDAgbiAKMDAwMDAwMDc5NyAwMDAwMCBuIAowMDAwMDAwODk5IDAwMDAwIG4gCjAwMDAwMDA5OTYgMDAwMDAgbiAKMDAwMDAwMTA5MyAwMDAwMCBuIAp0cmFpbGVyCjw8Ci9TaXplIDkKL1Jvb3QgMiAwIFIKL0luZm8gOCAwIFIKL0lEIFs8MDNGMDRDOTZEMDQwQkFBMzNGMzJDNjFCREQ1Q0FBRTg+PDAzRjA0Qzk2RDA0MEJBQTMzRjMyQzYxQkRENUNBQUU4Pl0KPj4Kc3RhcnR4cmVmCjExNDgKJSVFT0YK",
+                "mime_type": "application/pdf"
+            }
+        ],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "hgQgUXuTT7AnGHBy3vm8hb5EMxWjtlkxhhXa3XlcMA8"
+        }
+    },
+    "ip": "34.34.240.91",
+    "logged_at": "2026-03-21T22:52:48.686490Z"
+}

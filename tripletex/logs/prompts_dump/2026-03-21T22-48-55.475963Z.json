@@ -1,0 +1,13 @@
+{
+    "prompt": "Create an order for the customer Ridgepoint Ltd (org no. 997470311) with the products Maintenance (6293) at 21700 NOK and Software License (5849) at 2250 NOK. Convert the order to an invoice and register full payment.",
+    "body": {
+        "prompt": "Create an order for the customer Ridgepoint Ltd (org no. 997470311) with the products Maintenance (6293) at 21700 NOK and Software License (5849) at 2250 NOK. Convert the order to an invoice and register full payment.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "l_gnDdrszo1BYDc1l-8RAaoYgEraWJizEgAwE8fKbr8"
+        }
+    },
+    "ip": "34.34.240.8",
+    "logged_at": "2026-03-21T22:48:55.475963Z"
+}

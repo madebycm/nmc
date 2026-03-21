@@ -1,0 +1,13 @@
+{
+    "prompt": "Opprett kunden Nordlys AS med organisasjonsnummer 951285463. Adressa er Parkveien 45, 5003 Bergen. E-post: post@nordlys.no.",
+    "body": {
+        "prompt": "Opprett kunden Nordlys AS med organisasjonsnummer 951285463. Adressa er Parkveien 45, 5003 Bergen. E-post: post@nordlys.no.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "JHaO-AOmltu6ncVvLEustQUikLvG40eYxjjlKPUCO8A"
+        }
+    },
+    "ip": "34.34.240.81",
+    "logged_at": "2026-03-21T22:54:20.448287Z"
+}

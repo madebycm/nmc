@@ -1,0 +1,13 @@
+{
+    "prompt": "Gjennomf\u00f8r heile prosjektsyklusen for 'Dataplattform Fossekraft' (Fossekraft AS, org.nr 992409274): 1) Prosjektet har budsjett 322600 kr. 2) Registrer timar: Geir Berge (prosjektleiar, geir.berge@example.org) 22 timar og Randi Vik (konsulent, randi.vik@example.org) 61 timar. 3) Registrer leverand\u00f8rkostnad 84650 kr fr\u00e5 Sj\u00f8bris AS (org.nr 937539266). 4) Opprett kundefaktura for prosjektet.",
+    "body": {
+        "prompt": "Gjennomf\u00f8r heile prosjektsyklusen for 'Dataplattform Fossekraft' (Fossekraft AS, org.nr 992409274): 1) Prosjektet har budsjett 322600 kr. 2) Registrer timar: Geir Berge (prosjektleiar, geir.berge@example.org) 22 timar og Randi Vik (konsulent, randi.vik@example.org) 61 timar. 3) Registrer leverand\u00f8rkostnad 84650 kr fr\u00e5 Sj\u00f8bris AS (org.nr 937539266). 4) Opprett kundefaktura for prosjektet.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "MZx58pagweQg76qY8LLM1aaBClCXwQj42tDVGWOctGA"
+        }
+    },
+    "ip": "34.34.240.63",
+    "logged_at": "2026-03-21T23:00:59.961337Z"
+}

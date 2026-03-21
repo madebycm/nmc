@@ -1,0 +1,19 @@
+{
+    "prompt": "Du har motteke eit tilbodsbrev (sjaa vedlagt PDF) for ein ny tilsett. Utfor komplett onboarding: opprett den tilsette, tilknytt rett avdeling, set opp tilsetjingsforhold med stillingsprosent og arslonn, og konfigurer standard arbeidstid.",
+    "body": {
+        "prompt": "Du har motteke eit tilbodsbrev (sjaa vedlagt PDF) for ein ny tilsett. Utfor komplett onboarding: opprett den tilsette, tilknytt rett avdeling, set opp tilsetjingsforhold med stillingsprosent og arslonn, og konfigurer standard arbeidstid.",
+        "files": [
+            {
+                "filename": "files/tilbudsbrev_nn_04.pdf",
+                "content_base64": "JVBERi0xLjMKJenr8b8KMSAwIG9iago8PAovQ291bnQgMQovS2lkcyBbMyAwIFJdCi9NZWRpYUJveCBbMCAwIDU5NS4yOCA4NDEuODldCi9UeXBlIC9QYWdlcwo+PgplbmRvYmoKMiAwIG9iago8PAovT3BlbkFjdGlvbiBbMyAwIFIgL0ZpdEggbnVsbF0KL1BhZ2VMYXlvdXQgL09uZUNvbHVtbgovUGFnZXMgMSAwIFIKL1R5cGUgL0NhdGFsb2cKPj4KZW5kb2JqCjMgMCBvYmoKPDwKL0NvbnRlbnRzIDQgMCBSCi9QYXJlbnQgMSAwIFIKL1Jlc291cmNlcyA3IDAgUgovVHlwZSAvUGFnZQo+PgplbmRvYmoKNCAwIG9iago8PAovRmlsdGVyIC9GbGF0ZURlY29kZQovTGVuZ3RoIDU5OQo+PgpzdHJlYW0KeJyNVO9v0zAQ/b6/4r4ggQSe8zvZN6atMLaBoGFfkStfU7euXWyvE/89l6Rt2m2gVK2cOu/de3e+cwxfzjjLCng6u6zhfBJBVDLOoZ7Ddd1uxTxlUQpFFbVLLeFtfXN3+fMKvt3DlB7vbr5+egf1cgc/n8QQRScREmKWUCQFq/IuwO1SoEO4NY8BHtTq/RF9h+U5K8oO+6BgIRw0GiUaEFsQEJSe/QGJDXh61Mo09MbbNUzRKOsew1atNDpQBJfYvocrp+aBndikRJNXbOZ5xngvfYVB6CW657TXssuTlGW8o02s9Ki9FMFe/L8wURGzKjrmxjHjBYuqKh8lSrtl3J+J0sFRibTHkaIDl4pN35jHo0Szsto3wkfjMYRW08+tW48TPuJPhA+HMxylnecs7XtouqP5jbMeTRgpPgSIOGf8zSjVNGFF1WfsvLbGjBQbeFnF6QOrUb2UxbREO70ZKkklkiMlB2rBMpqUNc3Bhn5SNM8D8CHAbziIp0XJys40Z2lMgKd2BvVKuAs4Pe+F1RIDOGweadrQd8PZ+10rvbTabmkubQMzlO34ofGtFW+N0Ath5MyuGNCMQbNEiuSA0HSYW6RsYSNg343w/cRfTn3bzWfCsjLt/K2FwTbAGiVQa1GuJNOGNV5J1YDdbLxqet9O+cDgmtJwBzUSpn/PUbSbwC40gwk6hZTNYGqwlKasLLqiz1vUBulGcjC3ulvara4W7MU9l9ClyvshvCfvhDGa/C4UmTAvr8Uki1iSdPBf//68pNGS9n34+ceH/Z2IZg/8CxunnOoKZW5kc3RyZWFtCmVuZG9iago1IDAgb2JqCjw8Ci9CYXNlRm9udCAvSGVsdmV0aWNhLUJvbGQKL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcKL1N1YnR5cGUgL1R5cGUxCi9UeXBlIC9Gb250Cj4+CmVuZG9iago2IDAgb2JqCjw8Ci9CYXNlRm9udCAvSGVsdmV0aWNhCi9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nCi9TdWJ0eXBlIC9UeXBlMQovVHlwZSAvRm9udAo+PgplbmRvYmoKNyAwIG9iago8PAovRm9udCA8PC9GMSA1IDAgUgovRjIgNiAwIFI+PgovUHJvY1NldCBbL1BERiAvVGV4dCAvSW1hZ2VCIC9JbWFnZUMgL0ltYWdlSV0KPj4KZW5kb2JqCjggMCBvYmoKPDwKL0NyZWF0aW9uRGF0ZSAoRDoyMDI2MDMwNDE5MTgwNlopCj4+CmVuZG9iagp4cmVmCjAgOQowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAwMTUgMDAwMDAgbiAKMDAwMDAwMDEwMiAwMDAwMCBuIAowMDAwMDAwMjA1IDAwMDAwIG4gCjAwMDAwMDAyODUgMDAwMDAgbiAKMDAwMDAwMDk1NiAwMDAwMCBuIAowMDAwMDAxMDU4IDAwMDAwIG4gCjAwMDAwMDExNTUgMDAwMDAgbiAKMDAwMDAwMTI1MiAwMDAwMCBuIAp0cmFpbGVyCjw8Ci9TaXplIDkKL1Jvb3QgMiAwIFIKL0luZm8gOCAwIFIKL0lEIFs8NjdCRUUxNUM2MDdBQzk1NTg1NTZFMjE5RDY4NjlGMDM+PDY3QkVFMTVDNjA3QUM5NTU4NTU2RTIxOUQ2ODY5RjAzPl0KPj4Kc3RhcnR4cmVmCjEzMDcKJSVFT0YK",
+                "mime_type": "application/pdf"
+            }
+        ],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "aU0ISVTKw_0CYj36kMvZNdksf2-pmQ72oq1UDzQqb9I"
+        }
+    },
+    "ip": "34.34.240.63",
+    "logged_at": "2026-03-21T22:57:56.518007Z"
+}

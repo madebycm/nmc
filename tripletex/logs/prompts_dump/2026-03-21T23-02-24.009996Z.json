@@ -1,0 +1,13 @@
+{
+    "prompt": "Erfassen Sie 33 Stunden f\u00fcr Paul M\u00fcller (paul.muller@example.org) auf der Aktivit\u00e4t \"Testing\" im Projekt \"Datenmigration\" f\u00fcr Sonnental GmbH (Org.-Nr. 839389701). Stundensatz: 900 NOK/h. Erstellen Sie eine Projektrechnung an den Kunden basierend auf den erfassten Stunden.",
+    "body": {
+        "prompt": "Erfassen Sie 33 Stunden f\u00fcr Paul M\u00fcller (paul.muller@example.org) auf der Aktivit\u00e4t \"Testing\" im Projekt \"Datenmigration\" f\u00fcr Sonnental GmbH (Org.-Nr. 839389701). Stundensatz: 900 NOK/h. Erstellen Sie eine Projektrechnung an den Kunden basierend auf den erfassten Stunden.",
+        "files": [],
+        "tripletex_credentials": {
+            "base_url": "https://tx-proxy-jwanbnu3pq-lz.a.run.app/v2",
+            "session_token": "ZnTijy5I2F_6GxyIek9C8V_8sU0SHhSUfymeObPBJp8"
+        }
+    },
+    "ip": "34.34.240.90",
+    "logged_at": "2026-03-21T23:02:24.009996Z"
+}
