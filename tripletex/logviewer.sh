@@ -36,9 +36,9 @@ calls = e.get('api_calls', [])
 turns = e.get('turns', '?')
 
 # Color code
-if outcome == 'success':
+if outcome in ('success', 'completed', 'completed_at_limit'):
     oc = '\033[32m'  # green
-elif outcome == 'fail':
+elif outcome in ('fail', 'forced_completion_at_turn_limit'):
     oc = '\033[31m'  # red
 else:
     oc = '\033[33m'  # yellow
@@ -49,8 +49,21 @@ print(f'\033[2m{ts}\033[0m  {oc}{outcome.upper()}\033[0m  {f\"score: {score}\" i
 print(f'\033[36mPrompt:\033[0m {prompt}')
 
 if calls:
-    chain = ' → '.join(f\"{c.get(\"method\",\"?\")} {c.get(\"endpoint\",\"?\")} [{c.get(\"status\",\"?\")}]\" for c in calls[:8])
-    print(f'\033[2mAPI:\033[0m {chain}')
+    parts = []
+    for c in calls[:8]:
+        m = c.get('method', '?')
+        ep = c.get('endpoint', '?')
+        s = c.get('status', '')
+        if not s:
+            snip = c.get('result_snippet', '')
+            if 'ERROR' in snip:
+                s = '✗'
+            elif c.get('error'):
+                s = '✗'
+            else:
+                s = '✓'
+        parts.append(f'{m} {ep} [{s}]')
+    print(f'\033[2mAPI:\033[0m {\" → \".join(parts)}')
 
 if errors:
     for err in errors[:3]:

@@ -57,13 +57,31 @@ def _pre_validate(tool_name: str, args: dict) -> dict:
         if not postings:
             log.warning("AUTOFIX: voucher has no postings")
         elif isinstance(postings, list):
+            # DETERMINISTIC GUARD: Block unbalanced vouchers before hitting API
             total = sum(p.get("amountGross", 0) for p in postings if isinstance(p, dict))
             if abs(total) > 0.01:
-                log.warning("AUTOFIX: voucher postings unbalanced (sum=%.2f)", total)
+                raise ValueError(
+                    f"VOUCHER UNBALANCED. Sum of amountGross is {total:.2f}. "
+                    f"Debits (positive) must exactly equal Credits (negative). Fix your amounts."
+                )
             voucher_date = args.get("date", date.today().isoformat())
+            # Allowed posting fields — strip anything hallucinated
+            _VALID_POSTING_KEYS = {
+                "account_id", "amountGross", "amountGrossCurrency", "currency_id",
+                "vatType_id", "description", "date", "customer_id", "supplier_id",
+                "employee_id", "project_id", "department_id", "product_id", "row",
+                # Dimension fields
+                "freeAccountingDimension1", "freeAccountingDimension2", "freeAccountingDimension3",
+                "freeAccountingDimension1_id", "freeAccountingDimension2_id", "freeAccountingDimension3_id",
+            }
             for i, p in enumerate(postings):
                 if not isinstance(p, dict):
                     continue
+                # Strip hallucinated fields
+                bad_keys = [k for k in p.keys() if k not in _VALID_POSTING_KEYS]
+                for bk in bad_keys:
+                    del p[bk]
+                    log.warning("AUTOFIX: Stripped hallucinated field '%s' from posting %d", bk, i)
                 # Ensure each posting has date
                 if "date" not in p:
                     p["date"] = voucher_date
@@ -851,8 +869,17 @@ def solve_task_sync(body: dict):
                 })
                 continue
 
-            # Runtime autofixes then route
-            args = _pre_validate(tool_name, args)
+            # Runtime autofixes then route (catch ValueError from balance guard)
+            try:
+                args = _pre_validate(tool_name, args)
+            except ValueError as ve:
+                api_result = f"BLOCKED BY GUARD: {ve}"
+                log.warning("Guard blocked %s: %s", tool_name, ve)
+                fn_responses.append({
+                    "functionResponse": {"name": tool_name, "response": {"result": api_result}}
+                })
+                turn_had_error = True
+                continue
             method, endpoint, params, req_body = route_tool_call(tool_name, args)
             if method is None:
                 fn_responses.append({
@@ -871,6 +898,15 @@ def solve_task_sync(body: dict):
                 call_log["error"] = True
                 task_record["errors"].append(f"{tool_name} → {method} {endpoint}: {api_result[:200]}")
                 turn_had_error = True
+
+                # 422 error amplification — force LLM to actually read the error
+                if "HTTP 422" in api_result:
+                    api_result = (
+                        f"CRITICAL API REJECTION (422): {api_result}\n\n"
+                        f"STOP. DO NOT RETRY WITH THE SAME PAYLOAD. "
+                        f"You sent an invalid field name, missing required data, or violated an accounting rule. "
+                        f"Read the error message above. Fix the EXACT parameter mentioned and retry."
+                    )
 
                 # Detect 401 auth failure — unrecoverable
                 if "HTTP 401" in api_result:

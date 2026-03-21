@@ -273,6 +273,17 @@ FIELD NOTES:
 - For supplier invoices: amounts are INCLUDING VAT. The vatTypeId on orderLines handles the VAT split automatically.
 - CRITICAL ACCOUNT NUMBERS: When the task explicitly specifies an account number (e.g. "account 6030", "compte 2900", "Konto 5000"), you MUST use that EXACT account number in your postings — even if the account name in Tripletex seems unrelated. The task author knows which account to use. NEVER substitute a "better-named" account. For example, if the task says "credit account 2900" and Tripletex shows 2900 as "Forskudd fra kunder", USE 2900 ANYWAY. Do NOT switch to 2930 just because the name seems more appropriate. If the exact account doesn't exist, search the same range (e.g. 6030 → try 6000-6099).
 
+CRITICAL ACCOUNTING RULES & OVERRIDES:
+1. ACCOUNT SEARCH: ALWAYS search for ledger accounts using the `number` parameter (search_ledger_account(number="6010")), NEVER by name. Name searches return too many results and waste turns.
+2. DEPRECIATION PAIRS: When posting depreciation, use these standard Norwegian contra-account pairs. Do NOT search for contra-accounts by name.
+   - Expense 6010 → Contra-Account 1029 (buildings)
+   - Expense 6020 → Contra-Account 1039 (machinery)
+   - Expense 6030 → Contra-Account 1049 (other assets)
+   - Expense 6000 → Contra-Account 1019 (general)
+   If the contra-account doesn't exist, search by number in the range 10x0-10x9.
+3. PER DIEM (Diett/ajudas de custo): Travel expenses with per diem allowance MUST be a separate cost line. Search costCategory for 'Diett' or 'Kost' to get the ID. Create one cost line per type (transport, accommodation, per diem).
+4. SALARY ACCRUAL: If the task says "salary accrual" without specifying an amount, use the employee's monthly salary (annualSalary / 12). If no employee salary is known, the task MUST specify the amount — do NOT guess.
+
 LANGUAGE KEY:
 ansatt=employee, kunde=customer, produkt=product, faktura=invoice, ordre=order,
 reiseregning=travel expense, avdeling=department, prosjekt=project, bilag=voucher,

@@ -1,14 +1,22 @@
 import asyncio
+import json
 import logging
 import os
+import time
 import traceback
 from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime
 
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 import uvicorn
 
-from agent import solve_task_sync
+AGENT_BACKEND = os.environ.get("AGENT_BACKEND", "gemini")  # "gemini" or "claude"
+
+if AGENT_BACKEND == "claude":
+    from agent_claude import solve_task_sync
+else:
+    from agent import solve_task_sync
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 log = logging.getLogger("tripletex")
@@ -16,6 +24,7 @@ log = logging.getLogger("tripletex")
 app = FastAPI()
 
 API_KEY = os.environ.get("TRIPLETEX_API_KEY", "")
+TASK_LOG_FILE = os.environ.get("TASK_LOG_FILE", "/opt/tripletex/task_log.jsonl")
 
 # Thread pool for concurrent task execution (sync requests blocks event loop)
 _executor = ThreadPoolExecutor(max_workers=8)
@@ -30,7 +39,9 @@ async def solve(request: Request):
             return JSONResponse({"error": "unauthorized"}, status_code=401)
 
     body = await request.json()
-    log.info("Task received: %s", body.get("prompt", "")[:120])
+    prompt = body.get("prompt", "")
+    log.info("Task received: %s", prompt[:120])
+    t0 = time.time()
 
     try:
         loop = asyncio.get_event_loop()
@@ -38,6 +49,19 @@ async def solve(request: Request):
         log.info("Task completed successfully")
     except Exception:
         log.error("Task failed:\n%s", traceback.format_exc())
+        # Log crashed tasks so they don't disappear
+        try:
+            crash_entry = {
+                "prompt": prompt,
+                "outcome": "crash",
+                "error": traceback.format_exc()[-500:],
+                "elapsed_s": round(time.time() - t0, 1),
+                "logged_at": datetime.utcnow().isoformat() + "Z",
+            }
+            with open(TASK_LOG_FILE, "a") as f:
+                f.write(json.dumps(crash_entry, ensure_ascii=False) + "\n")
+        except Exception:
+            pass
 
     # Always return completed — partial work still earns partial credit
     return JSONResponse({"status": "completed"})
