@@ -58,6 +58,8 @@ COMMON PATTERNS:
     → post_travelExpense_cost(travelExpense_id, date, costCategory_id, paymentType_id, currency_id=1, count=1, rate=amount, amountCurrencyIncVat=amount, comments="description text")
 11. DELETE TRAVEL EXPENSE: search_travelExpense → delete_travelExpense(id)
 12. CREATE PROJECT: search_employee → post_customer → post_project(name, projectManager_id, customer_id, startDate=today, endDate=...)
+    CRITICAL: If the task says "internt prosjekt" / "internal project" / "internes Projekt" / "projeto interno", set isInternal=true on the project.
+    CRITICAL: For ledger analysis tasks: request account fields (number, name) and amounts when querying /ledger/posting. Compare totals per expense account between periods to find biggest increases.
 13. CREATE VOUCHER (journal entry):
     → search_ledger_account (find account IDs by number — e.g. search_ledger_account(number=6030))
     → If account number not found, search nearby numbers in the same range (e.g. 6000, 6010, 6020, 6050)
@@ -70,44 +72,31 @@ COMMON PATTERNS:
     OPTIONAL posting fields: project_id (link to project), employee_id (link to employee), customer_id (link to customer), department_id (link to department), supplier_id (link to supplier). Use when the task mentions these entities in connection with the journal entry.
 14. REGISTER SUPPLIER INVOICE / RECEIPT / EXPENSE FROM VENDOR:
     This pattern applies to ANY expense from an external supplier — invoices, receipts (kvittering), purchase documents.
+    CRITICAL: NEVER use post_incomingInvoice — it ALWAYS returns 403 (module disabled). ALWAYS use post_ledger_voucher directly.
     → post_supplier(name, organizationNumber) OR search_supplier to find existing
     → search_ledger_account (find expense account — see ACCOUNT SELECTION below)
-    → post_incomingInvoice(
-        sendTo="ledger",
-        invoiceHeader={
-          vendorId: SUPPLIER_ID,
-          invoiceDate: "YYYY-MM-DD",
-          dueDate: "YYYY-MM-DD" (30 days after invoiceDate if not specified),
-          currencyId: 1,
-          invoiceAmount: TOTAL_INCL_VAT,
-          invoiceNumber: "INV-XXXX" or receipt number,
-          description: "..."
-        },
-        orderLines=[{
-          externalId: "line1",
-          accountId: EXPENSE_ACCOUNT_ID,
-          vatTypeId: 1,
-          amountInclVat: AMOUNT_INCL_VAT,
-          description: "...",
-          count: 1,
-          departmentId: DEPT_ID (if task specifies a department)
-        }]
-      )
-    FALLBACK: If post_incomingInvoice returns 403 (module not enabled), IMMEDIATELY use post_ledger_voucher:
+    → search_ledger_account(number="2400") — find Leverandørgjeld account
     → post_ledger_voucher(date=invoiceDate, description="...", sendToLedger=true, postings=[
-        {row=1, account_id=EXPENSE_ACCT, vatType_id=1, department_id=DEPT_ID, amountGross=TOTAL_INCL_VAT, amountGrossCurrency=TOTAL_INCL_VAT, date=invoiceDate},
-        {row=2, account_id=2400_ID, supplier_id=SUPPLIER_ID, amountGross=-TOTAL_INCL_VAT, amountGrossCurrency=-TOTAL_INCL_VAT, date=invoiceDate}
+        {row=1, account_id=EXPENSE_ACCT, department_id=DEPT_ID, amountGross=AMOUNT_EXCL_VAT, amountGrossCurrency=AMOUNT_EXCL_VAT, date=invoiceDate},
+        {row=2, account_id=2400_ID, supplier_id=SUPPLIER_ID, amountGross=-AMOUNT_EXCL_VAT, amountGrossCurrency=-AMOUNT_EXCL_VAT, date=invoiceDate}
       ])
+    CRITICAL: Do NOT set vatType_id on postings for expense accounts that are locked to MVA-kode 0 (no VAT).
+      These accounts have NO VAT deduction: 7350 (Representasjon), 7100 (Bilkostnader), 5000 (Lønn), 6540 (Inventar), 6800 (Kontorrekvisita).
+      For these accounts: use the EXCLUDING-VAT amount and do NOT set vatType_id.
+      For accounts WITH VAT deduction (4000 Innkjøp, 6300 Leie, 6700 IT): set vatType_id=1 and use the INCLUDING-VAT amount.
     CRITICAL: The credit posting MUST go to account 2400 (Leverandørgjeld) with supplier_id — NEVER to 1920 (Bank).
     CRITICAL: If a department is specified, add department_id to the EXPENSE posting (row 1).
     CRITICAL: vendorId / supplier_id is from post_supplier or search_supplier.
     ACCOUNT SELECTION: Always search_ledger_account to find the correct account. Common mappings:
-    - 6800: office supplies, stationery, small items (Bürobedarf, fournitures, suministros)
-    - 6540: furniture, fixtures, chairs, desks (Möbel, mobilier, muebles, inventar)
-    - 6300: rent, office services, cleaning (Miete, loyer, alquiler)
-    - 6700: IT, software, consulting (IT-Beratung, conseil informatique)
-    - 4000: raw materials, purchases for resale
+    - 6800: office supplies, stationery, small items (Bürobedarf, fournitures, suministros) — NO VAT
+    - 6540: furniture, fixtures, chairs, desks (Möbel, mobilier, muebles, inventar) — NO VAT
+    - 6300: rent, office services, cleaning (Miete, loyer, alquiler) — HAS VAT
+    - 6700: IT, software, consulting (IT-Beratung, conseil informatique) — HAS VAT
+    - 7350: entertainment, representation (Representasjon, middag representasjon) — NO VAT (locked to MVA 0)
+    - 7100: travel costs, car expenses (Bilkostnader, reise) — NO VAT
+    - 4000: raw materials, purchases for resale — HAS VAT
     - When in doubt, search_ledger_account(number=XXXX) or search by name keyword.
+    - If posting gets 422 about "locked to mva-kode 0", REMOVE vatType_id from that posting and retry.
 15. CREATE SUPPLIER: post_supplier(name, organizationNumber, email, ...)
 16. SEND INVOICE: send_invoice(id=invoiceId, sendType="EMAIL") — sends an already-created invoice
     NOTE: invoice_order with sendToCustomer=true already sends it. Only use send_invoice for re-sending.
@@ -195,16 +184,26 @@ COMMON PATTERNS:
 
 23. SALARY / PAYROLL BOOKING (lønn / Gehalt / salaire / salario / nómina):
     When a task asks to "run payroll", "book salary", or "register wages" for an employee:
+    Norwegian payroll ALWAYS requires these statutory components. NEVER book salary as just one debit + one credit.
     → search_employee (find employee)
-    → search_ledger_account(number=5000) — Lønn til ansatte (salary expense)
-    → search_ledger_account(number=2930) — Skyldig lønn (salary payable) OR search_ledger_account(number=1920) for direct bank payment
-    → For tax/employer contributions if mentioned: search_ledger_account(number=5400) — Arbeidsgiveravgift, credit 2770 — Skyldig arbeidsgiveravgift
-    → For holiday pay accrual if mentioned: search_ledger_account(number=5210) — Feriepenger, credit 2920 — Påløpt feriepenger
-    → post_ledger_voucher(date=today, description="Lønn [month]", sendToLedger=true, postings=[
-        {row=1, account_id=5000_ID, amountGross=GROSS_SALARY, amountGrossCurrency=GROSS_SALARY, date=today},
-        {row=2, account_id=2930_ID, amountGross=-GROSS_SALARY, amountGrossCurrency=-GROSS_SALARY, date=today}
+    → Look up ALL these accounts: 5000, 5400, 5020, 2600, 2770, 2940, 2930, 1920
+    → Calculate:
+      GROSS = base salary + any bonuses
+      TAX_WITHHOLDING = GROSS × 0.34 (skattetrekk, approximate — use 34% if not specified)
+      EMPLOYER_TAX = GROSS × 0.141 (arbeidsgiveravgift 14.1%)
+      VACATION_PAY = GROSS × 0.12 (feriepenger 12%)
+      NET_PAY = GROSS - TAX_WITHHOLDING
+    → post_ledger_voucher(date=today, description="Lønn [month] [name]", sendToLedger=true, postings=[
+        {row=1, account_id=5000_ID, amountGross=GROSS, employee_id=EMP_ID},          ← Debit: Salary expense
+        {row=2, account_id=5400_ID, amountGross=EMPLOYER_TAX},                        ← Debit: Employer tax expense (arbeidsgiveravgift) — MUST be 5400, NOT 5090
+        {row=3, account_id=5020_ID, amountGross=VACATION_PAY},                         ← Debit: Vacation pay expense
+        {row=4, account_id=2600_ID, amountGross=-TAX_WITHHOLDING},                     ← Credit: Tax withholding payable
+        {row=5, account_id=2770_ID, amountGross=-EMPLOYER_TAX},                        ← Credit: Employer tax payable
+        {row=6, account_id=2940_ID, amountGross=-VACATION_PAY},                        ← Credit: Vacation pay accrual
+        {row=7, account_id=2930_ID, amountGross=-NET_PAY},                             ← Credit: Net salary payable
       ])
-    If there are multiple components (base salary + bonus): add them together as total gross, OR book as separate postings on 5000 (base) and 5000 (bonus) with combined credit.
+    NOTE: Sum of all postings MUST be zero. GROSS + EMPLOYER_TAX + VACATION_PAY = TAX_WITHHOLDING + EMPLOYER_TAX + VACATION_PAY + NET_PAY.
+    OPTIONAL: If task says "pay out" or "utbetalt": add {row=8, account_id=2930_ID, amountGross=NET_PAY} and {row=9, account_id=1920_ID, amountGross=-NET_PAY} to clear the liability.
     KEYWORDS: lønn, lønnskjøring, Gehalt, Lohnabrechnung, salaire, nómina, salario, payroll, wages
 
 24. PROJECT FIXED PRICE + MILESTONE / AKONTO INVOICING:
@@ -275,12 +274,12 @@ FIELD NOTES:
 
 CRITICAL ACCOUNTING RULES & OVERRIDES:
 1. ACCOUNT SEARCH: ALWAYS search for ledger accounts using the `number` parameter (search_ledger_account(number="6010")), NEVER by name. Name searches return too many results and waste turns.
-2. DEPRECIATION PAIRS: When posting depreciation, use these standard Norwegian contra-account pairs. Do NOT search for contra-accounts by name.
-   - Expense 6010 → Contra-Account 1029 (buildings)
-   - Expense 6020 → Contra-Account 1039 (machinery)
-   - Expense 6030 → Contra-Account 1049 (other assets)
-   - Expense 6000 → Contra-Account 1019 (general)
-   If the contra-account doesn't exist, search by number in the range 10x0-10x9.
+2. DEPRECIATION PAIRS: When posting depreciation, use account 6000 (Avskrivning) for expense. For the contra-account (accumulated depreciation):
+   - FIRST try: search_ledger_account(number=1029), then 1039, then 1049, then 1019
+   - If NONE of those exist: use account 1200 (Maskiner og anlegg) or 1700 (Forskuddsbetalt) as credit
+   - NEVER give up on depreciation — if no accumulation account exists, create a voucher debiting 6000 and crediting 1200
+   - The expense account 6010/6020/6030 may not exist either — use 6000 as fallback
+   CRITICAL: Do NOT waste turns searching 10+ account numbers. Try the main ones (6000, 1029, 1200) and proceed.
 3. PER DIEM (Diett/ajudas de custo): Travel expenses with per diem allowance MUST be a separate cost line. Search costCategory for 'Diett' or 'Kost' to get the ID. Create one cost line per type (transport, accommodation, per diem).
 4. SALARY ACCRUAL: If the task says "salary accrual" without specifying an amount, use the employee's monthly salary (annualSalary / 12). If no employee salary is known, the task MUST specify the amount — do NOT guess.
 

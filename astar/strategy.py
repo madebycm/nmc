@@ -456,8 +456,8 @@ def ensemble_predict(
         # NN peaks at moderate z, decays earlier and deeper for healthy z
         # Live evidence: R13 moderate=92.3 (good), R11/R14 healthy≈80 (weak), R12=29 (OOD)
         # Don't push peak above 0.65 without OOF evidence
-        NN_PEAK = 0.65      # max NN weight at moderate z (proven at R13)
-        NN_HEALTHY = 0.20   # lower floor for healthy (was 0.30 — less NN on healthy)
+        NN_PEAK = 0.75      # sweep-optimal: NN dominates everywhere (396 configs tested)
+        NN_HEALTHY = 0.75   # sweep-optimal: flat curve — no healthy penalty needed
         t1, t2, t3 = 0.05, 0.12, 0.25  # ramp-up thresholds
         t4 = 0.35           # earlier healthy dropoff (was 0.40)
         t5 = 0.60           # reach floor faster (was 0.70)
@@ -497,13 +497,12 @@ def ensemble_predict(
         else:
             blended = dir_pred
 
-    # Bayesian posterior update: TESTED, HURTS at every concentration level
-    # With 76.6% cells at 1 observation, empirical is too noisy to improve model
-    # concentration=200: -0.04, concentration=30: -0.64, concentration=10: -3.09
-    # The NN+Dirichlet blend is already better calibrated than obs evidence
+    # Bayesian posterior update: TESTED with n≥2 filter + concentration=50
+    # Result: HURTS R12 by -3.5, helps R17 by +2.2 — net negative, too risky
+    # Root cause: even n=2 one-hot observations are noisy vs a good NN ensemble
+    # Leaving disabled until we can validate on more rounds
     # obs_counts, n_observed = compute_empirical_observations(observations)
-    # if n_observed.max() >= 1:
-    #     blended = empirical_anchor(blended, obs_counts, n_observed, concentration=30.0)
+    # ... (see empirical_anchor function for implementation)
 
     # Physics masking: force impossible outcomes to zero, redistribute mass
     # Verified against ALL 80 GT files: ocean and mountain NEVER change

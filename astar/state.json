@@ -106,6 +106,13 @@
       "seeds_submitted": 5,
       "strategy": "doctrine_v1",
       "timestamp": "2026-03-21T18:13:39Z"
+    },
+    "b0f9d1bf-4b71-4e6e-816c-19c718d29056": {
+      "round_number": 18,
+      "queries_used": 50,
+      "seeds_submitted": 5,
+      "strategy": "resubmit_nn",
+      "timestamp": "2026-03-21T22:02:49Z"
     }
   },
   "observations": {},
