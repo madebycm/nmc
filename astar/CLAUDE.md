@@ -5,11 +5,12 @@
 - Every round matters — leaderboard = max(round_score × round_weight)
 - Later rounds have higher weights → more leverage
 
-## Current Position (2026-03-20 ~15:00 UTC)
-- **Rank**: ~#55, weighted_score 97.2 (best: R4 79.9 × 1.216)
-- **Leader #1**: Meme Dream Team at 118.6
-- **Target**: 85+ on R8+ (weight ≥1.48) → 126+ weighted → #1
-- **Remaining time**: ~46 hours (deadline March 22 15:00 CET)
+## Current Position (2026-03-22 ~06:15 UTC)
+- **Rank**: #36, weighted_score 240.2 (best: R20 90.54 × 2.653)
+- **Leader #1**: People Made Machines at 247.7
+- **R21**: SUBMITTED (z=0.263 moderate, 75% NN, closes 08:48 UTC)
+- **Remaining**: R21 (active), R22 (~09:02), R23 (~12:01), competition ends 14:00 UTC
+- **Win condition**: R22 at 85 raw → 248.6 weighted → #1 (if leader doesn't improve)
 
 ## Prediction Pipeline (ensemble_ctx_v2)
 
@@ -80,21 +81,34 @@ queries excluded to avoid biasing toward high-density areas (Codex review).
 
 | Data | Count | Location |
 |------|-------|----------|
-| Ground truth | 30 files (R1-R6 × 5 seeds) | `ground_truth/` |
+| Ground truth | 100 files (R1-R20 × 5 seeds) | `ground_truth/` |
 | Initial grids | 35 files (R1-R7 × 5 seeds) | `observations/round_N/` |
 | Observations | R7 onwards | `observations/round_N/` |
-| Calibration z values | R1=0.419, R2=0.415, R3=0.018, R4=0.235, R5=0.330, R6=0.415 | `calibration.json` |
+| Calibration z values | 20 rounds, R1-R20 | `calibration.json` |
 
 ## Scored Rounds
 
-| Round | Score | Weight | Weighted | Strategy | Notes |
-|-------|-------|--------|----------|----------|-------|
-| R3 | 7.2 | 1.158 | 8.3 | proximity_v1 | Overwrite disaster |
-| R4 | 79.9 | 1.216 | **97.2** | dirichlet_v3 | Current best weighted |
-| R5 | 75.4 | 1.276 | 96.2 | dirichlet_v4 | |
-| R6 | 58.8 | 1.340 | 78.8 | dirichlet_v4 | |
-| R7 | 38.4 | 1.407 | 54.0 | ensemble_ctx_v2 | NN disaster (broken channels) |
-| R8 | pending | 1.477 | ? | pure_dirichlet | z=0.051 catastrophic, pure Dirichlet |
+| Round | Score | Weight | Weighted | z | Regime | Strategy |
+|-------|-------|--------|----------|------|--------|----------|
+| R3 | 7.2 | 1.158 | 8.3 | 0.018 | catastrophic | proximity_v1 |
+| R4 | 79.9 | 1.216 | 97.2 | 0.235 | moderate | dirichlet_v3 |
+| R5 | 75.4 | 1.276 | 96.2 | 0.330 | moderate | dirichlet_v4 |
+| R6 | 58.8 | 1.340 | 78.8 | 0.415 | healthy | dirichlet_v4 |
+| R7 | 38.4 | 1.407 | 54.0 | 0.423 | healthy | ensemble_nn_v1 |
+| R8 | 84.4 | 1.477 | 124.7 | 0.068 | catastrophic | ensemble_ctx_v2 |
+| R9 | 89.1 | 1.551 | 138.3 | 0.275 | moderate | champion_challenger |
+| R10 | 86.2 | 1.629 | 140.5 | 0.058 | catastrophic | champion_challenger |
+| R11 | 79.9 | 1.710 | 136.7 | 0.499 | healthy | champion_challenger |
+| R12 | 29.1 | 1.796 | 52.3 | 0.638 | healthy | champion_challenger |
+| R13 | 92.3 | 1.886 | 174.0 | 0.226 | moderate | champion_challenger |
+| R14 | 80.0 | 1.980 | 158.4 | 0.464 | healthy | champion_challenger |
+| R15 | 90.0 | 2.079 | 187.1 | 0.329 | moderate | champion_challenger |
+| R16 | 85.1 | 2.183 | 185.8 | 0.312 | moderate | champion_challenger |
+| R17 | 77.9 | 2.292 | 178.5 | 0.454 | healthy | doctrine_v1 |
+| R18 | 74.3 | 2.407 | 178.9 | 0.616 | healthy | resubmit_nn |
+| R19 | 94.2 | 2.527 | 238.0 | 0.041 | catastrophic | doctrine_v1 |
+| R20 | 90.5 | 2.653 | **240.2** | 0.130 | low-moderate | doctrine_v1 (resubmit) |
+| R21 | pending | 2.786 | ? | 0.263 | moderate | doctrine_v1 |
 
 ## Key Findings
 
@@ -124,22 +138,25 @@ queries excluded to avoid biasing toward high-density areas (Codex review).
 4. **v4 weight too high** — R1 LORO underperformed v2 (83.4 vs 87.4). Reduced from 0.5 to 0.4 until full LORO validates.
 5. **Precision queries bias context** — extra queries on high-density areas skew global context. Fixed: compute context from base 45 tiling only.
 
-### v2b Model (retrained 2026-03-20 ~16:00 UTC)
-- Trained on 35 GT files (R1-R7) on A100
-- LORO avg: 74.1 (R1=82.5, R2=77.6, R3=63.7, R4=75.3, R5=78.6, R6=75.2, R7=66.0)
-- Now active as `astar_nn.pt` (replaced old R1-R6-only v2)
-- With channel fix, inference matches LORO holdout quality
+### Nightforce v2 Model (promoted 2026-03-22 ~05:00 UTC)
+- **AstarNetNF**: 192-hidden, 8 ResBlocks, 6.4M params, 13 input channels
+- Trained on 95 GT files (R1-R19) on A100 with z-jitter=0.02
+- LORO avg: **87.49** (best across all experiments)
+- Active as `nf2_healthy_all.pt` (swapped from z-jitter=0.08 model, LORO 86.13)
+- Backup: `nf2_healthy_all_backup_zj08.pt`
+- A100 VPS (135.181.8.209) is DOWN — no further retraining possible
 
-### z-Adaptive NN Weight (updated 2026-03-20)
-- z < 0.08: 0% NN (pure Dirichlet) — catastrophic rounds
-- z 0.08-0.15: 15% NN
-- z 0.15-0.30: 35% NN
-- z > 0.30: 45% NN — healthy rounds where NN dominates
+### z-Adaptive NN Weight (sweep-optimized)
+- z < 0.05: 0% NN (pure Dirichlet) — catastrophic
+- z 0.05-0.12: ramp 0→30% NN
+- z 0.12-0.25: ramp 30→60% NN
+- z 0.25-0.35: 75% NN (peak)
+- z > 0.35: 75% NN (flat — sweep found no healthy penalty needed)
 
-### Architecture Ceiling
-- 27-key Dirichlet: LORO 70.1, oracle-z LORO 82.9
-- NN v2b (channel-fixed): LORO avg 74.1, ensemble with Dirichlet ~78-82 est
-- NN v4 (Conditional U-Net): LORO TBD
+### Performance by Regime
+- **Catastrophic** (z<0.08): avg 68.0, best 94.2 (R19), improving trend
+- **Moderate** (z=0.15-0.35): avg 85.3, best 92.3 (R13), consistent
+- **Healthy** (z>0.35): avg 62.6, best 80.0, inconsistent (our weakness)
 
 ## Running
 
@@ -200,10 +217,10 @@ round_score = avg over 5 seeds (100 × exp(-3 × entropy_weighted_kl))
 
 Only your BEST single weighted round matters. R3 disaster is irrelevant.
 
-## Next Steps (Priority Order)
+## Next Steps (Final Hours)
 
-1. **Fix train/inference context mismatch** — retrain v4 with observation-compatible context semantics
-2. **Wait for v4 LORO** — all 6 folds needed to validate. R1=83.4, R2=84.2 so far
-3. **Retrain after R7 GT** — 35 GT files, larger training set
-4. **Consider FiLM conditioning** — Codex recommended over broadcast context
-5. **Surrogate simulator** — highest ceiling (~95+) but needs z-conditioning fix
+1. **Monitor R21-R23** — auto-solver handles everything, just check scores
+2. **R22 resubmit** — if regime is favorable, consider NN weight override
+3. **Hope for catastrophic/moderate regime** — our model excels there
+4. **GPU servers down** — A100 reprovisioned, DataCrunch SSH rejected, no retraining
+5. **Production freeze** — no code changes, only weight swaps via config layer

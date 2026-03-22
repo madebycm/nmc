@@ -54,7 +54,30 @@ Stop guessing classifier soup ratios. The detector is 70% of score and transfers
 **E* = 58** (mean mAP50 = 0.9453). Flat plateau at epochs 55-60 (all within 0.001).
 Conservative pick: **E55** (earlier in flat zone, less overfitting risk).
 
-## Candidate Training
-- Training candidate_e55: 55 epochs on 224-train, no early stopping
-- Uses same winning recipe (AdamW, cos_lr, mosaic, mixup, randaugment, etc.)
-- Will evaluate on 24-val with full pipeline (detect → classify → COCO eval)
+## Candidate Training (COMPLETE)
+- Trained candidate_e55: 55 epochs on 224-train, saved every epoch
+- Best mAP50 on 24-val: **e33 = 0.9589** (old finetuned was e69 = 0.9591 — essentially identical)
+- NOTE: Ultralytics `best.pt` selected e42 by default (mAP50-95 fitness). We correctly use e33 (mAP50).
+
+## Full Pipeline Eval on 24-Val Holdout
+| Detector | det_mAP50 | cls_mAP50 | blend | Delta |
+|----------|-----------|-----------|-------|-------|
+| old_finetuned (B4 winner) | 0.7488 | 0.8755 | 0.7868 | — |
+| **candidate_e33** | 0.7494 | 0.8843 | **0.7899** | **+0.0031** |
+
+Key insight: det mAP50 nearly identical, but **cls improved +0.0088** — better detector crops → better classification.
+
+## 3-Way Comparison on 24-Val Holdout (COMPLETE)
+| Detector | det_mAP50 | cls_mAP50 | blend | Delta |
+|----------|-----------|-----------|-------|-------|
+| old_finetuned (B4 winner) | 0.7488 | 0.8755 | 0.7868 | — |
+| candidate_e33 (224-train, **CLEAN**) | 0.7494 | 0.8843 | 0.7899 | **+0.0031** |
+| alldata_e33 (248-train, **CONTAMINATED**) | 0.7615 | 0.9099 | 0.8060 | +0.0192 (don't trust) |
+
+**IMPORTANT**: alldata_e33 trained on the 24-val images → its eval is contaminated.
+Only candidate_e33's +0.0031 is an honest signal.
+
+## Decision
+- **candidate_e33**: Safe. Honest +0.0031. At 53% transfer → ~+0.0016 test. Expected ~0.9245.
+- **alldata_e33**: Risky. CV-informed E*=33 (better than B5's blind 60), but still no clean holdout.
+- B5 precedent: all-data with blind epochs REGRESSED. CV epochs may be different.
