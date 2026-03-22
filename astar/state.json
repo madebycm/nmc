@@ -127,6 +127,20 @@
       "seeds_submitted": 5,
       "strategy": "doctrine_v1",
       "timestamp": "2026-03-22T03:06:23Z"
+    },
+    "b3a0be6b-b48b-419d-916a-b7a77fa58c4d": {
+      "round_number": 21,
+      "queries_used": 50,
+      "seeds_submitted": 5,
+      "strategy": "doctrine_v1",
+      "timestamp": "2026-03-22T06:05:50Z"
+    },
+    "a8be24e1-bd48-49bb-aa46-c5593da79f6f": {
+      "round_number": 22,
+      "queries_used": 50,
+      "seeds_submitted": 5,
+      "strategy": "doctrine_v1",
+      "timestamp": "2026-03-22T10:45:16Z"
     }
   },
   "observations": {},
