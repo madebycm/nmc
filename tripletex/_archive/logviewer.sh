@@ -80,7 +80,7 @@ print()
 
 echo -e "${C_BOLD}${C_CYAN}╔══════════════════════════════════════════╗${C_RESET}"
 echo -e "${C_BOLD}${C_CYAN}║  Tripletex Agent — Live Log Viewer       ║${C_RESET}"
-echo -e "${C_BOLD}${C_CYAN}║  nm.j6x.com → vps (77.42.85.193)    ║${C_RESET}"
+echo -e "${C_BOLD}${C_CYAN}║  nm.j6x.com → vps (XXx--xx-VPS2)    ║${C_RESET}"
 echo -e "${C_BOLD}${C_CYAN}╚══════════════════════════════════════════╝${C_RESET}"
 echo
 

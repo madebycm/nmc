@@ -14,7 +14,7 @@ import requests
 ENDPOINT = os.environ.get("SOLVE_ENDPOINT", "https://nm.j6x.com/solve")
 SANDBOX_CREDS = {
     "base_url": "https://kkpqfuj-amager.tripletex.dev/v2",
-    "session_token": "eyJ0b2tlbklkIjoyMTQ3NjM5OTU2LCJ0b2tlbiI6ImM0YzUyMWM2LTBkMjItNGVhYy1iZmVhLWJlOWRjMjM0N2I3ZSJ9",
+    "session_token": "XXx--xx-REDACTED-SESSION",
 }
 AUTH = ("0", SANDBOX_CREDS["session_token"])
 BASE = SANDBOX_CREDS["base_url"]

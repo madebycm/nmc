@@ -276,7 +276,7 @@ When z>0.55, outcomes are very uniform (high survival, low entropy). The scoring
 | `calibration.json` | 12KB | 27-key z-conditioned Dirichlet priors |
 | `ground_truth/` | 90 files | R1-R18 × 5 seeds GT data |
 
-### H100 Server (86.38.238.86)
+### H100 Server (XXx--xx-H100)
 - GPU idle, standing by for R19 GT → retrain on 95 samples
 - All retrain scripts uploaded: `retrain_nf_r18.py`, `retrain_v2_r18.py`, `retrain_v3_r18.py`
 - Completed training logs available

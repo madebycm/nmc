@@ -146,6 +146,8 @@ ENDPOINT_SCHEMA_MAP = {
     "/supplier": "Supplier",
     "/supplier/{id}": "Supplier",
     "/incomingInvoice": "IncomingInvoiceAggregateExternalWrite",
+    "/timesheet/entry": "TimesheetEntry",
+    "/timesheet/entry/{id}": "TimesheetEntry",
 }
 
 

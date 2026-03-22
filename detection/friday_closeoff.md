@@ -74,7 +74,7 @@ OOF fold-1 results (honest eval, uncontaminated):
 
 ---
 
-## Training Jobs Running (H100 @ 86.38.238.168)
+## Training Jobs Running (H100 @ XXx--xx-H100)
 4 parallel jobs, 52/80 GB VRAM:
 - ArcFace (resumed from finetuned) — E22/30, ~15 min remaining
 - CE-only (resumed from finetuned) — E17/30, ~20 min remaining
@@ -93,8 +93,8 @@ OOF fold-1 results (honest eval, uncontaminated):
 | ref_labels.json | 31 KB | 6606 labels |
 
 ## Compute
-- **H100 80GB** @ 86.38.238.168 (on-demand, stable)
-- A100 80GB @ 135.181.8.209 (alive, idle)
+- **H100 80GB** @ XXx--xx-H100 (on-demand, stable)
+- A100 80GB @ XXx--xx-A100 (alive, idle)
 
 ---
 

@@ -250,7 +250,7 @@ Mar 21 00:21:58 n8n uvicorn[234262]:   File "/opt/tripletex/agent.py", line 86, 
 Mar 21 00:21:58 n8n uvicorn[234262]:     resp.raise_for_status()
 Mar 21 00:21:58 n8n uvicorn[234262]:   File "/opt/tripletex/venv/lib/python3.12/site-packages/requests/models.py", line 1026, in raise_for_status
 Mar 21 00:21:58 n8n uvicorn[234262]:     raise HTTPError(http_error_msg, response=self)
-Mar 21 00:21:58 n8n uvicorn[234262]: requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=AIzaSyDU9JLjRiaEfmp-Y7n7ilv91uhgk0wDv3U
+Mar 21 00:21:58 n8n uvicorn[234262]: requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=XXx--xx-REDACTED-GAPI
 Mar 21 00:22:44 n8n systemd[1]: Stopping tripletex.service - Tripletex AI Agent...
 Mar 21 00:22:44 n8n uvicorn[234262]: INFO:     Shutting down
 Mar 21 00:22:44 n8n uvicorn[234262]: INFO:     Waiting for application shutdown.
@@ -339,7 +339,7 @@ Mar 21 00:40:28 n8n uvicorn[235788]:   File "/opt/tripletex/agent.py", line 86, 
 Mar 21 00:40:28 n8n uvicorn[235788]:     resp.raise_for_status()
 Mar 21 00:40:28 n8n uvicorn[235788]:   File "/opt/tripletex/venv/lib/python3.12/site-packages/requests/models.py", line 1026, in raise_for_status
 Mar 21 00:40:28 n8n uvicorn[235788]:     raise HTTPError(http_error_msg, response=self)
-Mar 21 00:40:28 n8n uvicorn[235788]: requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=AIzaSyDU9JLjRiaEfmp-Y7n7ilv91uhgk0wDv3U
+Mar 21 00:40:28 n8n uvicorn[235788]: requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=XXx--xx-REDACTED-GAPI
 Mar 21 00:40:28 n8n uvicorn[235788]: INFO:     34.34.240.78:0 - "POST /solve HTTP/1.1" 200 OK
 Mar 21 00:41:55 n8n systemd[1]: Stopping tripletex.service - Tripletex AI Agent...
 Mar 21 00:41:55 n8n uvicorn[235788]: INFO:     Shutting down
@@ -7994,7 +7994,7 @@ Mar 21 20:45:16 n8n uvicorn[342903]:   File "/opt/tripletex/agent.py", line 494,
 Mar 21 20:45:16 n8n uvicorn[342903]:     resp.raise_for_status()
 Mar 21 20:45:16 n8n uvicorn[342903]:   File "/opt/tripletex/venv/lib/python3.12/site-packages/requests/models.py", line 1026, in raise_for_status
 Mar 21 20:45:16 n8n uvicorn[342903]:     raise HTTPError(http_error_msg, response=self)
-Mar 21 20:45:16 n8n uvicorn[342903]: requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=AIzaSyDU9JLjRiaEfmp-Y7n7ilv91uhgk0wDv3U
+Mar 21 20:45:16 n8n uvicorn[342903]: requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=XXx--xx-REDACTED-GAPI
 Mar 21 20:45:16 n8n uvicorn[342903]: INFO:     34.34.240.70:0 - "POST /solve HTTP/1.1" 200 OK
 Mar 21 20:45:16 n8n uvicorn[342903]: 2026-03-21 20:45:16,490 INFO Set bank account number on 1920 (id=375099487)
 Mar 21 20:45:16 n8n uvicorn[342903]: 2026-03-21 20:45:16,492 INFO Agent turn 1/40
@@ -8019,7 +8019,7 @@ Mar 21 20:45:16 n8n uvicorn[342903]:   File "/opt/tripletex/agent.py", line 494,
 Mar 21 20:45:16 n8n uvicorn[342903]:     resp.raise_for_status()
 Mar 21 20:45:16 n8n uvicorn[342903]:   File "/opt/tripletex/venv/lib/python3.12/site-packages/requests/models.py", line 1026, in raise_for_status
 Mar 21 20:45:16 n8n uvicorn[342903]:     raise HTTPError(http_error_msg, response=self)
-Mar 21 20:45:16 n8n uvicorn[342903]: requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=AIzaSyDU9JLjRiaEfmp-Y7n7ilv91uhgk0wDv3U
+Mar 21 20:45:16 n8n uvicorn[342903]: requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=XXx--xx-REDACTED-GAPI
 Mar 21 20:45:16 n8n uvicorn[342903]: INFO:     34.34.240.63:0 - "POST /solve HTTP/1.1" 200 OK
 Mar 21 20:45:17 n8n uvicorn[342903]: 2026-03-21 20:45:17,380 ERROR Gemini API error 400: {
 Mar 21 20:45:17 n8n uvicorn[342903]:   "error": {
@@ -8042,7 +8042,7 @@ Mar 21 20:45:17 n8n uvicorn[342903]:   File "/opt/tripletex/agent.py", line 494,
 Mar 21 20:45:17 n8n uvicorn[342903]:     resp.raise_for_status()
 Mar 21 20:45:17 n8n uvicorn[342903]:   File "/opt/tripletex/venv/lib/python3.12/site-packages/requests/models.py", line 1026, in raise_for_status
 Mar 21 20:45:17 n8n uvicorn[342903]:     raise HTTPError(http_error_msg, response=self)
-Mar 21 20:45:17 n8n uvicorn[342903]: requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=AIzaSyDU9JLjRiaEfmp-Y7n7ilv91uhgk0wDv3U
+Mar 21 20:45:17 n8n uvicorn[342903]: requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=XXx--xx-REDACTED-GAPI
 Mar 21 20:45:17 n8n uvicorn[342903]: INFO:     34.34.240.8:0 - "POST /solve HTTP/1.1" 200 OK
 Mar 21 20:46:12 n8n systemd[1]: Stopping tripletex.service - Tripletex AI Agent...
 Mar 21 20:46:12 n8n uvicorn[342903]: INFO:     Shutting down

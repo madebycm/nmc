@@ -232,7 +232,7 @@ Every cell gets [1/6, 1/6, 1/6, 1/6, 1/6, 1/6]
 
 ## 10. Infrastructure Plan
 
-### Where to run: H100 Server (86.38.238.86)
+### Where to run: H100 Server (XXx--xx-H100)
 - `/clade/astar/` — workspace (currently empty)
 - Venv: `/clade/venv/` has requests, numpy, scipy, httpx
 - Always-on, good for polling

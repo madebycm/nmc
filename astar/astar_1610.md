@@ -220,13 +220,13 @@ Rewrote `encode_grid_v2v3()` to inline all channels in the exact training order 
 - State tracking: `state.json` prevents double-execution
 - All submissions run from local only (server execution = R3 disaster)
 
-### A100 VPS (135.181.8.209)
+### A100 VPS (XXx--xx-A100)
 - NN training with CUDA
 - v2b training complete (35 GT files, 1000 epochs, LORO 74.1)
 - **v3b retraining in progress** — started ~16:10 UTC
 - Workspace: `/astar/` with venv
 
-### H100 Server (86.38.238.86) — for NorgesGruppen task, not used for Astar
+### H100 Server (XXx--xx-H100) — for NorgesGruppen task, not used for Astar
 
 ---
 

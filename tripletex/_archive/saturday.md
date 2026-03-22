@@ -70,7 +70,7 @@
 
 ## Deployment
 
-- **Server**: vps (77.42.85.193) → `/opt/tripletex/`
+- **Server**: vps (XXx--xx-VPS2) → `/opt/tripletex/`
 - **Service**: `systemctl restart tripletex`
 - **Endpoint**: `https://nm.j6x.com/solve`
 - **Deploy**: `scp *.py vps:/opt/tripletex/ && ssh vps "systemctl restart tripletex"`
