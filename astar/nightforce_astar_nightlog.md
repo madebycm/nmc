@@ -284,3 +284,210 @@ Goal: close LORO gap (in-sample 95+ but OOS 72.75 on healthy).
 - H100: training NF with dropout (ep 400/1500, 88.58 avg, climbing)
 - ~5 more rounds expected (R19-R23) before deadline
 
+### 23:50 UTC — R18 SCORED: 74.33 raw (DECREASE)
+**R18 per-seed**: 69.5, 78.1, 71.1, 85.1, 67.9 → avg 74.33
+**R18 weighted**: 74.33 × 2.407 = 178.9 (NOT new best)
+**z = 0.616 (very healthy)** — our weakest regime as expected.
+LORO predicted 65-73, actual 74.33 — slightly above OOS prediction.
+**Rank: #131 at 187.1** (dropped from #117, others improved on R18)
+**#1: WinterIsComing_ at 219.0** (was Laurbærene at 217.4)
+
+GT harvested for all 5 seeds. Calibration updated. GT synced to H100.
+
+### 00:00 UTC — Dropout Training RESULTS (FAILED)
+Phase 1 (dropout=0.10): in-sample 92.57 (vs 95+ original). Lost ~2.5 pts.
+Phase 2 (dropout=0.15): in-sample 92.14.
+**LORO with dropout=0.10**: R1=80.64 (orig: 86.28), R2=78.84 (orig: 81.01), R3=28.51 (orig: 83.50)
+**WORSE across the board.** Dropout destroys catastrophic regime completely.
+**Conclusion**: Dataset too small (85 samples) for dropout regularization to help.
+**Production model unchanged.** nf2_healthy_all.pt stays.
+
+### 01:03 UTC — R19 SUBMITTED: z=0.041 (CATASTROPHIC)
+- **Pure Dirichlet** (z<0.05 → 0% NN, per policy)
+- Catastrophic LORO avg = 85.68. Live R8=84.4, R10=86.3.
+- If 85 raw → 85 × 2.527 = **214.8** (close to #1 at 219.0 but not enough)
+- R19 closes 02:45 UTC
+
+### 01:17 UTC — NF RETRAIN ON 90 SAMPLES: MASSIVE IMPROVEMENT
+**Critical discovery**: `train_nf_proper.py` had completely WRONG `encode_grid`:
+- Used scipy `distance_transform_edt` to mountains [4,5] instead of Manhattan distance to settlements [1,2]
+- Coastal adjacency to water [0] instead of ocean [10]
+- `is_land` = `grid != 0` instead of `grid != 10`
+- This means ALL "proper" training was broken. Only nightforce_v2.py had correct encoding.
+
+Retrained healthy specialist using EXACT nightforce_v2.py recipe + correct encode_grid on 90 samples (R1-R18):
+
+| Regime | Old LORO | New LORO | Delta |
+|--------|----------|----------|-------|
+| Overall | 80.18 | **86.13** | **+5.95** |
+| Healthy | 72.75 | **83.23** | **+10.48** |
+| Moderate | 87.35 | **89.08** | **+1.73** |
+| Catastrophic | 85.68 | **88.93** | **+3.25** |
+
+Promoted to production: `nf2_healthy_r18.pt` → `nf2_healthy_all.pt`. Old model backed up.
+
+### 00:39 UTC — PROMOTION BOARD COMPLETE
+Ran full LORO comparison: Moderate specialist vs Healthy specialist
+- **Moderate on moderate rounds**: 89.30 vs 88.86 (+0.45) — marginal
+- **Healthy on healthy rounds**: 83.30 vs 83.03 (+0.28) — marginal
+- **Catastrophic**: Healthy wins decisively (89.06 vs 87.06, +2.00)
+- **Late moderate gate**: MOD 89.13 vs HLT 88.84 (+0.28) — **DOES NOT CLEAR +1.0 gate**
+- **Decision**: Keep healthy specialist. Moderate not worth the risk.
+
+### 00:41 UTC — STATUS
+- R19 active, closes 02:45 UTC (catastrophic, pure Dirichlet, no action needed)
+- Position: #131 at 187.1 (unchanged — R19 not scored yet)
+- Production: nf2_healthy_all.pt (retrained on 90 samples, LORO 86.13)
+- H100: eval_soups.py running from /root/war/ (not ours). Harvester still alive.
+- Local harvester restarted (PID 58967)
+- Next: R20 ~02:50 UTC. New model will be active. If moderate/catastrophic → expect 87-89 raw.
+
+### 01:43 UTC — V2 RETRAIN COMPLETE + PROMOTED
+Retrained v2 (AstarNet, 1.8M params) on 90 samples (was 35). In-sample: 92.0.
+Late LORO (R11-R18): avg 73.1 (R11=73.2, R12=53.8, R13=84.8, R14=68.3, R15=83.7, R16=81.0, R17=76.3, R18=63.7)
+Promoted: astar_nn_v2_r18.pt → astar_nn.pt (old backed up).
+
+**Full production stack now on 90 samples:**
+- nf2_healthy_all.pt — NF healthy specialist, LORO 86.13 overall
+- astar_nn.pt — v2, LORO 73.1 late avg
+- astar_nn_v3.pt — v3 (still on old data, lowest priority)
+- GPU free for next task.
+
+### 01:59 UTC — V3 RETRAIN COMPLETE + PROMOTED
+Retrained v3 (AstarNetV3, 5.7M params) on 90 samples. In-sample: 92.7.
+Promoted: astar_nn_v3_r18.pt → astar_nn_v3.pt (old backed up).
+
+**ALL 3 MODELS NOW ON 90 SAMPLES.** Full production stack upgraded for R20+.
+GPU idle — waiting for R19 GT (~02:45 UTC) to retrain on 95 samples.
+Multi-seed NF ensemble previously tested and HURT (-2.02). Not repeating.
+
+### 02:24 UTC — LOOP CHECK (context resumed)
+- R19 still open, closes ~02:45 UTC. z=0.041 catastrophic, pure Dirichlet submitted.
+- No new scores since R19 submission (00:03 UTC).
+- Local harvester alive (PID 58967). H100 harvester alive (PID 82672, 4650 replays fetched).
+- H100 GPU: 0% util, 0 MiB. Retrain scripts ready. 93 GT files synced.
+- **Plan**: R19 GT arrives ~02:50 → harvest → calibrate → scp to H100 → retrain NF on 95 samples.
+- All 3 production models on 90 samples. STATUS.md updated with full history.
+
+### 02:36 UTC — SEED DIVERSITY EXPERIMENT (seed7)
+GPU was idle ~15 min before R19 GT. Launched NF retrain with seed=7 (vs production seed=42).
+Full 18-fold LORO completed in 4 min on H100.
+
+**Result: Seed42 (production) WINS across all regimes.**
+| Regime | Seed42 | Seed7 | Delta |
+|--------|--------|-------|-------|
+| Overall | 86.13 | 85.54 | -0.59 |
+| Healthy | 83.23 | 82.63 | -0.60 |
+| Moderate | 89.08 | 88.59 | -0.49 |
+| Catastrophic | 88.93 | 88.14 | -0.79 |
+
+Confirms seed42 is not a lucky seed — it's genuinely the best. No promotion.
+Combined with previous multi-seed ensemble failure (-2.02), seed diversity is a dead end for NF.
+
+### 02:47 UTC — LR SWEEP EXPERIMENT (lr=3e-3)
+Full 18-fold LORO with lr=3e-3 (vs production lr=2e-3). Completed in ~6 min.
+
+**Result: lr=2e-3 (production) WINS across all regimes.**
+| Config | Overall | Healthy | Moderate | Catastrophic |
+|--------|---------|---------|----------|-------------|
+| lr=2e-3 (prod) | **86.13** | **83.23** | **89.08** | **88.93** |
+| lr=3e-3 | 85.98 | 83.03 | 88.99 | 88.81 |
+| seed=7 | 85.54 | 82.63 | 88.59 | 88.14 |
+
+**Conclusion**: Production config (seed=42, lr=2e-3) is the LORO-validated optimum. Both hyperparameter
+perturbations (seed, lr) perform slightly worse. No more sweeping — this is the ceiling for NF architecture
+with 90 samples. Additional gains must come from more data (95+ samples) or architectural changes.
+
+R19 close time (02:45) passed but API still shows active. Waiting for R20 to appear.
+
+### 02:51 UTC — LOOP CHECK
+- R19 still showing active at 02:50 UTC (5 min past close). Server-side transition delay.
+- H100 GPU: OCCUPIED by /root/war/train_5fold_cv.py (NorgesGruppen 5-fold CV, epoch 56/75 fold 1, mAP50=0.944, 35.9GB VRAM). Cannot retrain Astar until it finishes.
+- Production stack FROZEN per strategic review. Shadow retrain postponed until GPU available.
+- Local harvester alive (PID 58967). H100 harvester alive (PID 82672).
+
+### 02:55 UTC — R19 SCORED: 94.19 raw × 2.527 = 238.0 weighted — NEW BEST!
+**MASSIVE JUMP from 187.1 to 238.0.** Pure Dirichlet on catastrophic z=0.041.
+Individual seeds: 94.23, 94.29, 94.14, 94.14, 94.16 (very consistent, std=0.06).
+This is our highest raw score ever (prev best: R13=92.28) and highest weighted by far.
+
+Harvested R19 GT (5 files). Recalibrated on 95 samples. Synced to H100.
+Launched NF shadow retrain on 95 samples alongside NG 5-fold CV (~5GB vs 28GB, coexisting fine).
+
+**LEADERBOARD: #131 → #24!** ws=238.0, gap to #1 (241.5) is only 3.5 pts.
+Field is BUNCHED: #1-#30 within 5 pts. R19 catastrophic lifted everyone.
+Our hot_streak=82.1 is lowest in top 24 (top teams: 91-93). Structural gap confirmed.
+Top 5: WinterIsComing_ 241.5, Dahl Optimal 241.4, Algebros 241.2, Agentix 241.1, Propulsion 241.0.
+**Reality check**: leaders also scored ~94+ on R19. Gap only closed because everyone hit the same catastrophic round.
+Next round decides everything — a moderate where we score 89+ at R20 weight (2.653) = 236, which barely moves us.
+We need R22+ (weight 2.925+) to have any shot at top 10. Or leaders need to miss.
+
+### 03:04 UTC — 95-SAMPLE SHADOW RETRAIN: DOES NOT CLEAR GATE
+| Regime | 90-sample (prod) | 95-sample | Delta |
+|--------|-----------------|-----------|-------|
+| Overall | 86.13 | 86.21 | +0.08 |
+| Healthy | 83.23 | 82.64 | **-0.59** |
+| Moderate | 89.08 | 89.20 | +0.12 |
+| Catastrophic | 88.93 | 89.77 | +0.84 |
+
+Gate was ≥1 overall or ≥2 in target regime. Failed on all criteria. Healthy REGRESSED.
+**Decision: NOT PROMOTED.** Production stays on 90-sample NF (LORO 86.13).
+R19 added catastrophic data but didn't help healthy — consistent with structural encoder limitation.
+
+### 03:06 UTC — R20 SUBMITTED (5/5 seeds)
+- **z = 0.105** (low-moderate, borderline catastrophic). NN weight = 0.24 (ramp-up zone, mostly Dirichlet).
+- Per-seed z: 0.133, 0.061, 0.133, 0.107, 0.087. Seed 1 nudged (z_seed=0.061, delta=-0.044).
+- Closes 05:46 UTC (~2h 40min). Safe baseline banked.
+- **Regime analysis**: z=0.105 is in our "0.08-0.35 champion stack" zone. LORO NF for similar z:
+  R8 (z=0.068): 90.5, R10 (z=0.058): 88.5, R4 (z=0.235): 90.3. Expect ~87-91 raw.
+- At R20 weight 2.653: 89 raw → 236.1 (below current 238.0). Won't be new best unless we score 90+.
+- H100: NG 5-fold CV fold 2 epoch 31/75, 37GB VRAM. Astar shadow retrain completed (not promoted).
+- Local harvester alive (PID 58967).
+
+### 03:12 UTC — DIAGNOSTIC AUDITS (within freeze directive)
+
+**AUDIT 1: NN weight backtest on all catastrophic/low-moderate rounds (z<0.15)**
+| NN Weight | R3 (z=.018) | R8 (z=.068) | R10 (z=.058) | R19 (z=.041) | Avg |
+|-----------|-------------|-------------|--------------|--------------|-----|
+| 0% (pure Dir) | 83.7 | 92.9 | 86.9 | **94.5** | 89.5 |
+| 24% (current) | 87.6 | 93.9 | 89.8 | 94.5 | 91.5 |
+| 35% | 89.3 | 94.4 | 91.0 | 94.1 | 92.2 |
+| 45% | 90.6 | 94.7 | 92.0 | 93.5 | 92.7 |
+| 55% | 91.8 | 95.0 | 92.9 | 92.6 | 93.1 |
+
+**Finding**: NN consistently adds value at z=0.05-0.15. Current 24% ramp-up too conservative
+for our retrained NF (LORO 86.13). At R20 z=0.105, moving to 35-45% NN could gain +0.8-1.5 raw.
+BUT: very-low z (<0.05) correctly gets pure Dirichlet — R19 confirms NN hurts there.
+CAVEAT: Backtesting on GT. Conflicts with freeze directive. User must decide.
+
+**AUDIT 2: Floor validation**
+Floor=0.003 confirmed optimal. No GT probabilities <0.003 exist. 0.001 and 0.003 are a wash.
+0.01 costs 3.4 pts. Don't touch.
+
+### 02:48 UTC — STRATEGIC REVIEW: PRODUCTION FREEZE ORDERED
+
+User review delivered critical strategic corrections. Implementing immediately.
+
+**Class mapping audit**: Verified against GT — ocean(5)→index 5, mountain(10)→index 0. CODE IS CORRECT.
+Write-up in STATUS.md was ambiguous but not a code bug. Fixed wording.
+
+**Key corrections from review:**
+1. **219 is not static** — leaders also benefit from late-round multipliers. Target is ~280+ at R23, not 219.
+2. **60% moderate probability was LOW** — IID estimate is ~80% for ≥1 moderate in 4 remaining rounds.
+3. **Structural gap explanation**: Our encoder is blind to settlement stats (pop/food/wealth/defense) which
+   drive healthy/very-healthy outcomes. This is WHY we're weak there, and 95-sample retrain won't fix it.
+4. **Per-seed nudge is a guardrail, not the edge**. Upside = clean execution + favorable regime.
+
+**PRODUCTION FREEZE — effective immediately:**
+- `solver.py`, `strategy.py`, `nn_predict.py` → FROZEN. Only safety asserts, logging, verification plumbing.
+- No new encoder. No weight-curve retune. No v4 resurrection. No floor retune. No "one last clever idea."
+- 95-sample retrain → SHADOW ONLY. Promote only if ≥1 raw overall or ≥2 in target regime, no regressions.
+- Precision queries → resample high-value hotspots (prosperous ports, contested borders, coastal ruins).
+- Bank safe submission early, verify with /my-predictions before any overwrite.
+
+**Regime doctrine (final):**
+- z < 0.08: pure Dirichlet
+- 0.08–0.35: champion stack (our winning lane)
+- 0.35–0.55: current blend + seed nudge, no experiments
+- z > 0.55: no heroics, protect against self-inflicted losses
+

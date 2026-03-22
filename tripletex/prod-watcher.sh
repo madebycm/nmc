@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Live prod watcher — polls task_log.jsonl from VPS, formats nicely locally.
-# Only prod IPs (34.34.240.x) are saved to logs/live/prod.jsonl.
-# Smoke tests are shown in terminal (dimmed) but NOT written to prod.jsonl.
+# Prod entries saved to logs/live/prod.jsonl. Smoke tests (X-Smoke-Test: 1 header)
+# are shown dimmed but NOT written to prod.jsonl.
 #
 # Usage: ./prod-watcher.sh
 
@@ -41,10 +41,10 @@ for line in sys.stdin:
         continue
 
     ip = d.get('ip', d.get('_client_ip', '?'))
-    is_prod = ip.startswith('34.34.240.')
+    is_smoke = d.get('smoke', False)
 
-    # Only write prod to file
-    if is_prod:
+    # Only write prod (non-smoke) to file
+    if not is_smoke:
         with open(prod_log, 'a') as f:
             f.write(line + '\n')
 
@@ -57,10 +57,10 @@ for line in sys.stdin:
     prompt = d.get('prompt', '')[:120]
     summary = (d.get('summary') or '')[:120]
 
-    if is_prod:
-        ip_tag = f'\033[35m[PROD {ip}]\033[0m'
+    if is_smoke:
+        ip_tag = f'\033[2m[SMOKE]\033[0m'
     else:
-        ip_tag = f'\033[2m[SMOKE {ip}]\033[0m'
+        ip_tag = f'\033[35m[PROD]\033[0m'
 
     if outcome == 'completed':
         oc = f'\033[32m{outcome}\033[0m'

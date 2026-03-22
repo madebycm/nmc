@@ -151,6 +151,24 @@
           "employeeCategory_id": {
             "type": "INTEGER",
             "description": "ID of the EmployeeCategory"
+          },
+          "address": {
+            "type": "OBJECT",
+            "description": "Inline address object with addressLine1, postalCode, city. Use this instead of address_id.",
+            "properties": {
+              "addressLine1": {
+                "type": "STRING",
+                "description": "Street address"
+              },
+              "postalCode": {
+                "type": "STRING",
+                "description": "Postal/ZIP code"
+              },
+              "city": {
+                "type": "STRING",
+                "description": "City name"
+              }
+            }
           }
         }
       }
@@ -464,6 +482,42 @@
           "currency_id": {
             "type": "INTEGER",
             "description": "ID of the Currency"
+          },
+          "postalAddress": {
+            "type": "OBJECT",
+            "description": "Inline address object with addressLine1, postalCode, city. Use this instead of postalAddress_id when you need to set a new address.",
+            "properties": {
+              "addressLine1": {
+                "type": "STRING",
+                "description": "Street address"
+              },
+              "postalCode": {
+                "type": "STRING",
+                "description": "Postal/ZIP code"
+              },
+              "city": {
+                "type": "STRING",
+                "description": "City name"
+              }
+            }
+          },
+          "physicalAddress": {
+            "type": "OBJECT",
+            "description": "Inline physical address object with addressLine1, postalCode, city.",
+            "properties": {
+              "addressLine1": {
+                "type": "STRING",
+                "description": "Street address"
+              },
+              "postalCode": {
+                "type": "STRING",
+                "description": "Postal/ZIP code"
+              },
+              "city": {
+                "type": "STRING",
+                "description": "City name"
+              }
+            }
           }
         },
         "required": [
@@ -2871,9 +2925,173 @@
           "version"
         ]
       }
+    },
+    {
+      "name": "search_activity",
+      "description": "Find activities for timesheet registration.\n\nAPI: GET /activity",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "name": {
+            "type": "STRING",
+            "description": "Containing"
+          },
+          "number": {
+            "type": "STRING",
+            "description": "Equals"
+          },
+          "isProjectActivity": {
+            "type": "BOOLEAN",
+            "description": "Filter project activities"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "search_timesheet_entry",
+      "description": "Find timesheet entries (hours registered on projects).\n\nAPI: GET /timesheet/entry",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "dateFrom": {
+            "type": "STRING",
+            "description": "From date (YYYY-MM-DD). Required."
+          },
+          "dateTo": {
+            "type": "STRING",
+            "description": "To date (YYYY-MM-DD). Required."
+          },
+          "employeeId": {
+            "type": "STRING",
+            "description": "Employee ID"
+          },
+          "projectId": {
+            "type": "STRING",
+            "description": "Project ID"
+          },
+          "activityId": {
+            "type": "STRING",
+            "description": "Activity ID"
+          }
+        },
+        "required": [
+          "dateFrom",
+          "dateTo"
+        ]
+      }
+    },
+    {
+      "name": "post_timesheet_entry",
+      "description": "Create a new timesheet entry (register hours on a project).\n\nAPI: POST /timesheet/entry",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "employee_id": {
+            "type": "INTEGER",
+            "description": "Employee ID"
+          },
+          "project_id": {
+            "type": "INTEGER",
+            "description": "Project ID"
+          },
+          "activity_id": {
+            "type": "INTEGER",
+            "description": "Activity ID (from search_activity)"
+          },
+          "date": {
+            "type": "STRING",
+            "description": "Date (YYYY-MM-DD)"
+          },
+          "hours": {
+            "type": "NUMBER",
+            "description": "Number of hours to register"
+          },
+          "comment": {
+            "type": "STRING",
+            "description": "Optional comment"
+          }
+        },
+        "required": [
+          "employee_id",
+          "project_id",
+          "activity_id",
+          "date",
+          "hours"
+        ]
+      }
+    }
+    ,
+    {
+      "name": "search_supplierInvoice",
+      "description": "Search supplier invoices by various criteria.\n\nAPI: GET /supplierInvoice",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "id": {
+            "type": "STRING",
+            "description": "List of IDs"
+          },
+          "invoiceNumber": {
+            "type": "STRING",
+            "description": "Invoice number to search for"
+          },
+          "supplierId": {
+            "type": "STRING",
+            "description": "Supplier ID to filter by"
+          },
+          "invoiceDateFrom": {
+            "type": "STRING",
+            "description": "From and including (YYYY-MM-DD)"
+          },
+          "invoiceDateTo": {
+            "type": "STRING",
+            "description": "To and excluding (YYYY-MM-DD)"
+          }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "addPayment_supplierInvoice",
+      "description": "Register payment on a supplier invoice.\n\nAPI: POST /supplierInvoice/{invoiceId}/:addPayment",
+      "parameters": {
+        "type": "OBJECT",
+        "properties": {
+          "invoiceId": {
+            "type": "INTEGER",
+            "description": "ID of the supplier invoice"
+          },
+          "paymentType_id": {
+            "type": "INTEGER",
+            "description": "Payment type ID"
+          },
+          "amount": {
+            "type": "NUMBER",
+            "description": "Payment amount"
+          },
+          "paymentDate": {
+            "type": "STRING",
+            "description": "Payment date (YYYY-MM-DD)"
+          },
+          "bban": {
+            "type": "STRING",
+            "description": "BBAN of the payer"
+          },
+          "paidAmount": {
+            "type": "NUMBER",
+            "description": "Amount paid in NOK"
+          },
+          "paidAmountCurrency": {
+            "type": "NUMBER",
+            "description": "Amount paid in invoice currency"
+          }
+        },
+        "required": ["invoiceId"]
+      }
     }
   ],
   "_meta": {
-    "count": 50
+    "count": 56
   }
 }

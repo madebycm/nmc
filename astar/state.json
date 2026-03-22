@@ -113,6 +113,20 @@
       "seeds_submitted": 5,
       "strategy": "resubmit_nn",
       "timestamp": "2026-03-21T22:02:49Z"
+    },
+    "597e60cf-d1a1-4627-ac4d-2a61da68b6df": {
+      "round_number": 19,
+      "queries_used": 50,
+      "seeds_submitted": 5,
+      "strategy": "doctrine_v1",
+      "timestamp": "2026-03-22T00:03:26Z"
+    },
+    "fd82f643-15e2-40e7-9866-8d8f5157081c": {
+      "round_number": 20,
+      "queries_used": 50,
+      "seeds_submitted": 5,
+      "strategy": "doctrine_v1",
+      "timestamp": "2026-03-22T03:06:23Z"
     }
   },
   "observations": {},

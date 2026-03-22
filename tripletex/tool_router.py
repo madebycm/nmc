@@ -68,7 +68,7 @@ TOOL_MAP = {
     "search_ledger_account": ("GET",   "/ledger/account",      "query"),
     # Company
     "get_company":          ("GET",    "/company/{id}",        "path_query"),
-    "get_company_withLoginAccess": ("GET", "/company/>withLoginAccess", "query"),
+    "get_company_withLoginAccess": ("GET", "/company/withLoginAccess", "query"),
     # Entitlement
     "grantEntitlementsByTemplate_employee_entitlement": ("PUT", "/employee/entitlement/:grantEntitlementsByTemplate", "query"),
     # Employment
@@ -86,6 +86,17 @@ TOOL_MAP = {
     "search_ledger_accountingDimensionValue": ("GET", "/ledger/accountingDimensionValue/search", "query"),
     # Invoice Reminder
     "createReminder_invoice":          ("PUT",    "/invoice/{id}/:createReminder",  "path_query"),
+    # Timesheet
+    "search_activity":                 ("GET",    "/activity",                       "query"),
+    "search_timesheet_entry":          ("GET",    "/timesheet/entry",                "query"),
+    "post_timesheet_entry":            ("POST",   "/timesheet/entry",                "body"),
+    # Salary
+    "search_salary_type":              ("GET",    "/salary/type",                    "query"),
+    "post_salary_transaction":         ("POST",   "/salary/transaction",             "body"),
+
+    # Supplier Invoice
+    "search_supplierInvoice":          ("GET",    "/supplierInvoice",                "query"),
+    "addPayment_supplierInvoice":      ("POST",   "/supplierInvoice/{invoiceId}/:addPayment", "path_query"),
 }
 
 # ─── Query fields for body_query routing ───
@@ -103,8 +114,8 @@ SEARCH_FIELDS = {
     "search_product": "id,name,number,priceExcludingVatCurrency,vatType(id,name)",
     "search_invoice": "id,invoiceNumber,invoiceDate,invoiceDueDate,customer(id,name),currency(id,code),amountOutstanding,amountOutstandingTotal,amount,amountCurrency,amountExcludingVat,amountExcludingVatCurrency,isCredited,isCreditNote,isApproved",
     "search_department": "id,name,departmentNumber",
-    "search_contact": "id,firstName,lastName,email,phoneNumber,customer(id,name)",
-    "search_project": "id,name,number,version,isFixedPrice,fixedprice,projectManager(id,firstName,lastName),customer(id,name),startDate,endDate",
+    "search_contact": "id,firstName,lastName,email,phoneNumberMobile,phoneNumberWork,customer(id,name)",
+    "search_project": "id,name,number,version,isFixedPrice,fixedprice,isInternal,projectManager(id,firstName,lastName),customer(id,name),startDate,endDate,description",
     "search_travelExpense": "id,title,state,amount,employee(id,firstName,lastName),travelDetails(departureDate,returnDate)",
     "search_travelExpense_paymentType": "id,description,displayName",
     "search_travelExpense_costCategory": "id,description,displayName",
@@ -112,11 +123,14 @@ SEARCH_FIELDS = {
     "search_ledger_voucher": "id,number,date,description,year",
     "search_ledger_account": "id,number,name",
     "search_supplier": "id,name,supplierNumber,organizationNumber,email,phoneNumber",
+    "search_supplierInvoice": "id,invoiceNumber,invoiceDate,invoiceDueDate,supplier(id,name),amount,amountCurrency,outstandingAmount,currency(id,code),voucher(id)",
     "search_employee_employment": "id,employee(id,firstName,lastName),startDate,endDate,employmentId",
     "search_employee_employment_details": "id,employment(id),date,annualSalary,percentageOfFullTimeEquivalent,occupationCode(id,code,nameNO),employmentType,remunerationType,workingHoursScheme",
     "search_employee_employment_occupationCode": "id,code,nameNO",
     "search_ledger_accountingDimensionName": "id,dimensionName,description,dimensionIndex,active",
     "search_ledger_accountingDimensionValue": "id,displayName,dimensionIndex,number,active",
+    "search_activity": "id,name,number,isProjectActivity",
+    "search_timesheet_entry": "id,employee(id,firstName,lastName),project(id,name),activity(id,name),date,hours,comment",
 }
 
 # Fields that are flattened refs: tool uses `foo_id` but API wants `{"foo": {"id": N}}`
@@ -179,12 +193,16 @@ _REF_NAMES = {v: k for k, v in REF_FIELDS.items()}
 def _unflatten_refs(params: dict) -> dict:
     """Convert flattened ref fields back to nested objects.
     e.g. department_id=5 → department: {"id": 5}
+    Also passes through inline address/ref objects as-is.
     """
     result = {}
     for key, value in params.items():
         if key in REF_FIELDS:
             ref_name = REF_FIELDS[key]
             result[ref_name] = {"id": value}
+        elif key in ("postalAddress", "physicalAddress", "deliveryAddress", "address") and isinstance(value, dict):
+            # Agent passed inline address object — pass through as-is
+            result[key] = value
         else:
             result[key] = value
     return result
@@ -303,19 +321,19 @@ def route_tool_call(tool_name: str, args: dict) -> tuple:
     method, endpoint_pattern, param_type = TOOL_MAP[tool_name]
     args = dict(args)  # copy to avoid mutation
 
-    # Extract path parameters (e.g. {id})
-    if "{id}" in endpoint_pattern:
-        entity_id = args.get("id")
-        if entity_id is not None:
-            endpoint = endpoint_pattern.replace("{id}", str(entity_id))
-            # For path_query: remove id from args (it's only in URL)
+    # Extract path parameters (e.g. {id}, {invoiceId}, {employeeId})
+    endpoint = endpoint_pattern
+    import re as _re
+    for match in _re.findall(r'\{(\w+)\}', endpoint_pattern):
+        val = args.get(match)
+        if val is not None:
+            endpoint = endpoint.replace(f"{{{match}}}", str(val))
             # For path_body: KEEP id in args (Tripletex PUT needs id in body)
-            if param_type != "path_body":
-                args.pop("id", None)
-        else:
-            endpoint = endpoint_pattern
-    else:
-        endpoint = endpoint_pattern
+            if param_type != "path_body" or match != "id":
+                args.pop(match, None)
+        elif match == "id":
+            pass  # id might not be provided for some endpoints
+        # else: leave placeholder — will likely 404 but that's an agent error
 
     # Add per-tool search fields (narrowed, not fields="*")
     if param_type == "query" and method == "GET":
