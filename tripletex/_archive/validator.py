@@ -19,7 +19,7 @@ log = logging.getLogger("validator")
 # Sandbox credentials (safe to use for testing)
 SANDBOX_CREDS = {
     "base_url": "https://kkpqfuj-amager.tripletex.dev/v2",
-    "session_token": "***REMOVED***",
+    "session_token": "XXx--xx-REDACTED-SESSION",
 }
 
 AUTH = ("0", SANDBOX_CREDS["session_token"])

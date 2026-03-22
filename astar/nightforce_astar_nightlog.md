@@ -663,3 +663,76 @@ Write-up in STATUS.md was ambiguous but not a code bug. Fixed wording.
 - R20 closes 05:46 UTC (~23 min). R21 will auto-submit with promoted model.
 - **Full z-jitter LORO results**:
   - 0.16→80.93, 0.12→83.64, 0.08→86.24, 0.04→87.07, 0.03→87.27, **0.02→87.49**, 0.01→87.37, 0.00→87.27
+
+## 2026-03-22 10:47 UTC — Cron Loop Status
+
+**Position**: #55 at 249.4 (R21 best). Leader: 261.2 (Dahl Optimal). Gap: 11.8
+**R22**: SUBMITTED (z=0.215 moderate, ~52% NN). Closes 11:46 UTC
+**R23**: Expected ~12:00 UTC open (weight 3.072 — massive leverage)
+**GPU**: Both servers DOWN (A100 reprovisioned, DataCrunch SSH rejected). No retraining possible.
+**Harvester**: Running (PID 58967)
+**Monitor**: Inline monitor running, auto-catches new rounds
+**Model**: nf2_healthy_all.pt = z-jitter=0.02 (LORO 87.49), FROZEN
+
+### Round Analysis
+- R19: 94.2 (catastrophic z=0.041) — our spike round
+- R20: 90.5 (low-moderate z=0.130) — solid with resubmit at 35% NN
+- R21: 89.5 (moderate z=0.263) — consistent moderate performance
+- R22: pending (moderate z=0.215) — similar to R21, expect ~88-91
+
+### Win Scenario
+Top teams consistently score 93+ on moderate. We average 89-90.
+Our edge: catastrophic rounds (R19: 94.2). Need R23 to be catastrophic for any chance at #1.
+R23 at 94 raw × 3.072 = 288.7 weighted → massive spike if catastrophic.
+
+### 10:50 UTC — Cron tick
+R22 active, waiting. No new scores. Harvester alive. GPU down. 56 min to R22 close.
+
+### 10:51 UTC — Promotion Machine: DEAD
+Both GPU servers unreachable. A100 reprovisioned (key rejected). DataCrunch H100 key rejected.
+No retraining, no LORO, no multi-seed, no promotion possible. Production model is FINAL.
+### 11:00 UTC — Cron tick. R22 waiting (46min). No new scores. Harvester alive. GPU down.
+### 11:10 UTC — Cron tick. R22 waiting (36min). Steady.
+### 11:38 UTC — Cron tick. R22 closes in 8min. R23 ~12:00. GPU dead. Final stretch.
+### 11:40 UTC — Cron tick. R22 closes in 6min. Waiting for score + R23.
+
+### 11:56 UTC — R22 GT Harvested + Recalibrated
+R22 scored 83.93 (z=0.170 moderate). Per-seed: 84.2, 83.3, 85.3, 83.3, 83.6
+Position: #73 at 249.4. Leader: Løkka Language Models at 266.6. Gap: 17.2
+R22 DISAPPOINTED — below moderate avg (85.3). z=0.170 with ~52% NN underperformed.
+110 GT files now in calibration. No active round — waiting for R23 (FINAL).
+GPU servers dead. Harvester alive.
+
+### 12:07 UTC — R23 SOLVED (FINAL ROUND)
+z=0.463 (HEALTHY). All 5 seeds submitted. Closes 14:00 UTC sharp.
+Per-seed z: 0.474, 0.525, 0.414, 0.387, 0.585 (wide spread)
+NN weight: 75% (sweep-optimized flat curve). 
+Regime is our weakness. Expected 75-80 raw → 230-246 weighted.
+R21 (249.4) will remain our best. Expected final rank: ~#50-80.
+Competition state: FINAL. No more actions possible.
+### 12:07 UTC — Final cron tick. R23 submitted. Competition ends in 1h53m. Nothing left to do.
+
+---
+### 12:25 UTC — Loop Check (Final)
+- R23 ACTIVE, closes 14:00 UTC (~95 min remaining)
+- R23 already solved with doctrine_v1 (75% NN)
+- Position: #73 at 249.4 (R21 locked)
+- #1: Løkka Language Models at 266.6
+- GPU servers DEAD (both A100 and H100 unreachable) — no training possible
+- Harvester irrelevant — no more rounds after R23
+- NUCLEAR.md written with full tech stack + expert questions
+- **Only action remaining: nuclear resubmit on R23 (free lottery ticket)**
+
+---
+### 13:25 UTC — Loop Check
+- R23 ACTIVE, closes 14:00 UTC (**35 min remaining**)
+- #73 at 249.4 | #1 Løkka at 266.6
+- Awaiting expert review on NUCLEAR.md blend params
+- No new scores, no GPU, no training — resubmit is only play
+---
+### 13:25 UTC — Final stretch. 35min to close. Awaiting expert review for nuclear resubmit. No other actions possible.
+---
+### 13:30 UTC — Nuclear resubmit live. R23 closes 14:00. Awaiting score. Nothing left to do.
+---
+### 13:41 UTC — FINAL NUCLEAR submitted (cross-seed pooled, stability-aware C). Awaiting R23 score. Competition closes 14:00 UTC.
+### 13:50 UTC — RAGNAROK live. Final loop. Awaiting 14:00 close.

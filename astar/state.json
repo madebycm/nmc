@@ -141,6 +141,13 @@
       "seeds_submitted": 5,
       "strategy": "doctrine_v1",
       "timestamp": "2026-03-22T10:45:16Z"
+    },
+    "93c39605-628f-4706-abd9-08582f8b61d7": {
+      "round_number": 23,
+      "queries_used": 50,
+      "seeds_submitted": 5,
+      "strategy": "doctrine_v1",
+      "timestamp": "2026-03-22T12:06:48Z"
     }
   },
   "observations": {},

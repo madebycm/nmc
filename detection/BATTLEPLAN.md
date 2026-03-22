@@ -192,7 +192,7 @@ The expected case puts us within striking distance. The optimistic case beats th
 | **Total** | **~305 MB** | Within 420 MB |
 
 ### Compute
-- A100 80GB at 135.181.8.209 — alive, idle, ready
+- A100 80GB at XXx--xx-A100 — alive, idle, ready
 - Sweep harness (`sweep_knn.py`) — exists, needs new aggregator configs
 
 ### Sandbox Constraints (reminder)

@@ -1,6 +1,6 @@
 # Friday Evening Launch Plan — ArcFace Classifier Retraining
 **Time:** ~20:30 → midnight UTC (3.5 hrs)
-**Server:** H200 141GB @ 95.133.253.114 (ONLY)
+**Server:** H200 141GB @ XXx--xx-H200 (ONLY)
 **Goal:** Ship ArcFace-trained classifier with better embeddings for tonight's submission
 
 ---

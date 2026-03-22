@@ -209,13 +209,13 @@ Distribution: 4 healthy, 3 moderate, 3 catastrophic
 - Backups: v2b + v3b saved as *_backup.pt
 - **CRITICAL**: solver runs LOCAL ONLY. Never from server (R3 disaster).
 
-### A100 VPS (135.181.8.209)
+### A100 VPS (XXx--xx-A100)
 - 2 training processes running (v2d LORO done, v3d LORO 5/9 done)
 - Workspace: `/astar/` with all GT, calibration, training scripts
 - `source /astar/venv/bin/activate`
-- Monitor: `ssh root@135.181.8.209 "grep holdout /astar/train_v3d.log"`
+- Monitor: `ssh root@XXx--xx-A100 "grep holdout /astar/train_v3d.log"`
 
-### H100 Server (86.38.238.86)
+### H100 Server (XXx--xx-H100)
 - **NOT accessible** — SSH key rejected. Needs auth fix if we want to use it.
 
 ---

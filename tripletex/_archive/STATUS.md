@@ -1,7 +1,7 @@
 # Tripletex Agent — Live Status
 
 **Score: 5/8** (last scored batch, 22:21 UTC Mar 21)
-**Server: vps (77.42.85.193)** | **Backend: Gemini 2.5 Pro**
+**Server: vps (XXx--xx-VPS2)** | **Backend: Gemini 2.5 Pro**
 
 ---
 
@@ -28,7 +28,7 @@
 ## Architecture
 
 ```
-Platform (34.34.240.x) → POST /solve → nginx → uvicorn → agent.py (Gemini 2.5 Pro)
+Platform (XXx--xx-PLATFORMx) → POST /solve → nginx → uvicorn → agent.py (Gemini 2.5 Pro)
                                                               ↓
                                                      Tripletex API
 ```

@@ -25,7 +25,7 @@ import requests
 
 os.environ.setdefault(
     "GOOGLE_API_KEY",
-    "***REMOVED***",
+    "XXx--xx-REDACTED-GAPI",
 )
 os.environ.setdefault("TASK_LOG_FILE", os.path.join(os.path.dirname(__file__), "test_harness_log.jsonl"))
 
@@ -39,7 +39,7 @@ log = logging.getLogger("harness")
 
 SANDBOX_CREDS = {
     "base_url": "https://kkpqfuj-amager.tripletex.dev/v2",
-    "session_token": "***REMOVED***",
+    "session_token": "XXx--xx-REDACTED-SESSION",
 }
 AUTH = ("0", SANDBOX_CREDS["session_token"])
 BASE = SANDBOX_CREDS["base_url"]

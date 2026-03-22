@@ -111,7 +111,7 @@ Execute in this order, validate each on server before committing:
 **Stop criterion**: if cumulative val improvement > +0.02 blend, package and submit.
 **Abort criterion**: if any change causes regression > 0.005, revert immediately.
 
-## Assets on Server (135.181.8.209)
+## Assets on Server (XXx--xx-A100)
 
 - `/clade/ng/submission/classifier.safetensors` — E40 fine-tuned model
 - `/clade/ng/submission/detector.onnx` — YOLOv8x 1280px

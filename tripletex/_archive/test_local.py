@@ -48,7 +48,7 @@ TEST_PROMPTS = {
 
 SANDBOX_CREDS = {
     "base_url": "https://kkpqfuj-amager.tripletex.dev/v2",
-    "session_token": "***REMOVED***",
+    "session_token": "XXx--xx-REDACTED-SESSION",
 }
 
 

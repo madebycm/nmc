@@ -155,8 +155,8 @@ replays/
 ```bash
 # Compress and upload
 tar czf replays.tar.gz replays/
-scp replays.tar.gz root@135.181.8.209:/astar/
-ssh root@135.181.8.209 "cd /astar && tar xzf replays.tar.gz"
+scp replays.tar.gz root@XXx--xx-A100:/astar/
+ssh root@XXx--xx-A100 "cd /astar && tar xzf replays.tar.gz"
 ```
 
 ### Phase 3: Train on A100 GPU

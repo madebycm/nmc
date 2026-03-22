@@ -33,9 +33,9 @@ MCP server: `claude mcp add --transport http nmiai https://mcp-docs.ainm.no/mcp`
 ## Compute Server — 2x H100 80GB
 
 ### Connection
-- **Host**: 86.38.238.86
+- **Host**: XXx--xx-H100
 - **User**: root
-- **SSH**: `ssh root@86.38.238.86`
+- **SSH**: `ssh root@XXx--xx-H100`
 - **Provider**: DataCrunch (Finland)
 
 ### Hardware
@@ -99,7 +99,7 @@ data/
 ### Quick Reference
 ```bash
 # SSH in
-ssh root@86.38.238.86
+ssh root@XXx--xx-H100
 
 # Activate env
 source /clade/venv/bin/activate
@@ -181,7 +181,7 @@ torch.load = _patched
 **YOLOv8x (H100 CUDA, 100 epochs, 1280px)** — TRAINING NOW (PID 8857)
 - Training at 1280px resolution, batch=16, with advanced augmentation
 - Export will be at 640px for sandbox inference
-- Monitor: `ssh root@86.38.238.86 "tail -f /clade/ng/train_x.log"`
+- Monitor: `ssh root@XXx--xx-H100 "tail -f /clade/ng/train_x.log"`
 
 ### Classification Pipeline
 - EVA-02 base ViT (86M params) pretrained on CLIP data
@@ -231,12 +231,12 @@ torch.load = _patched
 ## Tripletex — Not Started
 - AI accounting agent that processes accounting tasks
 - Sandbox API credentials available (see memory files)
-- Deployment target: nm.j6x.com (204.168.177.62)
+- Deployment target: nm.j6x.com (XXx--xx-VPS)
 - Submission: HTTPS endpoint at `/solve`
-- **Server workspace**: `/clade/tripletex/` on 86.38.238.86
+- **Server workspace**: `/clade/tripletex/` on XXx--xx-H100
 
 ## Astar Island — Not Started
 - Norse world prediction task
 - REST API-based predictions
 - See `docs/astar-island/` for details
-- **Server workspace**: `/clade/astar/` on 86.38.238.86
+- **Server workspace**: `/clade/astar/` on XXx--xx-H100

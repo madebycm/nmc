@@ -144,7 +144,7 @@ queries excluded to avoid biasing toward high-density areas (Codex review).
 - LORO avg: **87.49** (best across all experiments)
 - Active as `nf2_healthy_all.pt` (swapped from z-jitter=0.08 model, LORO 86.13)
 - Backup: `nf2_healthy_all_backup_zj08.pt`
-- A100 VPS (135.181.8.209) is DOWN — no further retraining possible
+- A100 VPS (XXx--xx-A100) is DOWN — no further retraining possible
 
 ### z-Adaptive NN Weight (sweep-optimized)
 - z < 0.05: 0% NN (pure Dirichlet) — catastrophic
@@ -164,25 +164,25 @@ queries excluded to avoid biasing toward high-density areas (Codex review).
 - **Loop**: `/loop 3m cd ~/www/nm/astar && python solver.py`
 - **Manual**: `python solver.py` (safe, checks state.json)
 - **Calibrate**: `python calibrate.py` (after new GT harvested)
-- **Retrain on A100**: `ssh root@135.181.8.209`, workspace at `/astar`
+- **Retrain on A100**: `ssh root@XXx--xx-A100`, workspace at `/astar`
 
 ## Training on A100 VPS
 
 ```bash
-ssh root@135.181.8.209
+ssh root@XXx--xx-A100
 source /astar/venv/bin/activate
 cd /astar
 
 # Upload new GT
-scp ground_truth/round_*_seed_*.json root@135.181.8.209:/astar/ground_truth/
-scp calibration.json root@135.181.8.209:/astar/
+scp ground_truth/round_*_seed_*.json root@XXx--xx-A100:/astar/ground_truth/
+scp calibration.json root@XXx--xx-A100:/astar/
 
 # Train
 nohup python3 -u train_nn_v4.py > train_nn_v4.log 2>&1 &
 tail -f train_nn_v4.log
 
 # Download model
-scp root@135.181.8.209:/astar/astar_nn_v4.pt .
+scp root@XXx--xx-A100:/astar/astar_nn_v4.pt .
 ```
 
 ## Auto-Pipeline (every round)

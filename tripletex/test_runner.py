@@ -23,7 +23,7 @@ from datetime import date, datetime
 
 # ─── Env setup (before agent import) ───
 
-os.environ.setdefault("GOOGLE_API_KEY", "***REMOVED***")
+os.environ.setdefault("GOOGLE_API_KEY", "XXx--xx-REDACTED-GAPI")
 os.environ.setdefault("TASK_LOG_FILE", os.path.join(os.path.dirname(__file__), "logs", "test_task_log.jsonl"))
 
 logging.basicConfig(
@@ -36,7 +36,7 @@ log = logging.getLogger("test_runner")
 
 SANDBOX_CREDS = {
     "base_url": "https://kkpqfuj-amager.tripletex.dev/v2",
-    "session_token": "***REMOVED***",
+    "session_token": "XXx--xx-REDACTED-SESSION",
 }
 
 PROMPTS_DIR = os.path.join(os.path.dirname(__file__), "logs", "prompts_dump")

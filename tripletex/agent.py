@@ -261,8 +261,8 @@ def _pre_validate(tool_name: str, args: dict) -> dict:
             log.info("AUTOFIX: set dispatchType=EMAIL")
 
     elif tool_name == "invoice_order":
-        # CRITICAL: always send to customer — tasks expect invoices to be delivered
-        if not args.get("sendToCustomer"):
+        # Default sendToCustomer=True, but respect explicit False from LLM
+        if "sendToCustomer" not in args:
             args["sendToCustomer"] = True
         if not args.get("invoiceDate"):
             args["invoiceDate"] = date.today().isoformat()
@@ -297,6 +297,87 @@ def _pre_validate(tool_name: str, args: dict) -> dict:
             log.info("AUTOFIX: set workingHoursScheme=NOT_SHIFT")
 
     return args
+
+
+# ─── Generic voucher preflight validator ───
+
+def _preflight_voucher_postings(postings: list, base_url: str, auth: tuple) -> list:
+    """Validate and correct voucher postings against live account metadata.
+
+    Fetches account properties (vatLocked, ledgerType) via free GETs and
+    auto-corrects VAT types and warns about missing entity refs. This kills
+    the entire class of "konto X er låst til mva-kode Y" 422 errors.
+    """
+    if not postings:
+        return postings
+
+    # Collect unique account IDs and fetch metadata (GETs are free)
+    account_meta = {}  # account_id -> {vatLocked, vatType, ledgerType, number, ...}
+    for p in postings:
+        if not isinstance(p, dict):
+            continue
+        acct = p.get("account", {})
+        acct_id = acct.get("id") if isinstance(acct, dict) else None
+        if acct_id and acct_id not in account_meta:
+            try:
+                resp = requests.get(
+                    f"{base_url}/ledger/account/{acct_id}",
+                    auth=auth,
+                    params={"fields": "id,number,name,vatType(id,name),vatLocked,ledgerType"},
+                    timeout=15,
+                )
+                if resp.status_code == 200:
+                    data = resp.json().get("value", {})
+                    account_meta[acct_id] = data
+                    log.info("PREFLIGHT: fetched account %s (number=%s, vatLocked=%s, ledgerType=%s)",
+                             acct_id, data.get("number"), data.get("vatLocked"), data.get("ledgerType"))
+            except Exception as e:
+                log.warning("PREFLIGHT: failed to fetch account %s: %s", acct_id, e)
+
+    if not account_meta:
+        return postings
+
+    corrected = []
+    for p in postings:
+        if not isinstance(p, dict):
+            corrected.append(p)
+            continue
+        p = dict(p)
+        acct = p.get("account", {})
+        acct_id = acct.get("id") if isinstance(acct, dict) else None
+        meta = account_meta.get(acct_id)
+
+        if meta:
+            # 1. VAT lock enforcement — if account is locked, force its VAT type
+            if meta.get("vatLocked"):
+                locked_vat = meta.get("vatType") or {}
+                locked_vat_id = locked_vat.get("id") if isinstance(locked_vat, dict) else None
+                current_vat = p.get("vatType") or {}
+                current_vat_id = current_vat.get("id") if isinstance(current_vat, dict) else current_vat
+                if locked_vat_id is not None and current_vat_id != locked_vat_id:
+                    old_val = current_vat_id
+                    if locked_vat_id == 0:
+                        p.pop("vatType", None)  # Remove VAT entirely for MVA-0 locked accounts
+                    else:
+                        p["vatType"] = {"id": locked_vat_id}
+                    log.info("PREFLIGHT: account %s (number=%s) locked to vatType %s, was %s — corrected",
+                             acct_id, meta.get("number"), locked_vat_id, old_val)
+
+            # 2. ledgerType entity ref enforcement — warn if missing required ref
+            ledger_type = (meta.get("ledgerType") or "").upper()
+            if ledger_type == "CUSTOMER" and not p.get("customer") and not p.get("customer_id"):
+                log.warning("PREFLIGHT: account %s (number=%s) requires customer ref (ledgerType=CUSTOMER) — posting may fail",
+                            acct_id, meta.get("number"))
+            elif ledger_type == "SUPPLIER" and not p.get("supplier") and not p.get("supplier_id"):
+                log.warning("PREFLIGHT: account %s (number=%s) requires supplier ref (ledgerType=SUPPLIER) — posting may fail",
+                            acct_id, meta.get("number"))
+            elif ledger_type == "EMPLOYEE" and not p.get("employee") and not p.get("employee_id"):
+                log.warning("PREFLIGHT: account %s (number=%s) requires employee ref (ledgerType=EMPLOYEE) — posting may fail",
+                            acct_id, meta.get("number"))
+
+        corrected.append(p)
+
+    return corrected
 
 
 # ─── Structured response compaction ───
@@ -818,9 +899,16 @@ def solve_task_sync(body: dict):
     if not api_key:
         raise ValueError("GOOGLE_API_KEY not set")
 
-    # Bank account setup — required for invoice/payment tasks (422 without it)
-    # Costs 1-2 proxy calls but prevents 0% on all invoice tasks
-    _ensure_bank_account(base_url, auth)
+    # Bank account setup — only needed for invoice/payment tasks (422 without it)
+    # Gate to avoid wasting a PUT write call on non-invoice tasks
+    _INVOICE_KEYWORDS = ["faktura", "invoice", "rechnung", "factura", "facture",
+                          "betaling", "payment", "zahlung", "pago", "pagamento", "paiement",
+                          "ordre", "order", "bestellung", "pedido", "commande",
+                          "purring", "reminder", "inkasso", "agio", "disagio",
+                          "bankavsteming", "reconciliation", "bank statement",
+                          "kreditnota", "credit note"]
+    if any(kw in prompt.lower() for kw in _INVOICE_KEYWORDS):
+        _ensure_bank_account(base_url, auth)
 
     # Per-task search cache
     cache = _SearchCache()
@@ -834,6 +922,8 @@ def solve_task_sync(body: dict):
         "turns": 0,
         "outcome": "unknown",
         "smoke": body.get("_smoke", False),
+        "write_calls": 0,
+        "write_4xx": 0,
     }
     t0 = time.time()
 
@@ -945,6 +1035,7 @@ def solve_task_sync(body: dict):
     consecutive_errors = 0
     last_error_sig = None
     auth_failed = False
+    proxy_403_count = 0  # Track 403s — two consecutive = proxy expired
 
     for turn in range(MAX_TURNS):
         log.info("Agent turn %d/%d", turn + 1, MAX_TURNS)
@@ -1110,19 +1201,29 @@ def solve_task_sync(body: dict):
                         cache.put(method, path, qp, api_result)
 
                 raw = getattr(api_result, 'raw_data', None)
+                is_write = method in ("POST", "PUT", "DELETE")
                 call_log = {
                     "tool": tool_name, "method": method, "endpoint": path,
                     "params": qp, "body": req_body,
                     "result_snippet": api_result[:300],
                     "result_full": api_result if "ERROR" in api_result else None,
                     "raw_response": raw,
+                    "is_write": is_write,
                 }
+                if is_write:
+                    task_record["write_calls"] += 1
                 if "ERROR" in api_result:
                     call_log["error"] = True
                     task_record["errors"].append(f"tripletex_api → {method} {path}: {api_result}")
                     turn_had_error = True
-                    if "HTTP 401" in api_result or ("HTTP 403" in api_result and "expired" in api_result.lower()):
+                    if is_write and "HTTP 4" in api_result:
+                        task_record["write_4xx"] += 1
+                    if "HTTP 401" in api_result:
                         auth_failed = True
+                    elif "HTTP 403" in api_result:
+                        proxy_403_count += 1
+                        if "expired" in api_result.lower() or proxy_403_count >= 2:
+                            auth_failed = True
                     error_sig = f"tripletex_api:{path}:{api_result[:30]}"
                     if error_sig == last_error_sig:
                         consecutive_errors += 1
@@ -1147,6 +1248,12 @@ def solve_task_sync(body: dict):
                     "functionResponse": {"name": tool_name, "response": {"error": f"Unknown tool: {tool_name}"}}
                 })
                 continue
+
+            # Voucher preflight: validate postings against account metadata (GETs are free)
+            if tool_name == "post_ledger_voucher" and req_body and req_body.get("postings"):
+                req_body["postings"] = _preflight_voucher_postings(
+                    req_body["postings"], base_url, auth
+                )
 
             # Check cache for GET requests
             cached = cache.get(method, endpoint, params)
@@ -1343,21 +1450,31 @@ def solve_task_sync(body: dict):
                         log.warning("AUTOFIX: project recovery failed: %s", e)
 
             raw = getattr(api_result, 'raw_data', None)
+            is_write = method in ("POST", "PUT", "DELETE")
             call_log = {
                 "tool": tool_name, "method": method, "endpoint": endpoint,
                 "params": params, "body": req_body,
                 "result_snippet": api_result[:300],
                 "result_full": api_result if "ERROR" in api_result else None,
                 "raw_response": raw,
+                "is_write": is_write,
             }
+            if is_write:
+                task_record["write_calls"] += 1
             if "ERROR" in api_result:
                 call_log["error"] = True
                 task_record["errors"].append(f"{tool_name} → {method} {endpoint}: {api_result}")
                 turn_had_error = True
+                if is_write and "HTTP 4" in api_result:
+                    task_record["write_4xx"] += 1
 
-                # Detect 401 auth failure — unrecoverable
+                # Detect auth failure — unrecoverable
                 if "HTTP 401" in api_result:
                     auth_failed = True
+                elif "HTTP 403" in api_result:
+                    proxy_403_count += 1
+                    if "expired" in api_result.lower() or proxy_403_count >= 2:
+                        auth_failed = True
 
                 # Detect repeated errors (same tool+endpoint+status)
                 error_sig = f"{tool_name}:{endpoint}:{api_result[:30]}"

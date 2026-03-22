@@ -1,6 +1,6 @@
 """Configuration for Astar Island solver."""
 
-TOKEN = "***REMOVED***
+TOKEN = "XXx--xx-REDACTED-JWT"
 
 # Polling interval in seconds
 POLL_INTERVAL = 120  # 2 minutes

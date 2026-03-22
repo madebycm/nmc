@@ -184,6 +184,10 @@ REF_FIELDS = {
     "occupationCode_id": "occupationCode",
     "division_id": "division",
     "asset_id": "asset",
+    "activity_id": "activity",
+    "invoice_id": "invoice",
+    "voucher_id": "voucher",
+    "type_id": "type",
 }
 
 # Reverse mapping: nested key → flat key (for canonicalization)
@@ -228,6 +232,11 @@ _CAMEL_REF_FIELDS = {
     "employmentId": "employment",
     "occupationCodeId": "occupationCode",
     "projectManagerId": "projectManager",
+    "activityId": "activity",
+    "invoiceId": "invoice",
+    "voucherId": "voucher",
+    "voucherTypeId": "voucherType",
+    "productUnitId": "productUnit",
 }
 
 

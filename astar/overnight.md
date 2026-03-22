@@ -2,7 +2,7 @@
 
 ## Setup (23:00 UTC / 00:00 CET)
 - **Cron loop**: job 84479134, every 3 min — `cd ~/www/nm/astar && python solver.py`
-- **H100 training**: v2e + v3e running at 86.38.238.168:/astar/
+- **H100 training**: v2e + v3e running at XXx--xx-H100:/astar/
 - **Production models**: v2d (LORO 79.7) + v3b (LORO 72.3)
 - **v3d reverted** to v3b — healthy rounds R6=61.7, R7=56.0 unacceptable
 - **R10**: still active, waiting for API transition (catastrophic, z≈0.038)

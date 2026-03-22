@@ -110,7 +110,7 @@ This is the ONLY way to tune the actual decision loop:
 ### Execution
 ```bash
 # On A100:
-ssh root@135.181.8.209
+ssh root@XXx--xx-A100
 cd /astar
 # Upload replays + harness code
 # Run full policy sweep
@@ -176,7 +176,7 @@ Retrain v2/v3 architectures with replay data:
 ### Execution
 ```bash
 # On A100:
-# 1. Upload replay data: scp -r replays/ root@135.181.8.209:/astar/
+# 1. Upload replay data: scp -r replays/ root@XXx--xx-A100:/astar/
 # 2. Generate MC-averaged targets per round/seed config
 # 3. Train v2c with replay targets + auxiliary heads
 # 4. LORO validation against official GT
