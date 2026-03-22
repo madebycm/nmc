@@ -42,7 +42,8 @@ async def solve(request: Request):
     prompt = body.get("prompt", "")
     client_ip = request.client.host if request.client else "unknown"
     body["_client_ip"] = client_ip
-    log.info("Task received [%s]: %s", client_ip, prompt[:120])
+    body["_smoke"] = request.headers.get("x-smoke-test", "") == "1"
+    log.info("Task received [%s]%s: %s", client_ip, " (SMOKE)" if body["_smoke"] else "", prompt[:120])
     t0 = time.time()
 
     try:

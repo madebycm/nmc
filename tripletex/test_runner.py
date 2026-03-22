@@ -64,8 +64,8 @@ TYPE_PATTERNS = [
     ("custom_dimension", r"(dimension|dimensjon|Produktlinje|accounting.*dimension)"),
     ("create_invoice", r"(create.*invoice|opprett.*faktura|cr[eé]e[rz].*factur|crear.*factura|crie.*fatura|Rechnung.*erstell|send.*faktura|envie.*fatura|envoy.*facture|erstellen.*senden.*Rechnung|lag.*faktura|Erstellen Sie eine Rechnung|env[ií]a una factura|Crea y env)"),
     ("create_order", r"(create.*order|opprett.*bestilling|cr[eé]e[rz].*commande|crear.*pedido|crie.*pedido|Bestellung.*erstell|Auftrag.*erstell|Crea un pedido)"),
-    ("create_project", r"(create.*project|opprett.*prosjekt|cr[eé]e[rz].*projet|crear.*proyecto|crie.*projeto|Projekt.*erstell|vinculado|linked.*customer|pre[cç]o fixo|Defina.*pre[cç]o)"),
-    ("create_employee", r"(create.*employee|opprett.*ansatt|ny.*tilsett|cr[eé]e[rz].*employ|crear.*empleado|crie.*empregado|Mitarbeiter.*erstell|new.*employee|ansett|nuevo.*empleado|nouvel.*employ|Arbeitsvertrag|employment.*contract|offer.*letter|lettre.*offre|carta.*oferta|tilbudsbrev|novo funcion[aá]rio|Crie-o como func)"),
+    ("create_project", r"(create.*project|opprett.*prosjekt|cr[eé]e[rz].*projet|crear.*proyecto|crie.*projeto|Projekt.*erstell|vinculado.*cliente|linked.*customer|pre[cç]o fixo|Defina.*pre[cç]o)"),
+    ("create_employee", r"(create.*employee|opprett.*ansatt|ny.*tilsett|cr[eé]e[rz].*employ|crear.*empleado|crie.*empregado|Mitarbeiter.*erstell|new.*employee|ansett|nuevo.*empleado|nouvel.*employ|Arbeitsvertrag|employment.*contract|offer.*letter|lettre.*offre|carta.*oferta|tilbudsbrev|novo funcion[aá]rio|Crie-o como func|crie o funcion[aá]rio|contrato de trabalho)"),
     ("create_customer", r"(create.*customer|opprett.*kunde|cr[eé]e[rz].*client|crear.*cliente|crie.*cliente|Kunden.*erstell|Crea el cliente)"),
     ("create_product", r"(create.*product|opprett.*produkt|cr[eé]e[rz].*produit|crear.*producto|crie.*produto|Produkt.*erstell|Crea el producto|Erstellen Sie.*Produkt)"),
     ("create_department", r"(create.*department|opprett.*avdeling|cr[eé]e[rz].*d[eé]partement|crear.*departamento|crie.*departamento|Abteilung.*erstell|Erstellen Sie drei Abteilungen)"),
@@ -129,13 +129,18 @@ def run_prompt(idx: int, entry: dict) -> dict:
     }
 
     t0 = time.time()
+    task_record = None
     try:
         from agent import solve_task_sync
-        solve_task_sync(body)
+        task_record = solve_task_sync(body)
         elapsed = round(time.time() - t0, 1)
         result["status"] = "completed"
         result["elapsed_s"] = elapsed
-        log.info("[%d] COMPLETED in %.1fs", idx, elapsed)
+        result["turns"] = task_record.get("turns") if task_record else None
+        result["api_calls"] = len(task_record.get("api_calls", [])) if task_record else 0
+        result["agent_errors"] = len(task_record.get("errors", [])) if task_record else 0
+        log.info("[%d] COMPLETED in %.1fs (%d turns, %d calls, %d errs)",
+                 idx, elapsed, result["turns"] or 0, result["api_calls"], result["agent_errors"])
 
     except Exception as e:
         elapsed = round(time.time() - t0, 1)
@@ -144,11 +149,33 @@ def run_prompt(idx: int, entry: dict) -> dict:
         result["elapsed_s"] = elapsed
         log.error("[%d] CRASHED after %.1fs: %s", idx, elapsed, str(e)[:200])
 
+    # ─── Verification ───
+    if task_record and result["status"] == "completed":
+        from verifier import verify
+        verdict = verify(
+            task_record, prompt, task_type,
+            SANDBOX_CREDS["base_url"], SANDBOX_CREDS["session_token"],
+        )
+        result["verdict"] = verdict.status
+        result["verdict_detail"] = verdict.detail
+        result["verdict_checks"] = verdict.checks
+        if verdict.status == "PASS":
+            log.info("[%d] VERIFY: \033[32mPASS\033[0m — %s", idx, verdict.detail)
+        elif verdict.status == "FAIL":
+            log.warning("[%d] VERIFY: \033[31mFAIL\033[0m — %s", idx, verdict.detail)
+        else:
+            log.info("[%d] VERIFY: \033[33mINCONCLUSIVE\033[0m — %s", idx, verdict.detail)
+    elif result["status"] == "crashed":
+        result["verdict"] = "CRASH"
+        result["verdict_detail"] = result.get("error", "")
+
     result["finished_at"] = datetime.utcnow().isoformat() + "Z"
 
     # Append to results log in real-time
     with open(RESULTS_FILE, "a") as f:
-        f.write(json.dumps(result, ensure_ascii=False) + "\n")
+        # Strip raw_response from serialization (too large)
+        clean = dict(result)
+        f.write(json.dumps(clean, ensure_ascii=False, default=str) + "\n")
 
     return result
 
@@ -167,36 +194,54 @@ def print_summary(results: list):
     total = len(results)
     completed = sum(1 for r in results if r["status"] == "completed")
     crashed = sum(1 for r in results if r["status"] == "crashed")
+    v_pass = sum(1 for r in results if r.get("verdict") == "PASS")
+    v_fail = sum(1 for r in results if r.get("verdict") == "FAIL")
+    v_inc = sum(1 for r in results if r.get("verdict") == "INCONCLUSIVE")
 
     print(f"\n{'=' * 70}")
     print(f"{C_BOLD}RESULTS: {completed}/{total} completed, {crashed} crashed{C_RESET}")
+    print(f"{C_BOLD}VERIFIED: {C_GREEN}{v_pass} PASS{C_RESET} / {C_RED}{v_fail} FAIL{C_RESET} / {C_YELLOW}{v_inc} INCONCLUSIVE{C_RESET}")
     print(f"{'=' * 70}")
 
-    # By type
+    # By type with verdict
     by_type = {}
     for r in results:
         t = r["type"]
-        by_type.setdefault(t, {"ok": 0, "fail": 0, "times": []})
-        if r["status"] == "completed":
-            by_type[t]["ok"] += 1
-        else:
+        by_type.setdefault(t, {"pass": 0, "fail": 0, "inc": 0, "crash": 0, "times": []})
+        v = r.get("verdict", "")
+        if v == "PASS":
+            by_type[t]["pass"] += 1
+        elif v == "FAIL":
             by_type[t]["fail"] += 1
+        elif v == "CRASH":
+            by_type[t]["crash"] += 1
+        else:
+            by_type[t]["inc"] += 1
         by_type[t]["times"].append(r.get("elapsed_s", 0))
 
-    print(f"\n{'Type':<28} {'OK':>4} {'FAIL':>4} {'Avg(s)':>7}")
-    print("-" * 50)
+    print(f"\n{'Type':<24} {'PASS':>5} {'FAIL':>5} {'INC':>5} {'CRASH':>5} {'Avg(s)':>7}")
+    print("-" * 60)
     for t in sorted(by_type.keys()):
         d = by_type[t]
         avg = sum(d["times"]) / len(d["times"]) if d["times"] else 0
-        color = C_GREEN if d["fail"] == 0 else C_RED
-        print(f"{color}{t:<28} {d['ok']:>4} {d['fail']:>4} {avg:>7.1f}{C_RESET}")
+        if d["fail"] or d["crash"]:
+            color = C_RED
+        elif d["inc"]:
+            color = C_YELLOW
+        else:
+            color = C_GREEN
+        print(f"{color}{t:<24} {d['pass']:>5} {d['fail']:>5} {d['inc']:>5} {d['crash']:>5} {avg:>7.1f}{C_RESET}")
 
     # Failures detail
-    failures = [r for r in results if r["status"] != "completed"]
+    failures = [r for r in results if r.get("verdict") in ("FAIL", "CRASH")]
     if failures:
         print(f"\n{C_RED}{C_BOLD}FAILURES:{C_RESET}")
         for r in failures:
-            print(f"  [{r['idx']}] {r['type']} — {r.get('error', '?')[:120]}")
+            detail = r.get("verdict_detail", r.get("error", "?"))[:150]
+            print(f"  [{r['idx']}] {r['type']} — {detail}")
+            for chk in r.get("verdict_checks", []):
+                if not chk.get("pass"):
+                    print(f"         {C_DIM}{chk}{C_RESET}")
 
     total_time = sum(r.get("elapsed_s", 0) for r in results)
     print(f"\nTotal time: {total_time:.0f}s ({total_time/60:.1f}m)")
